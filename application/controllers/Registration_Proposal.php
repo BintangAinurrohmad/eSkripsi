@@ -97,6 +97,7 @@ class Registration_Proposal extends CI_Controller
 		$this->load->view('template/overlay/mahasiswa', $data);
 	}
 
+	//bintang
 	public function addProposal()
 	{
 		if ($this->session->userdata('group_id') != 1) {
@@ -159,13 +160,53 @@ class Registration_Proposal extends CI_Controller
 
 					$this->Proregister_model->setTitle($this->input->post('title_id'), $data2);
 
+					// Get dosen pembimbing and koordinator skripsi (group_id = 4)
+					$dospem1 = $this->input->post('dospem1');
+					$dospem2 = $this->input->post('dospem2');
+
+					$koordinator_query = $this->db->where('group_id', 4)->get('users');
+					$koordinator_list = $koordinator_query->result();
+
+					// Insert notifications
+					$notif_data = [];
+
+					if ($dospem1) {
+						$notif_data[] = array(
+							'user_id' => $dospem1,
+							'judul' => 'Pengajuan Seminar Proposal Baru',
+							'pesan' => "Ada pengajuan seminar proposal baru dari mahasiswa bimbingan Anda.",
+							'type' => 'info'
+						);
+					}
+
+					if ($dospem2) {
+						$notif_data[] = array(
+							'user_id' => $dospem2,
+							'judul' => 'Pengajuan Seminar Proposal Baru',
+							'pesan' => "Ada pengajuan seminar proposal baru dari mahasiswa bimbingan Anda.",
+							'type' => 'info'
+						);
+					}
+
+					foreach ($koordinator_list as $koordinator) {
+						$notif_data[] = array(
+							'user_id' => $koordinator->id,
+							'judul' => 'Pengajuan Seminar Proposal Baru',
+							'pesan' => "Ada pengajuan seminar proposal baru yang perlu diperiksa.",
+							'type' => 'info'
+						);
+					}
+
+					if (!empty($notif_data)) {
+						$this->db->insert_batch('notifikasi', $notif_data);
+					}
+
 					$this->session->set_flashdata('success', 'Berhasil mendaftar ujian proposal');
 					redirect('registration_proposal');
 				}
 			}
 		}
 	}
-
 
 
 	public function dosen()

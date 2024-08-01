@@ -100,6 +100,7 @@ class Registration_Skripsi extends CI_Controller
 		$this->load->view('template/overlay/mahasiswa', $data);
 	}
 
+	//bintang
 	public function addSkripsi()
 	{
 		if ($this->session->userdata('group_id') != 1) {
@@ -108,7 +109,7 @@ class Registration_Skripsi extends CI_Controller
 
 		if ($this->input->post('title_id') == '-- Pilih Judul --') {
 			$this->session->set_flashdata('error', 'Seluruh kolom wajib diisi.');
-			redirect('registration_proposal/daftar');
+			redirect('registration_skripsi/daftar');
 		}
 
 		$this->form_validation->set_rules('title_id', 'Judul', 'required');
@@ -191,10 +192,52 @@ class Registration_Skripsi extends CI_Controller
 
 			$this->Skpregister_model->setTitle($this->input->post('title_id'), $data2);
 
+			// Get dosen pembimbing and koordinator skripsi (group_id = 4)
+			$dospem1 = $this->input->post('dospem1');
+			$dospem2 = $this->input->post('dospem2');
+
+			$koordinator_query = $this->db->where('group_id', 4)->get('users');
+			$koordinator_list = $koordinator_query->result();
+
+			// Insert notifications
+			$notif_data = [];
+
+			if ($dospem1) {
+				$notif_data[] = array(
+					'user_id' => $dospem1,
+					'judul' => 'Pengajuan Seminar Skripsi Baru',
+					'pesan' => "Ada pengajuan seminar skripsi baru dari mahasiswa bimbingan Anda.",
+					'type' => 'info'
+				);
+			}
+
+			if ($dospem2) {
+				$notif_data[] = array(
+					'user_id' => $dospem2,
+					'judul' => 'Pengajuan Seminar Skripsi Baru',
+					'pesan' => "Ada pengajuan seminar skripsi baru dari mahasiswa bimbingan Anda.",
+					'type' => 'info'
+				);
+			}
+
+			foreach ($koordinator_list as $koordinator) {
+				$notif_data[] = array(
+					'user_id' => $koordinator->id,
+					'judul' => 'Pengajuan Seminar Skripsi Baru',
+					'pesan' => "Ada pengajuan seminar skripsi baru yang perlu diperiksa.",
+					'type' => 'info'
+				);
+			}
+
+			if (!empty($notif_data)) {
+				$this->db->insert_batch('notifikasi', $notif_data);
+			}
+
 			$this->session->set_flashdata('success', 'Berhasil mendaftar ujian skripsi');
 			redirect('registration_skripsi');
 		}
 	}
+
 	
 	public function dosen()
 	{
