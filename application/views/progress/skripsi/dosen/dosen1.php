@@ -3,9 +3,7 @@
     <div class="card">
         <div class="card-body">
             <div class="tab-content pt-2">
-
                 <div class="tab-pane fade profile-overview active show" id="profile-overview" role="tabpanel">
-
                     <table class="table">
                         <thead>
                             <tr>
@@ -32,7 +30,27 @@
                                             <button class="btn btn-success">unduh</button>
                                         </a>
                                     </td>
-                                    <td><?php echo $row->status === 'approved' ? 'Diterima' : ($row->status === 'rejected' ? 'Ditolak' : 'Menunggu Disetujui'); ?></td>
+                                    <td>
+                                        <?php
+                                        $statusClass = '';
+                                        switch ($row->status) {
+                                            case 'approved':
+                                                $statusClass = 'badge bg-success';
+                                                $statusText = 'Disetujui';
+                                                break;
+                                            case 'rejected':
+                                                $statusClass = 'badge bg-danger';
+                                                $statusText = 'Ditolak';
+                                                break;
+                                            case 'pending':
+                                            default:
+                                                $statusClass = 'badge bg-warning text-dark';
+                                                $statusText = 'pilih';
+                                                break;
+                                        }
+                                        ?>
+                                        <span class="badge <?php echo $statusClass; ?>"><?php echo $statusText; ?></span>
+                                    </td>
                                     <td width="15%">
                                         <?php echo form_open('Progress_skripsi/update_status/' . $row->id . '/' . $mahasiswa_id, ['id' => 'statusForm' . $row->id]); ?>
                                         <?php echo form_hidden($this->security->get_csrf_token_name(), $this->security->get_csrf_hash()); ?>
@@ -45,7 +63,6 @@
                                         </div>
                                         <?php echo form_close(); ?>
                                     </td>
-
                                 </tr>
                             <?php endforeach; ?>
                         </tbody>
@@ -53,11 +70,10 @@
                     <!-- <a href="<?php echo site_url('Progress_skripsi/download_log'); ?>">
                         <button class="btn btn-primary">Unduh Log</button>
                     </a> -->
-
-
                 </div>
             </div>
         </div>
+    </div>
 </section>
 
 </html>

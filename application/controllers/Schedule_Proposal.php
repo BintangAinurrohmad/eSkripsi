@@ -271,7 +271,7 @@ class Schedule_Proposal extends CI_Controller {
 		$title_id = $this->input->post('title_id');
 		// Get mahasiswa and dosen IDs
 		$proposal_data = $this->db->where('id', $title_id)->get('title')->first_row();
-		$mahasiswa_id = $proposal_data->mahasiswa_id;
+		$mahasiswa_id = $proposal_data->mahasiswa;
 		$dospem_1_id = $proposal_data->dospem_1_id;
 		$dospem_2_id = $proposal_data->dospem_2_id;
 

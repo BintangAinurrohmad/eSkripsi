@@ -144,7 +144,7 @@ class Schedule_Skripsi extends CI_Controller
 		$title_id = $this->input->post('title_id');
 		// Get mahasiswa and dosen IDs
 		$skripsi_data = $this->db->where('id', $title_id)->get('title')->first_row();
-		$mahasiswa_id = $skripsi_data->mahasiswa_id;
+		$mahasiswa_id = $skripsi_data->mahasiswa;
 		$dospem_1_id = $skripsi_data->dospem_1_id;
 		$dospem_2_id = $skripsi_data->dospem_2_id;
 
