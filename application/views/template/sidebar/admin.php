@@ -9,11 +9,12 @@
 			</a>
 		</li><!-- End Dashboard Nav -->
 
-		<li class="nav-item">
+		<!-- <li class="nav-item">
 			<a class="nav-link collapsed" href="<?= base_url() ?>">
 				<i class="ri-megaphone-fill"></i><span>Pengumuman</span>
 			</a>
-		</li><!-- End Announcment Nav -->
+		</li> -->
+		<!-- End Announcment Nav -->
 
 		<li class="nav-item">
 			<a class="nav-link collapsed" data-bs-target="#data-nav" data-bs-toggle="collapse" href="#">
