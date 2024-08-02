@@ -141,4 +141,13 @@ class Proregister_model extends CI_Model
 	{
 		$this->db->insert('pro_nilai', $data);
 	}
+
+	public function has_approved_title($user_id)
+	{
+		$this->db->where('mahasiswa', $user_id);
+		$this->db->where('status', 'Diterima');
+		$this->db->where('status_ujian_proposal', 'Belum terdaftar');
+		$query = $this->db->get('title');
+		return $query->num_rows() > 0;
+	}
 }

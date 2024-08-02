@@ -1,8 +1,28 @@
+<?php
+$showAddButton = true;
+if (is_array($myProposal) && !empty($myProposal)) {
+	$latestProposal = $myProposal[0];
+	if ($latestProposal->pro_status == "Sedang diproses") {
+		$showAddButton = false;
+	} elseif ($latestProposal->pro_status == "Ditolak") {
+		$showAddButton = true;
+	} else {
+		$showAddButton = false;
+	}
+} else {
+	$showAddButton = true;
+}
+
+if (!$hasApprovedTitle) {
+	$showAddButton = false;
+}
+?>
+
 <section class="section">
 	<div class="card">
-		<div class="card-body">
-
-			<h5 class="card-title">Ujian Saya</h5>
+		<div class="card-body" style="padding-top: <?php if(!$showAddButton) { echo "1rem"; } else {
+									echo "4rem";
+								} ?>;">
 
 			<?php if ($this->session->flashdata('success')) : ?>
 				<div class="alert alert-info alert-dismissible fade show" role="alert">
@@ -82,23 +102,6 @@
 				</table>
 
 			<?php } ?>
-
-			<?php
-			// Logika untuk menampilkan tombol tambah
-			$showAddButton = true;
-			if (is_array($myProposal) && !empty($myProposal)) {
-				$latestProposal = $myProposal[0]; // Ambil proposal terbaru
-				if ($latestProposal->pro_status == "Sedang diproses") {
-					$showAddButton = false;
-				} elseif ($latestProposal->pro_status == "Ditolak") {
-					$showAddButton = true;
-				} else {
-					$showAddButton = false;
-				}
-			} else {
-				$showAddButton = true;
-			}
-			?>
 
 			<?php if ($showAddButton) : ?>
 				<a class="btn btn-primary position-absolute top-0 end-0 m-3" href="<?= base_url() ?>registration_proposal/daftar" style="border-radius: 15px;">

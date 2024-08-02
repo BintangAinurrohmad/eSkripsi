@@ -254,22 +254,19 @@
 
 			<?php
 			$showAddButton = true;
-			if (is_array($myt) && !empty($myt)) {
+			if (empty($myt)) {
+				$showAddButton = true;
+			} else {
 				foreach ($myt as $item) {
 					if (is_object($item) && isset($item->status)) {
 						if ($item->status == "Sedang diproses") {
 							$showAddButton = false;
 							break;
+						} else if ($item->status == "Ditolak") {
+							$showAddButton = true;
 						}
 					}
 				}
-				if ($showAddButton && $myt[0]->status == "Ditolak") {
-					$showAddButton = true;
-				} else {
-					$showAddButton = false;
-				}
-			} else {
-				$showAddButton = false;
 			}
 			?>
 

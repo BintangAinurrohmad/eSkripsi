@@ -315,10 +315,22 @@ class Title extends CI_Controller
 			$data['judul'] = $this->input->post('judul');
 			$data['bidang_id'] = $this->input->post('bidang_id');
 			$data['dospem_1_id'] = $this->input->post('dospem_1_id');
-			$data['status_dospem_1'] = 'Diterima';
 			$data['dospem_2_id'] = $this->input->post('dospem_2_id');
-			$data['status_dospem_2'] = 'Diterima';
-			$data['status'] = 'Diterima';
+
+			$inStatus = $this->input->post('title_status');
+			if ($inStatus == "Diterima") {
+				$data['status_dospem_1'] = "Diterima";
+				$data['status_dospem_2'] = "Diterima";
+				$data['status'] = "Diterima";
+			} else if ($inStatus == "Ditolak") {
+				$data['status_dospem_1'] = "Ditolak";
+				$data['status_dospem_2'] = "Ditolak";
+				$data['status'] = "Ditolak";
+			} else {
+				$data['status_dospem_1'] = "Sedang diproses";
+				$data['status_dospem_2'] = "Sedang diproses";
+				$data['status'] = "Sedang diproses";
+			}
 
 			$title_id = $this->input->post('title_id');
 

@@ -128,4 +128,14 @@ class Skpregister_model extends CI_Model
 	{
 		$this->db->insert('skp_nilai', $data);
 	}
+
+	public function has_approved_title($user_id)
+	{
+		$this->db->where('mahasiswa', $user_id);
+		$this->db->where('status', 'Diterima');
+		$this->db->where('status_ujian_proposal', 'Selesai');
+		$this->db->where('status_ujian_skripsi', 'Belum terdaftar');
+		$query = $this->db->get('title');
+		return $query->num_rows() > 0;
+	}
 }

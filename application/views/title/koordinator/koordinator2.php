@@ -11,7 +11,7 @@
 
 			<form method="post" action="<?php echo base_url('title/set_title'); ?>">
 
-			<input type="hidden" value="<?= $judul->id ?>" name="title_id" id="title_id">
+				<input type="hidden" value="<?= $judul->id ?>" name="title_id" id="title_id">
 
 				<div class="row mb-3 mt-3">
 					<label for="inputText" class="col-sm-2 col-form-label">Judul</label>
@@ -50,6 +50,20 @@
 							<?php foreach ($dosen2 as $dosen2) : ?>
 								<option value="<?= $dosen2['id_dosen']; ?>" <?= set_select('dospem_2_id', $dosen2['id_dosen']); ?> <?php if ($dosen2['id_dosen'] == $judul->dospem_2_id) echo 'selected'; ?>><?= $dosen2['nama_dosen']; ?></option>
 							<?php endforeach; ?>
+						</select>
+					</div>
+				</div>
+
+				<div class="row mb-3">
+					<label class="col-sm-2 col-form-label">Status</label>
+					<div class="col-sm-10">
+						<select class="form-select" name="title_status" id="title_status" aria-label="Default select example">
+							<option value="Diterima" <?php if ($judul->status == "Diterima") {
+															echo "selected";
+														} else{} ?>>Diterima</option>
+							<option value="Ditolak" <?php if ($judul->status == "Ditolak") {
+														echo "selected";
+													} else{} ?>>Ditolak</option>
 						</select>
 					</div>
 				</div>

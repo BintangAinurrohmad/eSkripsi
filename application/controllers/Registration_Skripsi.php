@@ -77,10 +77,12 @@ class Registration_Skripsi extends CI_Controller
 		}
 
 		$mySkripsi = $this->Skpregister_model->getMySkripsi($this->session->userdata('user_id'));
+		$hasApprovedTitle = $this->Skpregister_model->has_approved_title($this->session->userdata('user_id'));
 		$data = [
 			'title' => "Pendaftaran Ujian Skripsi",
 			'content' => 'registration/skripsi/mahasiswa/mahasiswa',
-			'mySkripsi' => $mySkripsi
+			'mySkripsi' => $mySkripsi,
+			'hasApprovedTitle' => $hasApprovedTitle
 		];
 		$this->load->view('template/overlay/mahasiswa', $data);
 	}

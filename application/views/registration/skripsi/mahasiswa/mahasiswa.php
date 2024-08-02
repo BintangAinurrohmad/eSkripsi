@@ -1,6 +1,28 @@
+<?php
+$showAddButton = true;
+if (is_array($mySkripsi) && !empty($mySkripsi)) {
+	$latestSkripsi = $mySkripsi[0];
+	if ($latestSkripsi->skp_status == "Sedang diproses" || $latestSkripsi->skp_status == "Diterima") {
+		$showAddButton = false;
+	} elseif ($latestSkripsi->skp_status == "Ditolak") {
+		$showAddButton = true;
+	}
+} else {
+	$showAddButton = true;
+}
+
+if (!$hasApprovedTitle) {
+	$showAddButton = false;
+}
+?>
+
 <section class="section">
 	<div class="card">
-		<div class="card-body">
+		<div class="card-body" style="padding-top: <?php if (!$showAddButton) {
+														echo "1rem";
+													} else {
+														echo "4rem";
+													} ?>;">
 
 			<h5 class="card-title">Ujian Saya</h5>
 
@@ -38,7 +60,7 @@
 								<td><a class="btn btn-primary" href="<?= base_url() ?>registration_skripsi/view_file/naskah/<?= $skripsi->file_naskah; ?>">Lihat</a></td>
 								<td><a class="btn btn-primary" href="<?= base_url() ?>registration_skripsi/view_file/persetujuan/<?= $skripsi->file_persetujuan; ?>">Lihat</a></td>
 								<td><a class="btn btn-primary" href="<?= base_url() ?>registration_skripsi/view_file/transkrip/<?= $skripsi->file_transkrip; ?>">Lihat</a></td>
-								<td><a class="btn btn-primary" href="<?= base_url() ?>registration_skripsi/view_file/ukt/<?= $skripsi->file_ukt; ?>">Lihat</a></td></td>
+								<td><a class="btn btn-primary" href="<?= base_url() ?>registration_skripsi/view_file/ukt/<?= $skripsi->file_ukt; ?>">Lihat</a></td>
 								<td>
 									<?php
 									$dosen1 = $this->db->where('id', $skripsi->dospem_1_id)->get('users')->row();
@@ -86,25 +108,8 @@
 				</table>
 
 			<?php } ?>
-			<!-- End Default Table Example -->
 
 
-			<?php
-			// Logika untuk menampilkan tombol tambah
-			$showAddButton = true;
-			if (is_array($mySkripsi) && !empty($mySkripsi)) {
-				$latestSkripsi = $mySkripsi[0]; // Ambil skpposal terbaru
-				if ($latestSkripsi->skp_status == "Sedang proses") {
-					$showAddButton = false;
-				} elseif ($latestSkripsi->skp_status == "Ditolak") {
-					$showAddButton = true;
-				} else {
-					$showAddButton = false;
-				}
-			} else {
-				$showAddButton = true;
-			}
-			?>
 
 			<?php if ($showAddButton) : ?>
 				<a class="btn btn-primary position-absolute top-0 end-0 m-3" href="<?= base_url() ?>registration_skripsi/daftar" style="border-radius: 15px;">
@@ -116,50 +121,3 @@
 		</div>
 	</div>
 </section>
-
-
-<!-- <div class="modal fade" id="myModal">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">Detail</h4>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                  <span class="col-sm-5"><b>Judul</b></span>
-                  <span class="col-sm-10">Sistem Informasi Balbla</span>
-                </div>
-                <div class="row">
-                  <span class="col-sm-5"><b>Mahasiswa</b></span>
-                  <span class="col-sm-10">Muhammad Amin (1412100017)</span>
-                </div>
-                <hr>
-                <div class="row">
-                  <span class="col-sm-5"><b>Pembimbing 1</b></span>
-                  <span class="col-sm-10">Amaludin Arifia, S.Kom. M.Kom.</span>
-                </div>
-                <div class="row">
-                  <span class="col-sm-5"><b>Status</b></span>
-                  <span class="col-sm-10">Diterima</span>
-                </div>
-                <hr>
-                <div class="row">
-                  <span class="col-sm-5"><b>Pembimbing 2</b></span>
-                  <span class="col-sm-10">Andik Adi Suryanto, S.T. M.T.</span>
-                </div>
-                <div class="row">
-                  <span class="col-sm-5"><b>Status</b></span>
-                  <span class="col-sm-10">Ditolak</span>
-                </div>
-                <hr>
-                <div class="row">
-                  <span class="col-sm-5"><b>Status Akhir</b></span>
-                  <span class="col-sm-10">Sedang Diskpses</span>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-dismiss="modal">Tutup</button>
-            </div>
-        </div>
-    </div>
-</div> -->
