@@ -61,7 +61,7 @@
 								</td>
 								<td>
 									<?php
-									$dosuji1 = $this->db->where('id', $data->dosuji_1_id)->get('users')->row();
+									$dosuji1 = $this->db->where('id', $data->dosuji_2_id)->get('users')->row();
 									echo $dosuji1->nama;
 									?>
 								</td>

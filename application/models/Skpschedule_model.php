@@ -61,4 +61,14 @@ class Skpschedule_model extends CI_Model
 	{
 		return $this->db->get('rooms')->result_array();
 	}
+
+	public function get_berita_acara($id)
+	{
+		$this->db->select('*, skp_register.id as skp_id');
+		$this->db->from('skp_register');
+		$this->db->join('title', 'skp_register.title_id = title.id', 'inner');
+		$this->db->where('skp_register.id', $id);
+		$query = $this->db->get();
+		return $query->row();
+	}
 }

@@ -161,7 +161,7 @@
 												<span class="badge rounded-pill bg-secondary">Menunggu Persetujuan</span>
 											<?php } ?>
 										</td>
-										<td><a class="btn btn-primary" href="<?= base_url() ?>progress_proposal/dosen1/<?= $dospem1->mahasiswa ?>">Lihat</a></td>
+										<td><a class="btn btn-primary" href="<?= base_url() ?>progress_proposal/dosen1/<?= $dospem2->mahasiswa ?>">Lihat</a></td>
 										<td><a class="btn btn-primary" href="<?= base_url() ?>registration_proposal/view_file/naskah/<?= $dospem2->file_naskah; ?>">Lihat</a></td>
 										<td><a class="btn btn-primary" href="<?= base_url() ?>registration_proposal/view_file/persetujuan/<?= $dospem2->file_persetujuan; ?>">Lihat</a></td>
 										<td width="15%">

@@ -24,8 +24,6 @@ if (!$hasApprovedTitle) {
 														echo "4rem";
 													} ?>;">
 
-			<h5 class="card-title">Ujian Saya</h5>
-
 			<?php if ($this->session->flashdata('success')) : ?>
 				<div class="alert alert-info alert-dismissible fade show" role="alert">
 					<?php echo $this->session->flashdata('success'); ?>

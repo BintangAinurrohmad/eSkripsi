@@ -33,7 +33,7 @@
 						<p>Maaf, Belum Ada Ujian Yang Dijadwalkan.</p>
 					<?php } else { ?>
 
-						<table class="table">
+						<table class="table datatable">
 							<thead>
 								<tr>
 									<th scope="col">No</th>
@@ -96,7 +96,7 @@
 						<p>Maaf, Belum Ada Ujian Yang Dijadwalkan.</p>
 					<?php } else { ?>
 
-						<table class="table">
+						<table class="table datatable">
 							<thead>
 								<tr>
 									<th scope="col">No</th>

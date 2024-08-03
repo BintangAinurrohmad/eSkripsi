@@ -46,6 +46,130 @@ class Schedule_Skripsi extends CI_Controller
 		$this->load->view('template/overlay/mahasiswa', $data);
 	}
 
+	public function download_berita_acara($id)
+	{
+
+		require_once APPPATH . 'third_party/PhpWord/PhpWordAutoloader.php';
+		require_once APPPATH . 'third_party/dompdf/autoload.inc.php';
+
+		$data = $this->Skpschedule_model->get_berita_acara($id);
+
+		setlocale(LC_TIME, 'id_ID.UTF-8');
+		$tanggal = $data->tanggal;
+		$hari = strftime('%A', strtotime($tanggal));
+		$tgl = date('d', strtotime($tanggal));
+		$bulan = strftime('%B', strtotime($tanggal));
+		$tahun = date('Y', strtotime($tanggal));
+		$now = strftime("%d %B %Y", strtotime($tanggal));
+
+		$dosuji1 = $this->db->where('id', $data->dosuji_1_id)->get('users')->row();
+		$dosuji2 = $this->db->where('id', $data->dosuji_2_id)->get('users')->row();
+		$dospem1 = $this->db->where('id', $data->dospem_1_id)->get('users')->row();
+		$dospem2 = $this->db->where('id', $data->dospem_2_id)->get('users')->row();
+		$mahasiswa = $this->db->where('id', $data->mahasiswa)->get('users')->row();
+
+		$templateProcessor = new \PhpOffice\PhpWord\TemplateProcessor("berita_acara_skripsi.docx");
+
+		$templateProcessor->setValues([
+			'dosuji1' => $dosuji1->nama,
+			'dosuji1_nidn' => $dosuji1->npm,
+			'dosuji2' => $dosuji2->nama,
+			'dosuji2_nidn' => $dosuji2->npm,
+			'dospem1' => $dospem1->nama,
+			'dospem1_nidn' => $dospem1->npm,
+			'dospem2' => $dospem2->nama,
+			'dospem2_nidn' => $dospem2->npm,
+			'judul' => $data->judul,
+			'mahasiswa' => $mahasiswa->nama,
+			'angkatan' => $mahasiswa->angkatan,
+			'npm' => $mahasiswa->npm,
+			'hari' => $hari,
+			'tgl' => $tgl,
+			'bulan' => $bulan,
+			'tahun' => $tahun,
+			'now' => $now
+		]);
+
+		$tempFile = tempnam(sys_get_temp_dir(), 'PHPWord');
+		$templateProcessor->saveAs($tempFile);
+
+		// Download the file
+		header('Content-Description: File Transfer');
+		header('Content-Type: application/vnd.openxmlformats-officedocument.wordprocessingml.document');
+		header('Content-Disposition: attachment; filename="berita-acara-skripsi.docx"');
+		header('Content-Transfer-Encoding: binary');
+		header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+		header('Expires: 0');
+		header('Pragma: public');
+		flush();
+		readfile($tempFile);
+		unlink($tempFile);
+		exit;
+	}
+
+	public function download_lembar_revisi($id)
+	{
+
+		require_once APPPATH . 'third_party/PhpWord/PhpWordAutoloader.php';
+		require_once APPPATH . 'third_party/dompdf/autoload.inc.php';
+
+		$data = $this->Skpschedule_model->get_berita_acara($id);
+
+		setlocale(LC_TIME, 'id_ID.UTF-8');
+		$tanggal = $data->tanggal;
+		$hari = strftime('%A', strtotime($tanggal));
+		$tgl = date('d', strtotime($tanggal));
+		$bulan = strftime('%B', strtotime($tanggal));
+		$tahun = date('Y', strtotime($tanggal));
+		$now = strftime("%d %B %Y", strtotime($tanggal));
+
+		$dosuji1 = $this->db->where('id', $data->dosuji_1_id)->get('users')->row();
+		$dosuji2 = $this->db->where('id', $data->dosuji_2_id)->get('users')->row();
+		$dospem1 = $this->db->where('id', $data->dospem_1_id)->get('users')->row();
+		$dospem2 = $this->db->where('id', $data->dospem_2_id)->get('users')->row();
+		$mahasiswa = $this->db->where('id', $data->mahasiswa)->get('users')->row();
+		$room = $this->db->where('id', $data->room_id)->get('rooms')->row();
+
+		$templateProcessor = new \PhpOffice\PhpWord\TemplateProcessor("lembar_revisi_skripsi.docx");
+
+		$templateProcessor->setValues([
+			'dosuji1' => $dosuji1->nama,
+			'dosuji1_nidn' => $dosuji1->npm,
+			'dosuji2' => $dosuji2->nama,
+			'dosuji2_nidn' => $dosuji2->npm,
+			'dospem1' => $dospem1->nama,
+			'dospem1_nidn' => $dospem1->npm,
+			'dospem2' => $dospem2->nama,
+			'dospem2_nidn' => $dospem2->npm,
+			'judul' => $data->judul,
+			'mahasiswa' => $mahasiswa->nama,
+			'angkatan' => $mahasiswa->angkatan,
+			'npm' => $mahasiswa->npm,
+			'hari' => $hari,
+			'tgl' => $tgl,
+			'bulan' => $bulan,
+			'tahun' => $tahun,
+			'now' => $now,
+			'room' => $room->nama
+		]);
+
+		$tempFile = tempnam(sys_get_temp_dir(), 'PHPWord');
+		$templateProcessor->saveAs($tempFile);
+
+		// Download the file
+		header('Content-Description: File Transfer');
+		header('Content-Type: application/vnd.openxmlformats-officedocument.wordprocessingml.document');
+		header('Content-Disposition: attachment; filename="lembar_revisi_skripsi.docx"');
+		header('Content-Transfer-Encoding: binary');
+		header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+		header('Expires: 0');
+		header('Pragma: public');
+		flush();
+		readfile($tempFile);
+		unlink($tempFile);
+		exit;
+	}
+
 
 	public function dosen()
 	{

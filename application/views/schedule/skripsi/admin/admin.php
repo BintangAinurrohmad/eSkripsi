@@ -1,12 +1,12 @@
 <section class="section">
 	<div class="card">
-		<div class="card-body">
+		<div class="card-body pt-3">
 
 			<?php if (empty($all)) { ?>
 				<p>Maaf, Belum Ada Ujian Yang Dijadwalkan.</p>
 			<?php } else { ?>
 
-				<table class="table mt-3">
+				<table class="table datatable">
 					<thead>
 						<tr>
 							<th scope="col">No</th>
@@ -28,29 +28,29 @@
 								<th scope="row"><?= $no++; ?></th>
 								<td><?= $all->judul; ?></td>
 								<td><?php
-										$mahasiswa = $this->db->where('id', $all->mahasiswa)->get('users')->row();
-										echo $mahasiswa->nama;
-										?></td>
+									$mahasiswa = $this->db->where('id', $all->mahasiswa)->get('users')->row();
+									echo $mahasiswa->nama;
+									?></td>
 								<td><?php
-										$dospem1 = $this->db->where('id', $all->dospem_1_id)->get('users')->row();
-										echo $dospem1->nama;
-										?></td>
+									$dospem1 = $this->db->where('id', $all->dospem_1_id)->get('users')->row();
+									echo $dospem1->nama;
+									?></td>
 								<td><?php
-										$dospem2 = $this->db->where('id', $all->dospem_2_id)->get('users')->row();
-										echo $dospem2->nama;
-										?></td>
+									$dospem2 = $this->db->where('id', $all->dospem_2_id)->get('users')->row();
+									echo $dospem2->nama;
+									?></td>
 								<td><?php
-										$dosuji1 = $this->db->where('id', $all->dosuji_1_id)->get('users')->row();
-										echo $dosuji1->nama;
-										?></td>
+									$dosuji1 = $this->db->where('id', $all->dosuji_1_id)->get('users')->row();
+									echo $dosuji1->nama;
+									?></td>
 								<td><?php
-										$dosuji2 = $this->db->where('id', $all->dosuji_2_id)->get('users')->row();
-										echo $dosuji2->nama;
-										?></td>
+									$dosuji2 = $this->db->where('id', $all->dosuji_2_id)->get('users')->row();
+									echo $dosuji2->nama;
+									?></td>
 								<td><?php
-										$room = $this->db->where('id', $all->room_id)->get('rooms')->row();
-										echo $room->nama;
-										?></td>
+									$room = $this->db->where('id', $all->room_id)->get('rooms')->row();
+									echo $room->nama;
+									?></td>
 								<td><?= $all->tanggal; ?></td>
 								<td><?= $all->jam; ?></td>
 							</tr>
