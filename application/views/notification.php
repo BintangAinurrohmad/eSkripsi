@@ -36,7 +36,7 @@ $no = 1;
 foreach ($notif as $n) { ?>
     <div class="card">
         <div class="card-body p-3">
-            <h4><?= $n->judul ?></h4>
+           <h4><u class=""><?= $n->judul ?></u></h4>
 
             <?= $n->pesan ?>
             <br>

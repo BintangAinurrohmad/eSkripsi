@@ -35,7 +35,7 @@
           <div class="form-group">
             <label for="bab">judul</label>
             <select class="form-control" id="judul" name="judul">
-                <option value="<?php echo $judul_list->id; ?>"><?php echo $judul_list->judul; ?></option>
+              <option value="<?php echo $judul_list->id; ?>"><?php echo $judul_list->judul; ?></option>
             </select>
           </div>
 
@@ -47,7 +47,7 @@
               <?php endforeach; ?>
             </select>
           </div>
-<!-- 
+          <!-- 
           <div class="form-group">
             <label for="bab">Bab</label>
             <select class="form-control" id="bab" name="bab">
@@ -64,7 +64,7 @@
           </div>
 
           <div class="form-group">
-            <label for="bukti">Bukti</label>
+            <label for="bukti">Bukti (format .JPG maks. 1 mb)</label>
             <input type="file" class="form-control-file" id="bukti" name="bukti" accept="image/png, image/gif, image/jpeg">
           </div>
 

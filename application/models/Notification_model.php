@@ -8,7 +8,7 @@ class Notification_model extends CI_Model
         $this->db->select('notifikasi.*');
         $this->db->from('notifikasi');
         $this->db->where('notifikasi.user_id', $user_id);
-        $this->db->or_where('notifikasi.user_id IS NULL', null, false);
+        // $this->db->or_where('notifikasi.user_id IS NULL', null, false);
         $this->db->order_by('notifikasi.created_at', 'DESC');
         $query = $this->db->get();
         return $query->result();
