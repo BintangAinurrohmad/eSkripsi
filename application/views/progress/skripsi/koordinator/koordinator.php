@@ -6,7 +6,7 @@
       <p class="card-title"><a href="" class="text-black">Semua Judul</a></p>
       <!-- Default Table -->
 
-      <table class="table">
+      <table class="table datatable">
         <thead>
           <tr>
             <th scope="col">No</th>

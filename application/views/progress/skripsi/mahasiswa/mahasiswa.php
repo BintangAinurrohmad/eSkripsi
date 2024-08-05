@@ -59,7 +59,7 @@
           <a href="<?= base_url() ?>/progress_skripsi/mahasiswa1" class="btn btn-primary btn-custom">Tambah</a>
         </div>
 
-        <table class="table table-striped">
+        <table class="table table-striped datatable">
           <thead>
             <tr>
               <th>Tanggal</th>

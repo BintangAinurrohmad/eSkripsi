@@ -15,7 +15,7 @@
         </form>
       </div> -->
 
-      <table class="table">
+      <table class="table datatable">
         <thead>
           <tr>
             <th scope="col">No</th>
