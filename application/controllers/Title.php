@@ -67,9 +67,10 @@ class Title extends CI_Controller
 		$this->load->view('template/overlay/mahasiswa', $data);
 	}
 
+
+	//bintang
 	public function addTitle()
 	{
-
 		$user = $this->db->get_where('users', ['id' => $this->session->userdata('user_id')])->row_array();
 
 		$this->form_validation->set_rules('judul', 'Judul', 'required');
@@ -83,15 +84,17 @@ class Title extends CI_Controller
 			redirect('title/mahasiswa2');
 		} else {
 			// If validation succeeds, save data to database
-			$data['judul'] = $this->input->post('judul');
-			$data['mahasiswa'] = $user['id'];
-			$data['tanggal_pengajuan'] = date('Y-m-d H:i:s');
-			$data['bidang_id'] = $this->input->post('bidang_id');
-			$data['dospem_1_id'] = $this->input->post('dospem_1_id');
-			$data['status_dospem_1'] = 'Sedang Diproses';
-			$data['dospem_2_id'] = $this->input->post('dospem_2_id');
-			$data['status_dospem_2'] = 'Sedang Diproses';
-			$data['status'] = 'Sedang Diproses';
+			$data = [
+				'judul' => $this->input->post('judul'),
+				'mahasiswa' => $user['id'],
+				'tanggal_pengajuan' => date('Y-m-d H:i:s'),
+				'bidang_id' => $this->input->post('bidang_id'),
+				'dospem_1_id' => $this->input->post('dospem_1_id'),
+				'status_dospem_1' => 'Sedang Diproses',
+				'dospem_2_id' => $this->input->post('dospem_2_id'),
+				'status_dospem_2' => 'Sedang Diproses',
+				'status' => 'Sedang Diproses'
+			];
 
 			if ($data['bidang_id'] == 'Pilih Bidang' || $data['dospem_1_id'] == 'Pilih Dosen' || $data['dospem_2_id'] == 'Pilih Dosen') {
 				$this->session->set_flashdata('error', 'Seluruh kolom wajib diisi.');
@@ -100,10 +103,54 @@ class Title extends CI_Controller
 
 			$this->Title_model->addTitle($data);
 
+			// Get dosen pembimbing and koordinator skripsi (group_id = 3)
+
+			$dospem1 = $this->input->post('dospem_1_id');
+			$dospem2 = $this->input->post('dospem_2_id');
+
+			$koordinator_query = $this->db->where('group_id', 3)->get('users');
+			$koordinator_list = $koordinator_query->result();
+
+
+			// Insert notifications
+			$notif_data = [];
+
+			if ($dospem1) {
+				$notif_data[] = [
+					'user_id' => $dospem1,
+					'judul' => 'Pengajuan Judul Skripsi Baru',
+					'pesan' => "Ada pengajuan judul skripsi baru dari mahasiswa bimbingan Anda.",
+					'type' => 'info'
+				];
+			}
+
+			if ($dospem2) {
+				$notif_data[] = [
+					'user_id' => $dospem2,
+					'judul' => 'Pengajuan Judul Skripsi Baru',
+					'pesan' => "Ada pengajuan judul skripsi baru dari mahasiswa bimbingan Anda.",
+					'type' => 'info'
+				];
+			}
+
+			foreach ($koordinator_list as $koordinator) {
+				$notif_data[] = [
+					'user_id' => $koordinator->id,
+					'judul' => 'Pengajuan Judul Skripsi Baru',
+					'pesan' => "Ada pengajuan judul skripsi baru yang perlu direspon.",
+					'type' => 'info'
+				];
+			}
+
+			if (!empty($notif_data)) {
+				$this->db->insert_batch('notifikasi', $notif_data);
+			}
+
 			$this->session->set_flashdata('success', 'Berhasil mengajukan judul. Silahkan tunggu untuk judul disetujui oleh dosen pembimbing yang telah anda pilih!');
 			redirect('title');
 		}
 	}
+
 
 	public function dosen()
 	{
