@@ -35,32 +35,30 @@ class Dashboard extends CI_Controller
 		$this->load->model('Title_model'); // Load the Title_model
 
 		$user_id = $this->session->userdata('user_id');
-		$lastTitle = $this->Title_model->getMyLastAccTitle($user_id);
-
-		$data = [
-			'my_title' => $lastTitle,
-			'title' => "Selamat Datang di Dashboard Mahasiswa",
-			'content' => 'dashboard/mahasiswa',
-		];
 
 		if ($user_id) {
-			$proposal_data = $this->Dashboard_model->get_proposal_data_by_user_id($user_id);
-			$guidance_count = $this->Dashboard_model->get_guidance_count($user_id);
-			$last_guidance_date = $this->Dashboard_model->get_last_guidance_date($user_id);
-			$data['approved_count'] = $this->Dashboard_model->getMhsToday($user_id);
+			$lastTitle = $this->Title_model->getMyLastAccTitle($user_id);
+			$user_name = $this->Dashboard_model->getLoggedInUserName(); // Get the user name
 
-			$data['data_proposal'] = $proposal_data;
-			$data['guidance_count'] = $guidance_count;
-			$data['last_guidance_date'] = $last_guidance_date;
-			$data['dosen_mahasiswa'] = $this->Dashboard_model->get_dosen_mahasiswa();
+			$data = [
+				'my_title' => $lastTitle,
+				'title' => "Selamat Datang di Dashboard Mahasiswa $user_name",
+				'content' => 'dashboard/mahasiswa',
+				'user_name' => $user_name,
+				'approved_count' => $this->Dashboard_model->getMhsToday($user_id),
+				'data_proposal' => $this->Dashboard_model->get_proposal_data_by_user_id($user_id),
+				'guidance_count' => $this->Dashboard_model->get_guidance_count($user_id),
+				'last_guidance_date' => $this->Dashboard_model->get_last_guidance_date($user_id),
+				'dosen_mahasiswa' => $this->Dashboard_model->get_dosen_mahasiswa()
+			];
+
+			$this->load->view('template/overlay/mahasiswa', $data);
 		} else {
-			redirect('login', 'refresh');
 			$this->session->set_flashdata('error', 'User ID not found in session');
-			redirect('dashboard', 'refresh');
+			redirect('login', 'refresh');
 		}
-
-		$this->load->view('template/overlay/mahasiswa', $data);
 	}
+
 
 
 	public function dosen()
@@ -73,6 +71,8 @@ class Dashboard extends CI_Controller
 		$data['belumSeminar'] = $this->Dashboard_model->getBelumSeminar();
 		$data['belumSkripsi'] = $this->Dashboard_model->getBelumSkripsi();
 		$data['dosen_mahasiswa'] = $this->Dashboard_model->get_dosen_mahasiswa();
+
+		$data['user_name'] = $this->Dashboard_model->getLoggedInUserName();
 
 		$data['jumlah_belum_disetujui'] = $this->Dashboard_model->count_pending_approval($dosen_id);
 		$data['jumlahskp_belum_disetujui'] = $this->Dashboard_model->count_pending_approvalskp($dosen_id);
@@ -101,6 +101,8 @@ class Dashboard extends CI_Controller
 		$data['belumSeminar'] = $this->Dashboard_model->getBelumSeminar();
 		$data['belumSkripsi'] = $this->Dashboard_model->getBelumSkripsi();
 		$data['dosen_mahasiswa'] = $this->Dashboard_model->get_dosen_mahasiswa();
+
+		$data['user_name'] = $this->Dashboard_model->getLoggedInUserName();
 
 		$jumlah_jadwal = $this->Dashboard_model->get_jumlah_jadwal();
 		$jumlah_jadwal_today = $this->Dashboard_model->get_jumlah_jadwal_today();
@@ -144,6 +146,8 @@ class Dashboard extends CI_Controller
 		$data['belumSeminar'] = $this->Dashboard_model->getBelumSeminar();
 		$data['belumSkripsi'] = $this->Dashboard_model->getBelumSkripsi();
 		$data['dosen_mahasiswa'] = $this->Dashboard_model->get_dosen_mahasiswa();
+
+		$data['user_name'] = $this->Dashboard_model->getLoggedInUserName();
 
 		$jumlah_jadwal = $this->Dashboard_model->get_jumlah_jadwal();
 		$jumlah_jadwal_today = $this->Dashboard_model->get_jumlah_jadwal_today();

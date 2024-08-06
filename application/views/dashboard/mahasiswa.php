@@ -1,6 +1,11 @@
 <section class="section dashboard">
   <div class="row">
 
+    <body>
+      <h2><?php echo $user_name; ?>!</h2>
+      <!-- Rest of your dashboard content -->
+    </body>
+
     <!-- Approved Count -->
     <div class="card-body">
       <h6 class="scrolling-text">

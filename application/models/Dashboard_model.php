@@ -454,4 +454,26 @@ class Dashboard_model extends CI_Model
         }
     }
 
+    public function getLoggedInUserName()
+    {
+        $user_id = $this->session->userdata('user_id'); // Mengambil user_id dari session
+
+        if (!$user_id) {
+            return null; // Return null if user_id is not set in session
+        }
+
+        // Query to get the user's name
+        $this->db->select('nama');
+        $this->db->from('users');
+        $this->db->where('id', $user_id);
+        $query = $this->db->get();
+
+        // Check if a result was found
+        if ($query->num_rows() > 0) {
+            return $query->row()->nama; // Return the user's name
+        } else {
+            return null; // Return null if no user was found with the given user_id
+        }
+    }
+
 }

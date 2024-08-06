@@ -2,6 +2,11 @@
 <html lang="en">
 
 <body>
+  <h2><?php echo $user_name; ?>!</h2>
+  <!-- Rest of your dashboard content -->
+</body>
+
+<body>
 
   <section class="section dashboard">
     <div class="row">

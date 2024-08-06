@@ -6,6 +6,12 @@
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0/css/bootstrap.min.css" rel="stylesheet">
 </head>
 
+
+<body>
+  <h2><?php echo $user_name; ?>!</h2>
+  <!-- Rest of your dashboard content -->
+</body>
+
 <body>
   <div class="card-body">
     <h6>
@@ -60,9 +66,9 @@
                     <span class="text-success small pt-1 fw-bold"><?php echo $jumlah_jadwal; ?></span>
                     <span class="text-muted small pt-2 ps-1"> jadwal ujian proposal</span>
                     <div>
-                    <span class="text-success small pt-1 fw-bold"><?php echo $jumlah_jadwal_skp; ?></span>
-                    <span class="text-muted small pt-2 ps-1"> jadwal ujian skripsi</span>
-                  </div>
+                      <span class="text-success small pt-1 fw-bold"><?php echo $jumlah_jadwal_skp; ?></span>
+                      <span class="text-muted small pt-2 ps-1"> jadwal ujian skripsi</span>
+                    </div>
                   </div>
                   <!-- <div class="ps-3">
                     <span class="text-success small pt-1 fw-bold"><?php echo $jumlah_jadwal_today; ?>,</span>
@@ -78,7 +84,7 @@
           </div><!-- End Card -->
 
           <u>
-            <h5>Dosen</h5>
+            <h5>Dosen Pembimbing</h5>
           </u>
 
           <!-- judul1 Card -->
