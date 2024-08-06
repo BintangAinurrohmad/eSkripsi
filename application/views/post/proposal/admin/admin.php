@@ -67,7 +67,7 @@
 								</td>
 								<td><?= $data->tanggal_upload; ?></td>
 								<td>
-									<a href="<?= base_url(); ?>file/proposal/naskah_final/<?= $data->file_naskah; ?>" class="btn btn-primary" href="">Naskah</a>
+									<a href="<?= base_url(); ?>post_proposal/view_naskah/<?= $data->file_naskah; ?>" class="btn btn-primary" href="">Naskah</a>
 								</td>
 							</tr>
 						<?php } ?>

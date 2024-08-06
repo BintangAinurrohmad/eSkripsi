@@ -802,11 +802,23 @@ class Score_Proposal extends CI_Controller
 
 	public function update_nilai()
 	{
-		$pro_id = $this->input->post('pro_id');
-		$nilai = $this->input->post('value');
+		$this->form_validation->set_rules('pro_id', 'ID', 'required');
+		$this->form_validation->set_rules('value', 'Nilai', 'required');
 
-		$this->Proscore_model->update_nilai($pro_id, $nilai);
-
-		redirect('score_proposal/koordinator');
+		if ($this->form_validation->run() == FALSE) {
+			$this->session->set_flashdata('error', 'Kolom nilai tidak boleh kosong');
+			redirect('score_proposal/koordinator');
+		} else {
+			$pro_id = $this->input->post('pro_id');
+			$nilai = $this->input->post('value');
+			if ($nilai < 0 || $nilai > 100) {
+				$this->session->set_flashdata('error', 'Nilai harus berisi angka antara 0-100');
+				redirect('score_proposal/koordinator');
+			} else {
+				$this->Proscore_model->update_nilai($pro_id, $nilai);
+				$this->session->set_flashdata('success', 'Nilai berhasil diperbarui');
+				redirect('score_proposal/koordinator');
+			}
+		}
 	}
 }

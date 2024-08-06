@@ -20,7 +20,6 @@
 							<th scope="col">Ruang</th>
 							<th scope="col">Jam</th>
 							<th scope="col">Status Ujian</th>
-							<th scope="col">Nilai</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -67,8 +66,15 @@
 									?>
 								</td>
 								<td><?php echo $ujian->jam; ?></td>
-								<td><?php echo $ujian->status_ujian_proposal; ?></td>
-								<td><?php echo $ujian->nilai; ?></td>
+								<td>
+									<?php if ($ujian->status_ujian_proposal == "Selesai") { ?>
+										<span class="badge rounded-pill bg-success">Selesai</span>
+									<?php } else if ($ujian->status_ujian_proposal == "Terdaftar") { ?>
+										<span class="badge rounded-pill bg-secondary">Menunggu Penilaian</span>
+									<?php } else { ?>
+										<span class="badge rounded-pill bg-danger">Belum Daftar</span>
+									<?php } ?>
+								</td>
 							</tr>
 						<?php } ?>
 					</tbody>

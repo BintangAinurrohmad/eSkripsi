@@ -7,12 +7,6 @@
 </head>
 
 <body>
-  <div class="card-body">
-    <h6>
-      <marquee behavior="scroll" direction="left">
-        <?php echo $count; ?></marquee>
-    </h6>
-  </div>
   <section class="section dashboard">
     <div class="row">
 

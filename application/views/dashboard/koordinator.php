@@ -10,7 +10,7 @@
   <div class="card-body">
     <h6>
       <marquee behavior="scroll" direction="left">
-        <?php echo $count; ?></marquee>
+        <?php echo $total_count; ?></marquee>
     </h6>
   </div>
   <section class="section dashboard">
@@ -35,7 +35,7 @@
                     <i class="ri-book-2-line"></i>
                   </div>
                   <div class="ps-3">
-                    <span class="text-success small pt-1 fw-bold"><?php echo $total_judul; ?></span>
+                    <span class="text-success small pt-1 fw-bold"><?php echo $total_judul_baru; ?></span>
                     <span class="text-muted small pt-2 ps-1">Perlu Di Respon</span>
                   </div>
                   <!-- <div class="ps-3">
@@ -58,12 +58,20 @@
                   </div>
                   <div class="ps-3">
                     <span class="text-success small pt-1 fw-bold"><?php echo $jumlah_jadwal; ?></span>
-                    <span class="text-muted small pt-2 ps-1"> Jadwal ,</span>
+                    <span class="text-muted small pt-2 ps-1"> jadwal ujian proposal</span>
+                    <div>
+                    <span class="text-success small pt-1 fw-bold"><?php echo $jumlah_jadwal_skp; ?></span>
+                    <span class="text-muted small pt-2 ps-1"> jadwal ujian skripsi</span>
                   </div>
-                  <div class="ps-3">
-                    <span class="text-success small pt-1 fw-bold"><?php echo $jumlah_jadwal_today; ?></span>
-                    <span class="text-muted small pt-2 ps-1"> Jadwal Hari Ini</span>
                   </div>
+                  <!-- <div class="ps-3">
+                    <span class="text-success small pt-1 fw-bold"><?php echo $jumlah_jadwal_today; ?>,</span>
+                    <span class="text-muted small pt-2 ps-1">Jadwal Hari Ini</span>
+                    <div>
+                    <span class="text-success small pt-1 fw-bold"><?php echo $jumlah_jadwal_today_skp; ?>,</span>
+                    <span class="text-muted small pt-2 ps-1">Jadwal Hari Ini</span>
+                    </div>
+                  </div> -->
                 </div>
               </div>
             </div>

@@ -80,7 +80,7 @@
                 <td><?php echo $row->pembahasan; ?></td>
                 <td>
                   <a href="<?php echo site_url('Progress_skripsi/download_bukti/' . $row->id); ?>" class="btn btn-light btn-custom">
-                    <i class="fas fa-download"></i>
+                    <button class="btn btn-success">Lihat</button>
                   </a>
                 </td>
                 <td>

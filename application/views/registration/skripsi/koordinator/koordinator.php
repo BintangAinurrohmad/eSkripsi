@@ -49,7 +49,7 @@
                 </div> -->
 
 					<?php if (empty($dospem1)) { ?>
-						<p>Tidak ada pendaftaran ujian proposal yang menunggu persetujuan.</p>
+						<p>Tidak ada pendaftaran ujian skripsi yang menunggu persetujuan.</p>
 					<?php } else { ?>
 
 						<table class="table datatable">
@@ -91,7 +91,7 @@
 											<?php } else if ($dospem1->skp_status_dospem_1 == "Ditolak") { ?>
 												<span class="badge rounded-pill bg-danger">Ditolak</span>
 											<?php } else { ?>
-												<span class="badge rounded-pill bg-secondary">Sedang diproses</span>
+												<span class="badge rounded-pill bg-secondary">Menunggu Persetujuan</span>
 											<?php } ?>
 										</td>
 										<td><a class="btn btn-primary" href="<?= base_url() ?>progress_skripsi/dosen1/<?= $dospem1->mahasiswa ?>">Lihat</a></td>
@@ -130,7 +130,7 @@
                 </div> -->
 
 					<?php if (empty($dospem2)) { ?>
-						<p>Tidak ada pendaftaran ujian proposal yang menunggu persetujuan.</p>
+						<p>Tidak ada pendaftaran ujian skripsi yang menunggu persetujuan.</p>
 					<?php } else { ?>
 
 						<table class="table datatable">
@@ -203,7 +203,7 @@
 				<div class="tab-pane fade" id="tab3" role="tabpanel" aria-labelledby="tab3-tab">
 
 					<?php if (empty($koordinator)) { ?>
-						<p>Tidak ada pendaftaran ujian proposal yang menunggu persetujuan.</p>
+						<p>Tidak ada pendaftaran ujian skripsi yang menunggu persetujuan.</p>
 					<?php } else { ?>
 
 						<table class="table datatable">

@@ -40,7 +40,7 @@
                 </div> -->
 
 					<?php if (empty($dospem1)) { ?>
-						<p>Tidak ada pendaftaran ujian proposal yang menunggu persetujuan.</p>
+						<p>Tidak ada pendaftaran ujian skripsi yang menunggu persetujuan.</p>
 					<?php } else { ?>
 
 						<table class="table datatable">
@@ -121,7 +121,7 @@
                 </div> -->
 
 					<?php if (empty($dospem2)) { ?>
-						<p>Tidak ada pendaftaran ujian proposal yang menunggu persetujuan.</p>
+						<p>Tidak ada pendaftaran ujian skripsi yang menunggu persetujuan.</p>
 					<?php } else { ?>
 
 						<table class="table datatable">

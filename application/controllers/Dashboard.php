@@ -77,8 +77,8 @@ class Dashboard extends CI_Controller
 		$data['jumlah_belum_disetujui'] = $this->Dashboard_model->count_pending_approval($dosen_id);
 		$data['jumlahskp_belum_disetujui'] = $this->Dashboard_model->count_pending_approvalskp($dosen_id);
 
-		$count = $this->Dashboard_model->countDsn($dosen_id);
-		$data['count'] = $count;
+		$total_count = $this->Dashboard_model->countDsn($dosen_id);
+		$data['total_count'] = $total_count;
 
 		// Menambahkan elemen baru ke array $data
 		$data['title'] = "Selamat Datang di Dashboard Dosen";
@@ -105,16 +105,22 @@ class Dashboard extends CI_Controller
 		$jumlah_jadwal = $this->Dashboard_model->get_jumlah_jadwal();
 		$jumlah_jadwal_today = $this->Dashboard_model->get_jumlah_jadwal_today();
 
+		$jumlah_jadwal_skp = $this->Dashboard_model->get_jumlah_jadwal_skp();
+		$jumlah_jadwal_today_skp = $this->Dashboard_model->get_jumlah_jadwal_today_skp();
+
 		$data['jumlah_jadwal'] = $jumlah_jadwal;
 		$data['jumlah_jadwal_today'] = $jumlah_jadwal_today;
+
+		$data['jumlah_jadwal_skp'] = $jumlah_jadwal_skp;
+		$data['jumlah_jadwal_today_skp'] = $jumlah_jadwal_today_skp;
 
 
 		$data['jumlah_belum_disetujui'] = $this->Dashboard_model->count_pending_approval($dosen_id);
 
-		$data['total_judul'] = $this->Dashboard_model->count_total_judul();
+		$data['total_judul_baru'] = $this->Dashboard_model->count_total_judul_baru();
 
-		$count = $this->Dashboard_model->countDsn($dosen_id);
-		$data['count'] = $count;
+		$total_count = $this->Dashboard_model->countKdr($dosen_id);
+		$data['total_count'] = $total_count;
 
 		$data['jumlahskp_belum_disetujui'] = $this->Dashboard_model->count_pending_approvalskp($dosen_id);
 

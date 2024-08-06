@@ -1,6 +1,21 @@
 <section class="section">
 	<div class="card">
 		<div class="card-body pt-3">
+
+			<?php if ($this->session->flashdata('success')) : ?>
+				<div class="alert alert-info alert-dismissible fade show" role="alert">
+					<?php echo $this->session->flashdata('success'); ?>
+					<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+				</div>
+			<?php endif; ?>
+
+			<?php if ($this->session->flashdata('error')) : ?>
+				<div class="alert alert-danger alert-dismissible fade show" role="alert">
+					<?php echo $this->session->flashdata('error'); ?>
+					<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+				</div>
+			<?php endif; ?>
+
 			<?php if (empty($ujian)) { ?>
 				<p class="mt-3">Maaf, Belum Ada Ujian Yang Dijadwalkan.</p>
 			<?php } else { ?>
@@ -66,12 +81,20 @@
 									?>
 								</td>
 								<td><?php echo $uj->jam; ?></td>
-								<td><?php echo $uj->status_ujian_skripsi; ?></td>
+								<td>
+									<?php if ($uj->status_ujian_skripsi == "Selesai") { ?>
+										<span class="badge rounded-pill bg-success">Selesai</span>
+									<?php } else if ($uj->status_ujian_skripsi == "Terdaftar") { ?>
+										<span class="badge rounded-pill bg-secondary">Menunggu Penilaian</span>
+									<?php } else { ?>
+										<span class="badge rounded-pill bg-danger">Belum Daftar</span>
+									<?php } ?>
+								</td>
 								<td>
 									<span class="editable" data-skp_id="<?php echo $uj->skp_id; ?>"><?php echo $uj->nilai; ?></span>
 									<form method="post" action="<?php echo site_url('score_skripsi/update_nilai'); ?>" class="edit-form" data-skp_id="<?php echo $uj->skp_id; ?>" style="display: none;">
 										<input type="hidden" name="skp_id" value="<?php echo $uj->skp_id; ?>">
-										<input type="text" name="value" class="edit-input form-control" value="<?php echo $uj->nilai; ?>">
+										<input type="number" name="value" class="edit-input form-control" value="<?php echo $uj->nilai; ?>">
 									</form>
 								</td>
 								<td>

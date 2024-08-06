@@ -105,26 +105,30 @@ class Dashboard_model extends CI_Model
     public function getMahasiswaDibimbing()
     {
         $user_id = $this->session->userdata('user_id'); // Mengambil user_id dari session
+        $current_year = date('Y');
+        $target_year = $current_year - 4;
 
         // Subquery untuk mendapatkan ID terbaru dari setiap mahasiswa
-        $subquery = $this->db->select('MAX(id) as id')
-        ->from('title')
-        ->where('status', 'Diterima')
+        $subquery = $this->db->select('MAX(t.id) as id')
+        ->from('title t')
+        ->join('users m', 'm.id = t.mahasiswa AND m.group_id = 1 AND m.angkatan = ' . $target_year, 'left')
+        ->where('t.status', 'Diterima')
         ->group_start()
-            ->where('dospem_1_id', $user_id)
-            ->or_where('dospem_2_id', $user_id)
+            ->where('t.dospem_1_id', $user_id)
+            ->or_where('t.dospem_2_id', $user_id)
             ->group_end()
-            ->group_by('mahasiswa')
+            ->group_by('t.mahasiswa')
             ->get_compiled_select();
 
         // Kueri utama untuk menghitung jumlah judul terbaru yang disetujui dosen
-        $this->db->select('count(*) as total');
+        $this->db->select('COUNT(*) as total');
         $this->db->from('title');
         $this->db->where("id IN ($subquery)", NULL, FALSE);
         $query = $this->db->get();
 
         return $query->row()->total; // Mengembalikan jumlah total
     }
+
 
 
     public function getBelumBimbingan()
@@ -260,6 +264,15 @@ class Dashboard_model extends CI_Model
         return $query->row()->total_judul;
     }
 
+    public function count_total_judul_baru()
+    {
+        $this->db->select('COUNT(*) as total_judul_baru');
+        $this->db->from('title');
+        $this->db->where('status', 'Sedang diproses');
+        $query = $this->db->get();
+        return $query->row()->total_judul_baru;
+    }
+
 
     public function get_jumlah_jadwal()
     {
@@ -271,6 +284,23 @@ class Dashboard_model extends CI_Model
 
         // Menjalankan query dengan query builder
         $this->db->from('pro_register');
+        $this->db->where('tanggal >=', $today);
+        $this->db->where('tanggal <=', $tomorrow);
+        $count = $this->db->count_all_results();
+
+        return $count;
+    }
+
+    public function get_jumlah_jadwal_skp()
+    {
+        // Mendapatkan tanggal hari ini
+        $today = date('Y-m-d');
+
+        // Mendapatkan tanggal besok
+        $tomorrow = date('Y-m-d', strtotime('+1 day'));
+
+        // Menjalankan query dengan query builder
+        $this->db->from('skp_register');
         $this->db->where('tanggal >=', $today);
         $this->db->where('tanggal <=', $tomorrow);
         $count = $this->db->count_all_results();
@@ -295,10 +325,29 @@ class Dashboard_model extends CI_Model
         return $count;
     }
 
+    public function get_jumlah_jadwal_Today_skp()
+    {
+        // Mendapatkan tanggal hari ini
+        $today = date('Y-m-d');
+
+        // Mendapatkan tanggal besok
+        $tomorrow = date('Y-m-d', strtotime('+1 day'));
+
+        // Menjalankan query dengan query builder
+        $this->db->from('skp_register');
+        $this->db->where('tanggal =', $today);
+        $this->db->where('tanggal <=', $tomorrow);
+        $count = $this->db->count_all_results();
+
+        return $count;
+    }
+
     public function countDsn($user_id)
     {
         $today = date('Y-m-d');
-        $this->db->select('COUNT(*) as count');
+
+        // Query for pro_register table
+        $this->db->select('COUNT(*) as pro_count');
         $this->db->from('pro_register');
         $this->db->join('title', 'pro_register.title_id = title.id', 'inner');
         $this->db->where('pro_register.status', 'Diterima');
@@ -309,42 +358,100 @@ class Dashboard_model extends CI_Model
         $this->db->or_where('title.dosuji_1_id', $user_id);
         $this->db->or_where('title.dosuji_2_id', $user_id);
         $this->db->group_end();
-        $query = $this->db->get();
-        $result = $query->row_array();
+        $pro_query = $this->db->get();
+        $pro_result = $pro_query->row_array();
 
-        $count = $result['count'];
-        if ($count > 0) {
-            return "$count jadwal ujian hari ini, segera cek jadwal anda";
+        // Query for skp_register table
+        $this->db->select('COUNT(*) as skp_count');
+        $this->db->from('skp_register');
+        $this->db->join('title', 'skp_register.title_id = title.id', 'inner');
+        $this->db->where('skp_register.status', 'Diterima');
+        $this->db->where('skp_register.tanggal', $today);
+        $this->db->group_start();
+        $this->db->or_where('title.dospem_1_id', $user_id);
+        $this->db->or_where('title.dospem_2_id', $user_id);
+        $this->db->or_where('title.dosuji_1_id', $user_id);
+        $this->db->or_where('title.dosuji_2_id', $user_id);
+        $this->db->group_end();
+        $skp_query = $this->db->get();
+        $skp_result = $skp_query->row_array();
+
+        // Calculate total count
+        $total_count = $pro_result['pro_count'] + $skp_result['skp_count'];
+
+        if ($total_count > 0) {
+            return "$total_count jadwal ujian hari ini, segera cek jadwal anda";
         } else {
             return "Tidak ada jadwal ujian hari ini";
         }
     }
 
+    public function countKdr($user_id)
+    {
+        $today = date('Y-m-d');
+
+        // Query for pro_register table
+        $this->db->select('COUNT(*) as pro_count');
+        $this->db->from('pro_register');
+        $this->db->join('title', 'pro_register.title_id = title.id', 'inner');
+        $this->db->where('pro_register.status', 'Diterima');
+        $this->db->where('pro_register.tanggal', $today);
+        $pro_query = $this->db->get();
+        $pro_result = $pro_query->row_array();
+
+        // Query for skp_register table
+        $this->db->select('COUNT(*) as skp_count');
+        $this->db->from('skp_register');
+        $this->db->join('title', 'skp_register.title_id = title.id', 'inner');
+        $this->db->where('skp_register.status', 'Diterima');
+        $this->db->where('skp_register.tanggal', $today);
+        $skp_query = $this->db->get();
+        $skp_result = $skp_query->row_array();
+
+        // Calculate total count
+        $total_count = $pro_result['pro_count'] + $skp_result['skp_count'];
+
+        if ($total_count > 0) {
+            return "$total_count jadwal ujian hari ini, segera cek jadwal anda";
+        } else {
+            return "Tidak ada jadwal ujian hari ini";
+        }
+    }
 
 
     public function getMhsToday($user_id)
     {
         $today = date('Y-m-d');
 
-        // Select the necessary fields
-        $this->db->select('COUNT(*) as count');
+        // Query for pro_register table
+        $this->db->select('COUNT(*) as pro_count');
         $this->db->from('pro_register');
         $this->db->join('title', 'pro_register.title_id = title.id', 'inner');
         $this->db->where('title.mahasiswa', $user_id);
         $this->db->where('pro_register.status', 'Diterima');
-        $this->db->where('DATE(pro_register.tanggal)', $today); // Filter by today's date
-        $query = $this->db->get();
+        $this->db->where('DATE(pro_register.tanggal)', $today);
+        $pro_query = $this->db->get();
+        $pro_count = $pro_query->row()->pro_count;
 
-        // Get the count of approved schedules for today
-        $count = $query->row()->count;
+        // Query for skp_register table
+        $this->db->select('COUNT(*) as skp_count');
+        $this->db->from('skp_register');
+        $this->db->join('title', 'skp_register.title_id = title.id', 'inner');
+        $this->db->where('title.mahasiswa', $user_id);
+        $this->db->where('skp_register.status', 'Diterima');
+        $this->db->where('DATE(skp_register.tanggal)', $today);
+        $skp_query = $this->db->get();
+        $skp_count = $skp_query->row()->skp_count;
+
+        // Calculate total count
+        $total_count = $pro_count + $skp_count;
 
         // Return the appropriate message based on the count
-        if ($count > 0) {
-            return "$count jadwal ujian hari ini";
+        if ($total_count > 0) {
+            return "$total_count jadwal ujian hari ini";
         } else {
             return "Tidak ada jadwal ujian hari ini";
         }
     }
 
-	
 }

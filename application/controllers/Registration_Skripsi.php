@@ -263,6 +263,17 @@ class Registration_Skripsi extends CI_Controller
 	public function update_status_dospem1($id)
 	{
 		$status = $this->input->post('status');
+
+		if ($status == "Diterima") {
+			$this->session->set_flashdata('success', 'Berhasil menyetujui pendaftaran ujian skripsi');
+		} else if ($status == "Ditolak") {
+			$this->session->set_flashdata('denied', 'Berhasil menolak pendaftaran ujian skripsi');
+		} else if ($status == "Sedang diproses") {
+			$this->session->set_flashdata('denied', 'Status ujian kembali menunggu');
+		} else {
+			$this->session->set_flashdata('denied', 'Error');
+		}
+
 		if (!empty($status)) {
 			$data['status_dospem_1'] = $status;
 			$this->Skpregister_model->accSkripsi($id, $data);
@@ -273,13 +284,23 @@ class Registration_Skripsi extends CI_Controller
 	public function update_status_dospem2($id)
 	{
 		$status = $this->input->post('status');
+
+		if ($status == "Diterima") {
+			$this->session->set_flashdata('success', 'Berhasil menyetujui pendaftaran ujian skripsi');
+		} else if ($status == "Ditolak") {
+			$this->session->set_flashdata('denied', 'Berhasil menolak pendaftaran ujian skripsi');
+		} else if ($status == "Sedang diproses") {
+			$this->session->set_flashdata('denied', 'Status ujian kembali menunggu');
+		} else {
+			$this->session->set_flashdata('denied', 'Error');
+		}
+
 		if (!empty($status)) {
 			$data['status_dospem_2'] = $status;
 			$this->Skpregister_model->accSkripsi($id, $data);
 		}
 		redirect("registration_skripsi");
 	}
-
 
 
 	public function koordinator()

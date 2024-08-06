@@ -9,7 +9,7 @@
       <div class="card-body">
         <h6>
           <marquee behavior="scroll" direction="left">
-            <?php echo $count; ?></marquee>
+            <?php echo $total_count; ?></marquee>
         </h6>
       </div>
 
