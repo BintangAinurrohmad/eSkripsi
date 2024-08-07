@@ -42,7 +42,7 @@ class Dashboard extends CI_Controller
 
 			$data = [
 				'my_title' => $lastTitle,
-				'title' => "Selamat Datang di Dashboard Mahasiswa $user_name",
+				'title' => "Selamat Datang, $user_name",
 				'content' => 'dashboard/mahasiswa',
 				'user_name' => $user_name,
 				'approved_count' => $this->Dashboard_model->getMhsToday($user_id),
@@ -63,8 +63,9 @@ class Dashboard extends CI_Controller
 
 	public function dosen()
 	{
-		$dosen_id = $this->session->userdata('user_id'); // Asumsi ID dosen diambil dari sesi
+		$dosen_id = $this->session->userdata('user_id'); // Assuming the dosen ID is retrieved from the session
 		$this->load->model('Dashboard_model');
+
 		$data['judul'] = $this->Dashboard_model->getBelumDisetujuiJudul();
 		$data['dibimbing'] = $this->Dashboard_model->getMahasiswaDibimbing();
 		$data['belumBimbingan'] = $this->Dashboard_model->getBelumBimbingan();
@@ -72,7 +73,8 @@ class Dashboard extends CI_Controller
 		$data['belumSkripsi'] = $this->Dashboard_model->getBelumSkripsi();
 		$data['dosen_mahasiswa'] = $this->Dashboard_model->get_dosen_mahasiswa();
 
-		$data['user_name'] = $this->Dashboard_model->getLoggedInUserName();
+		// Assuming getLoggedInUserName returns a string
+		$user_name = $this->Dashboard_model->getLoggedInUserName();
 
 		$data['jumlah_belum_disetujui'] = $this->Dashboard_model->count_pending_approval($dosen_id);
 		$data['jumlahskp_belum_disetujui'] = $this->Dashboard_model->count_pending_approvalskp($dosen_id);
@@ -80,8 +82,8 @@ class Dashboard extends CI_Controller
 		$total_count = $this->Dashboard_model->countDsn($dosen_id);
 		$data['total_count'] = $total_count;
 
-		// Menambahkan elemen baru ke array $data
-		$data['title'] = "Selamat Datang di Dashboard Dosen";
+		// Adding a new element to the $data array
+		$data['title'] = "Selamat Datang, $user_name";
 		$data['content'] = 'dashboard/dosen';
 
 		$this->load->view('template/overlay/dosen', $data);
@@ -126,8 +128,10 @@ class Dashboard extends CI_Controller
 
 		$data['jumlahskp_belum_disetujui'] = $this->Dashboard_model->count_pending_approvalskp($dosen_id);
 
+		$user_name = $this->Dashboard_model->getLoggedInUserName();
+
 		// Menambahkan elemen baru ke array $data
-		$data['title'] = "Selamat Datang di Dashboard";
+		$data['title'] = "Selamat Datang, $user_name";
 		$data['content'] = 'dashboard/koordinator';
 
 		$this->load->view('template/overlay/koordinator', $data);

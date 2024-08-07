@@ -6,12 +6,6 @@
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0/css/bootstrap.min.css" rel="stylesheet">
 </head>
 
-
-<body>
-  <h2><?php echo $user_name; ?>!</h2>
-  <!-- Rest of your dashboard content -->
-</body>
-
 <body>
   <div class="card-body">
     <h6>
@@ -35,14 +29,14 @@
           <div class="col-xxl-4 col-md-6">
             <div class="card info-card sales-card">
               <div class="card-body">
-                <h5 class="card-title"><a class="card-title" href="<?= base_url() ?>title/"> Judul Skripsi</a></h5>
+                <h5 class="card-title"><a class="card-title" href="<?= base_url() ?>title/"> Judul baru</a></h5>
                 <div class="d-flex align-items-center">
                   <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
                     <i class="ri-book-2-line"></i>
                   </div>
                   <div class="ps-3">
                     <span class="text-success small pt-1 fw-bold"><?php echo $total_judul_baru; ?></span>
-                    <span class="text-muted small pt-2 ps-1">Perlu Di Respon</span>
+                    <span class="text-muted small pt-2 ps-1">judul</span>
                   </div>
                   <!-- <div class="ps-3">
                     <span class="text-muted small pt-2 ps-1">Disetujui :</span>
@@ -99,7 +93,7 @@
                     <i class="ri-user-follow-line"></i>
                   </div>
                   <div class="ps-3">
-                    <span class="text-success small pt-1 fw-bold" class=""><?= $judul; ?> </span><span class="text-muted small">mahasiswa</span>
+                    <span class="text-success small pt-1 fw-bold" class=""><?= $judul; ?> </span><span class="text-muted small">judul</span>
 
                   </div>
                 </div>

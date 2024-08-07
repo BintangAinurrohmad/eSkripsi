@@ -2,11 +2,6 @@
 <html lang="en">
 
 <body>
-  <h2><?php echo $user_name; ?>!</h2>
-  <!-- Rest of your dashboard content -->
-</body>
-
-<body>
 
   <section class="section dashboard">
     <div class="row">
@@ -30,7 +25,7 @@
                 <i class="ri-user-follow-line"></i>
               </div>
               <div class="ps-3">
-                <span class="text-success small pt-1 fw-bold" class=""><?= $judul; ?> </span><span class="text-muted small">mahasiswa</span>
+                <span class="text-success small pt-1 fw-bold" class=""><?= $judul; ?> </span><span class="text-muted small">judul</span>
 
               </div>
             </div>
