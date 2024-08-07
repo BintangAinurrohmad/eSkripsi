@@ -53,7 +53,7 @@
                                         }
                                         ?>
                                         <span class="<?php echo $status_class; ?>">
-                                            <?php echo $row->status === 'approved' ? 'Diterima' : ($row->status === 'rejected' ? 'Ditolak' : 'Menunggu Disetujui'); ?>
+                                            <?php echo $row->status === 'approved' ? 'Disetujui' : ($row->status === 'rejected' ? 'Ditolak' : 'Menunggu Disetujui'); ?>
                                         </span>
                                     </td>
                                     <td width="15%">
@@ -62,7 +62,7 @@
                                         <div class="d-flex gap-3 ">
                                             <select name="status" class="form-control" onchange="document.getElementById('statusForm<?php echo $row->id; ?>').submit();">
                                                 <option value="pending" <?php if ($row->status == 'pending') echo 'selected'; ?>>Pilih</option>
-                                                <option value="approved" <?php if ($row->status == 'approved') echo 'selected'; ?>>Diterima</option>
+                                                <option value="approved" <?php if ($row->status == 'approved') echo 'selected'; ?>>Disetujui</option>
                                                 <option value="rejected" <?php if ($row->status == 'rejected') echo 'selected'; ?>>Ditolak</option>
                                             </select>
                                         </div>

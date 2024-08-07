@@ -195,8 +195,10 @@ class Registration_Skripsi extends CI_Controller
 			$this->Skpregister_model->setTitle($this->input->post('title_id'), $data2);
 
 			// Get dosen pembimbing and koordinator skripsi (group_id = 3)
-			$dospem1 = $this->input->post('dospem1');
-			$dospem2 = $this->input->post('dospem2');
+			$judulSaya = $this->Title_model->getMyTitleById($this->input->post('title_id'));
+
+			$dospem1 = $judulSaya[0]->dospem_1_id;
+			$dospem2 = $judulSaya[0]->dospem_2_id;
 
 			$koordinator_query = $this->db->where('group_id', 3)->get('users');
 			$koordinator_list = $koordinator_query->result();

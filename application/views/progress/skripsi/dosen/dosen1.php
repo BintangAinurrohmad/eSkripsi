@@ -57,7 +57,7 @@
                                         <div class="d-flex gap-3 ">
                                             <select name="status" class="form-control" onchange="document.getElementById('statusForm<?php echo $row->id; ?>').submit();">
                                                 <option value="pending" <?php if ($row->status == 'pending') echo 'selected'; ?>>Pilih</option>
-                                                <option value="approved" <?php if ($row->status == 'approved') echo 'selected'; ?>>Diterima</option>
+                                                <option value="approved" <?php if ($row->status == 'approved') echo 'selected'; ?>>Disetujui</option>
                                                 <option value="rejected" <?php if ($row->status == 'rejected') echo 'selected'; ?>>Ditolak</option>
                                             </select>
                                         </div>

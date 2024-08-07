@@ -167,7 +167,7 @@ class Progress_skripsi extends CI_Controller
 
 			// Define status mapping
 			$status_mapping = [
-				'approved' => 'Diterima',
+				'approved' => 'Disetujui',
 				'pending' => 'Diproses',
 				'rejected' => 'Ditolak',
 			];
@@ -243,7 +243,7 @@ class Progress_skripsi extends CI_Controller
 
 			// Define status mapping
 			$status_mapping = [
-				'approved' => 'Diterima',
+				'approved' => 'Disetujui',
 				'pending' => 'Diproses',
 				'rejected' => 'Ditolak',
 			];
@@ -378,7 +378,7 @@ class Progress_skripsi extends CI_Controller
 					// Insert notification for mahasiswa
 					$notif_data = array(
 						'user_id' => $mahasiswa_id,
-						'judul' => 'Progress Skripsi Diserahkan',
+						'judul' => 'Bimbingan Skripsi Diserahkan',
 						'pesan' => "Bimbingan skripsi anda berhasil diserahkan kepada dosen pembimbing anda.",
 						'type' => 'success'
 					);
@@ -389,7 +389,7 @@ class Progress_skripsi extends CI_Controller
 					if ($pembimbing_id) {
 						$notif_data = array(
 							'user_id' => $pembimbing_id,
-							'judul' => 'Progress Skripsi Baru',
+							'judul' => 'Bimbingan Skripsi Baru',
 							'pesan' => "mahasiswa bimbingan anda telah menyerahkan BIMBINGAN skripsi, segera cek progress mahasiswa bimbingan anda.",
 							'type' => 'info'
 						);

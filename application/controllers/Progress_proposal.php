@@ -168,7 +168,7 @@ class Progress_proposal extends CI_Controller
 
 			// Define status mapping
 			$status_mapping = [
-				'approved' => 'Diterima',
+				'approved' => 'Disetujui',
 				'pending' => 'Diproses',
 				'rejected' => 'Ditolak',
 			];
@@ -244,7 +244,7 @@ class Progress_proposal extends CI_Controller
 
 			// Define status mapping
 			$status_mapping = [
-				'approved' => 'Diterima',
+				'approved' => 'Disetujui',
 				'pending' => 'Diproses',
 				'rejected' => 'Ditolak',
 			];
@@ -379,7 +379,7 @@ class Progress_proposal extends CI_Controller
 					// Insert notification for mahasiswa
 					$notif_data = array(
 						'user_id' => $mahasiswa_id,
-						'judul' => 'Progress Proposal Diserahkan',
+						'judul' => 'Bimbingan Proposal Diserahkan',
 						'pesan' => "Bimbingan proposal anda berhasil diserahkan kepada dosen pembimbing anda.",
 						'type' => 'success'
 					);
@@ -390,8 +390,7 @@ class Progress_proposal extends CI_Controller
 					if ($pembimbing_id) {
 						$notif_data = array(
 							'user_id' => $pembimbing_id,
-							'judul' => 'Progress Proposal Baru',
-							'judul' => 'Progress Proposal Baru',
+							'judul' => 'Bimbingan Proposal Baru',
 							'pesan' => "mahasiswa bimbingan anda telah menyerahkan BIMBINGAN proposal, segera cek progress mahasiswa bimbingan anda.",
 							'type' => 'info'
 						);

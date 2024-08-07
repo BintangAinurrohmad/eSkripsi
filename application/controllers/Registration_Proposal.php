@@ -10,6 +10,7 @@ class Registration_Proposal extends CI_Controller
 		parent::__construct();
 		$this->load->model('Proregister_model');
 		$this->load->model('Notification_model');
+		$this->load->model('Title_model');
 		$this->load->library('upload');
 	}
 
@@ -117,6 +118,7 @@ class Registration_Proposal extends CI_Controller
 			$this->session->set_flashdata('error', 'Seluruh kolom wajib diisi.');
 			redirect('registration_proposal/daftar');
 		} else {
+
 			// Upload naskah
 			$config_naskah['upload_path'] = './file/proposal/naskah/';
 			$config_naskah['allowed_types'] = 'pdf';
@@ -162,9 +164,13 @@ class Registration_Proposal extends CI_Controller
 
 					$this->Proregister_model->setTitle($this->input->post('title_id'), $data2);
 
-					// Get dosen pembimbing and koordinator skripsi (group_id = 3)
-					$dospem1 = $this->input->post('dospem1');
-					$dospem2 = $this->input->post('dospem2');
+
+					// Get koordinator skripsi (group_id = 3)
+
+					$judulSaya = $this->Title_model->getMyTitleById($this->input->post('title_id'));
+
+					$dospem1 = $judulSaya[0]->dospem_1_id;
+					$dospem2 = $judulSaya[0]->dospem_2_id;
 
 					$koordinator_query = $this->db->where('group_id', 3)->get('users');
 					$koordinator_list = $koordinator_query->result();
