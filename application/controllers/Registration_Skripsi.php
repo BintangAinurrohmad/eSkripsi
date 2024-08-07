@@ -10,6 +10,8 @@ class Registration_Skripsi extends CI_Controller
 		parent::__construct();
 		$this->load->model('Skpregister_model');
 		$this->load->library('upload');
+		$this->load->model('Notification_model');
+		$this->load->model('Title_model');
 	}
 
 	public function index()
