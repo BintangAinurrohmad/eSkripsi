@@ -197,7 +197,7 @@ class Progress_proposal_model extends CI_Model
         $this->db->join('users u', 't.mahasiswa = u.id');
         $this->db->where('t.status', 'Diterima');
         $this->db->where("t.id IN ($subquery)", NULL, FALSE);
-        // $this->db->where('u.angkatan', $target_year); // Filter by the latest batch year
+        $this->db->where('u.angkatan', $target_year); // Filter by the latest batch year
         $this->db->order_by('t.id', 'DESC'); // Order by ID if there's no created_at column
         $query = $this->db->get();
 
