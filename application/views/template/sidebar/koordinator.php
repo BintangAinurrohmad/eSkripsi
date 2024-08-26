@@ -92,6 +92,12 @@
 		</li>
 
 		<li class="nav-item">
+			<a class="nav-link <?= set_active('tracking_mhs/track_mhs'); ?>" href="<?= base_url() ?>tracking_mhs/track_mhs">
+				<i class="ri-download-2-fill"></i><span>Progress mahasiswa</span>
+			</a>
+		</li>
+
+		<li class="nav-item">
 			<a class="nav-link <?= set_active('download'); ?>" href="<?= base_url('download') ?>">
 				<i class="ri-download-2-fill"></i><span>Unduhan</span>
 			</a>

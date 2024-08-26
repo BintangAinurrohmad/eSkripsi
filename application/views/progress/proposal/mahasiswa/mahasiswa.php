@@ -82,9 +82,13 @@
                 <!-- <td><?php echo $row->bab; ?></td> -->
                 <td><?php echo $row->pembahasan; ?></td>
                 <td>
-                  <a href="<?php echo site_url('Progress_proposal/download_bukti/' . $row->id); ?>" class="btn btn-light btn-custom">
+                  <!-- <a href="<?php echo site_url('Progress_proposal/download_bukti/' . $row->id); ?>" class="btn btn-light btn-custom">
                     <button class="btn btn-success">Lihat</button>
-                  </a>
+                  </a> -->
+
+                  <!-- 13/08/2024 -->
+
+                  <a class="btn btn-primary" href="<?= base_url() ?>progress_proposal/view_file/bukti/<?= $row->bukti; ?>">Lihat</a>
                 </td>
                 <td>
                   <?php
@@ -116,6 +120,7 @@
             <?php endforeach; ?>
           </tbody>
         </table>
+        <label>*(<b>Catatan</b> : Bimbingan minimal 6 kali masing-masing dosen pembimbing)</label>
         <div class="d-flex gap-3 mt-3">
           <!-- <a href="<?php echo site_url('Progress_proposal/download_log'); ?>" class="btn btn-primary btn-custom">
             <i class="fas fa-download"></i> Log

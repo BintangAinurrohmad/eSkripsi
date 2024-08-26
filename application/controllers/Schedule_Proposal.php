@@ -280,7 +280,8 @@ class Schedule_Proposal extends CI_Controller {
 			'user_id' => $mahasiswa_id,
 			'judul' => 'Jadwal Ujian Diperbarui',
 			'pesan' => "Jadwal ujian proposal Anda telah diperbarui. Silahkan cek jadwal Anda sekarang.",
-			'type' => 'info'
+			'type' => 'info',
+			'page_type' => 'update_pro'
 		);
 		$this->db->insert('notifikasi', $notif_data);
 
@@ -290,7 +291,8 @@ class Schedule_Proposal extends CI_Controller {
 				'user_id' => $dospem_1_id,
 				'judul' => 'Jadwal Ujian Diperbarui',
 				'pesan' => "Jadwal ujian proposal mahasiswa bimbingan Anda telah diperbarui. Silahkan cek jadwal sekarang.",
-				'type' => 'info'
+				'type' => 'info',
+				'page_type' => 'update_pro'
 			);
 			$this->db->insert('notifikasi', $notif_data);
 		}
@@ -301,7 +303,8 @@ class Schedule_Proposal extends CI_Controller {
 				'user_id' => $dospem_2_id,
 				'judul' => 'Jadwal Ujian Diperbarui',
 				'pesan' => "Jadwal ujian proposal mahasiswa bimbingan Anda telah diperbarui. Silahkan cek jadwal sekarang.",
-				'type' => 'info'
+				'type' => 'info',
+				'page_type' => 'update_pro'
 			);
 			$this->db->insert('notifikasi', $notif_data);
 		}

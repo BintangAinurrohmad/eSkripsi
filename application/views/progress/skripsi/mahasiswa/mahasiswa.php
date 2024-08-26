@@ -48,8 +48,8 @@
     <?php } ?>
     <div class="card mb-4">
       <div class="card-body">
-        <div class="card-title">Judul Skripsi</div>
-        <h5 class="text-uppercase"><?= isset($my_title) ? $my_title->judul : '-'; ?></h5>
+        <h6 class="card-title pt-0">Judul Skripsi</h6>
+        <h6 class="text-uppercase"><?= isset($my_title) ? $my_title->judul : '-'; ?></h6>
       </div>
     </div>
     <div class="card">
@@ -79,9 +79,13 @@
                 <!-- <td><?php echo $row->bab; ?></td> -->
                 <td><?php echo $row->pembahasan; ?></td>
                 <td>
-                  <a href="<?php echo site_url('Progress_skripsi/download_bukti/' . $row->id); ?>" class="btn btn-light btn-custom">
+                  <!-- <a href="<?php echo site_url('Progress_skripsi/download_bukti/' . $row->id); ?>" class="btn btn-light btn-custom">
                     <button class="btn btn-success">Lihat</button>
-                  </a>
+                  </a> -->
+
+                  <!-- 13/08 -->
+
+                  <a class="btn btn-primary" href="<?= base_url() ?>progress_skripsi/view_file/bukti/<?= $row->bukti; ?>">Lihat</a>
                 </td>
                 <td>
                   <?php
@@ -109,6 +113,7 @@
             <?php endforeach; ?>
           </tbody>
         </table>
+        <label>*(<b>Catatan</b> : Bimbingan minimal 6 kali masing-masing dosen pembimbing)</label>
         <div class="d-flex gap-3 mt-3">
           <!-- <a href="<?php echo site_url('Progress_skripsi/download_log'); ?>" class="btn btn-primary btn-custom">
             <i class="fas fa-download"></i> Log

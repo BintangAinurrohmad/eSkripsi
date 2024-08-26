@@ -27,7 +27,7 @@ class Progress_skripsi extends CI_Controller
 			} else if ($this->session->userdata('group_id') == 2) {
 				$this->dosen();
 			} else if ($this->session->userdata('group_id') == 3) {
-				$this->dosen();
+				$this->koordinator();
 			} else if ($this->session->userdata('group_id') == 4) {
 				$this->admin();
 			} else {
@@ -126,6 +126,38 @@ class Progress_skripsi extends CI_Controller
 		} else {
 			echo "Data not found.";
 		}
+	}
+
+	//bintang 13/08/2024
+	public function view_file($folder, $file)
+	{
+		if (!$this->session->userdata('is_login')) {
+			redirect('login');
+		} else {
+			if ($this->session->userdata('group_id') == 1) {
+				$overlay = 'template/overlay/mahasiswa';
+			} else if ($this->session->userdata('group_id') == 2) {
+				$overlay = 'template/overlay/dosen';
+			} else if ($this->session->userdata('group_id') == 3) {
+				$overlay = 'template/overlay/koordinator';
+			} else if ($this->session->userdata('group_id') == 4) {
+				$overlay = 'template/overlay/admin';
+			} else {
+				redirect('login');
+			}
+		}
+
+		if ($folder == "bukti") {
+			$title = "bukti bimbingan";
+		}
+
+		$data = [
+			'title' => 'Lihat ' . $title,
+			'content' => 'progress/skripsi/view_file',
+			'folder' => $folder,
+			'file' => $file
+		];
+		$this->load->view($overlay, $data);
 	}
 
 	public function delete_progress($id)
@@ -307,49 +339,15 @@ class Progress_skripsi extends CI_Controller
 		}
 	}
 
-	// public function insert_bimbingan()
-	// {
-	// 	if ($this->input->post()) {
-	// 		$config['upload_path'] = './file/skripsi/bukti/'; // Set upload path
-	// 		$config['allowed_types'] = 'gif|jpg|png'; // Allowed file types
-	// 		$config['max_size'] = '1024'; // Max file size in KB
-	// 		$this->load->library('upload', $config);
-
-	// 		if (!$this->upload->do_upload('bukti')) {
-	// 			$data['error'] = $this->upload->display_errors(); // Display error message
-	// 		} else {
-	// 			$upload_data = $this->upload->data(); // Get upload data
-	// 			$bukti = $upload_data['file_name']; // Get uploaded file name
-
-	// 			$data = array(
-	// 				'tanggal' => $this->input->post('tanggal'),
-	// 				'judul_id' => $this->input->post('judul'),
-	// 				'pembimbing' => $this->input->post('pembimbing'),
-	// 				// 'bab' => $this->input->post('bab'),
-	// 				'pembahasan' => $this->input->post('pembahasan'),
-	// 				'bukti' => $bukti,
-	// 				'status' => 'pending' // Assuming initial status is 'Diajukan'
-	// 			);
-
-
-	// 			if ($this->Progress_skripsi_model->insert_progress($data)) {
-	// 				$data['success'] = 'Progress skripsi submitted successfully!';
-	// 			} else {
-	// 				$data['error'] = 'Failed to submit progress skripsi.';
-	// 			}
-	// 		}
-	// 		return
-	// 			redirect('Progress_skripsi/mahasiswa');
-	// 	}
-	// }
 
 	//bintang
 	public function insert_bimbingan()
 	{
 		if ($this->input->post()) {
 			$config['upload_path'] = './file/skripsi/bukti/';
-			$config['allowed_types'] = 'gif|jpg|png';
-			$config['max_size'] = '1024';
+			//13/08/2024
+			$config['allowed_types'] = 'gif|jpg|png|pdf|doc|docx';
+			$config['max_size'] = '3000';
 			$this->load->library('upload', $config);
 
 			if (!$this->upload->do_upload('bukti')) {
@@ -380,7 +378,8 @@ class Progress_skripsi extends CI_Controller
 						'user_id' => $mahasiswa_id,
 						'judul' => 'Bimbingan Skripsi Diserahkan',
 						'pesan' => "Bimbingan skripsi anda berhasil diserahkan kepada dosen pembimbing anda.",
-						'type' => 'success'
+						'type' => 'success',
+						'page_type' => 'new_progress_skp'
 					);
 					$this->db->insert('notifikasi', $notif_data);
 
@@ -391,7 +390,8 @@ class Progress_skripsi extends CI_Controller
 							'user_id' => $pembimbing_id,
 							'judul' => 'Bimbingan Skripsi Baru',
 							'pesan' => "mahasiswa bimbingan anda telah menyerahkan BIMBINGAN skripsi, segera cek progress mahasiswa bimbingan anda.",
-							'type' => 'info'
+							'type' => 'info',
+							'page_type' => 'new_progress_skp'
 						);
 						$this->db->insert('notifikasi', $notif_data);
 					}
@@ -448,6 +448,7 @@ class Progress_skripsi extends CI_Controller
 		$this->load->view('template/overlay/dosen', $data);
 	}
 
+	//revisi
 	public function koordinator()
 	{
 		$user_id = $this->session->userdata('user_id');
@@ -455,8 +456,13 @@ class Progress_skripsi extends CI_Controller
 			'title' => "Progress Skripsi",
 			'content' => 'progress/skripsi/koordinator/koordinator',
 		];
-		$data['skripsi_data'] =
-			$this->Progress_skripsi_model->get_mahasiswa_for_dosen($user_id);
+
+		$angkatan = $this->input->get('angkatan');
+		$npm = $this->input->get('npm');
+		$status_terakhir = $this->input->get('status_terakhir');
+		$data['skripsi_data'] = $this->Progress_skripsi_model->get_mahasiswa_for_dosen($user_id);
+		$data['mahasiswa_data'] = $this->Progress_skripsi_model->get_all_mahasiswa($angkatan, $npm, $status_terakhir);
+        
 		$this->load->view('template/overlay/koordinator', $data);
 	}
 

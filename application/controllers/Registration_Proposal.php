@@ -183,7 +183,8 @@ class Registration_Proposal extends CI_Controller
 							'user_id' => $dospem1,
 							'judul' => 'Pengajuan Seminar Proposal Baru',
 							'pesan' => "Ada pengajuan seminar proposal baru dari mahasiswa bimbingan Anda.",
-							'type' => 'info'
+							'type' => 'info',
+							'page_type' => 'new_proregis'
 						);
 					}
 
@@ -192,7 +193,8 @@ class Registration_Proposal extends CI_Controller
 							'user_id' => $dospem2,
 							'judul' => 'Pengajuan Seminar Proposal Baru',
 							'pesan' => "Ada pengajuan seminar proposal baru dari mahasiswa bimbingan Anda.",
-							'type' => 'info'
+							'type' => 'info',
+							'page_type' => 'new_proregis'
 						);
 					}
 
@@ -201,7 +203,8 @@ class Registration_Proposal extends CI_Controller
 							'user_id' => $koordinator->id,
 							'judul' => 'Pengajuan Seminar Proposal Baru',
 							'pesan' => "Ada pengajuan seminar proposal baru yang perlu diperiksa.",
-							'type' => 'info'
+							'type' => 'info',
+							'page_type' => 'new_proregis'
 						);
 					}
 
@@ -383,7 +386,8 @@ class Registration_Proposal extends CI_Controller
 			'user_id' => $mahasiswa_id,
 			'judul' => 'Pengajuan Seminar Proposal Diterima',
 			'pesan' => "Silahkan cek jadwal anda sekarang",
-			'type' => 'success'
+			'type' => 'success',
+			'page_type' => 'acc_proregis'
 		);
 		$this->db->insert('notifikasi', $notif_data);
 
@@ -393,7 +397,8 @@ class Registration_Proposal extends CI_Controller
 				'user_id' => $dospem1,
 				'judul' => 'Pengajuan Seminar Proposal Diterima',
 				'pesan' => "Silahkan cek jadwal mahasiswa bimbingan Anda sekarang",
-				'type' => 'info'
+				'type' => 'info',
+				'page_type' => 'acc_proregis'
 			);
 			$this->db->insert('notifikasi', $notif_data);
 		}
@@ -404,7 +409,8 @@ class Registration_Proposal extends CI_Controller
 				'user_id' => $dospem2,
 				'judul' => 'Pengajuan Seminar Proposal Diterima',
 				'pesan' => "Silahkan cek jadwal mahasiswa bimbingan Anda sekarang",
-				'type' => 'info'
+				'type' => 'info',
+				'page_type' => 'acc_proregis'
 			);
 			$this->db->insert('notifikasi', $notif_data);
 		}
@@ -415,7 +421,8 @@ class Registration_Proposal extends CI_Controller
 				'user_id' => $dosuji1,
 				'judul' => 'Pengajuan Seminar Proposal Diterima',
 				'pesan' => "Silahkan cek jadwal ujian proposal yang akan Anda uji",
-				'type' => 'info'
+				'type' => 'info',
+				'page_type' => 'acc_proregis'
 			);
 			$this->db->insert('notifikasi', $notif_data);
 		}
@@ -426,7 +433,8 @@ class Registration_Proposal extends CI_Controller
 				'user_id' => $dosuji2,
 				'judul' => 'Pengajuan Seminar Proposal Diterima',
 				'pesan' => "Silahkan cek jadwal ujian proposal yang akan Anda uji",
-				'type' => 'info'
+				'type' => 'info',
+				'page_type' => 'acc_proregis'
 			);
 			$this->db->insert('notifikasi', $notif_data);
 		}
@@ -462,7 +470,8 @@ class Registration_Proposal extends CI_Controller
 			'user_id' => $mahasiswa_id,
 			'judul' => 'Pengajuan Seminar Proposal Ditolak',
 			'pesan' => "Silahkan cek jadwal anda sekarang",
-			'type' => 'success'
+			'type' => 'success',
+			'page_type' => 'de_proregis'
 		);
 		$this->db->insert('notifikasi', $notif_data);
 
@@ -472,7 +481,8 @@ class Registration_Proposal extends CI_Controller
 				'user_id' => $dospem_1_id,
 				'judul' => 'Pengajuan Seminar Proposal Ditolak',
 				'pesan' => "Silahkan cek status pengajuan seminar proposal mahasiswa bimbingan Anda",
-				'type' => 'info'
+				'type' => 'info',
+				'page_type' => 'de_proregis'
 			);
 			$this->db->insert('notifikasi', $notif_data);
 		}
@@ -483,7 +493,8 @@ class Registration_Proposal extends CI_Controller
 				'user_id' => $dospem_2_id,
 				'judul' => 'Pengajuan Seminar Proposal Ditolak',
 				'pesan' => "Silahkan cek status pengajuan seminar proposal mahasiswa bimbingan Anda",
-				'type' => 'info'
+				'type' => 'info',
+				'page_type' => 'de_proregis'
 			);
 			$this->db->insert('notifikasi', $notif_data);
 		}

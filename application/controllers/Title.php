@@ -112,7 +112,7 @@ class Title extends CI_Controller
 			$koordinator_list = $koordinator_query->result();
 
 
-			// Insert notifications
+			// Insert notifications 
 			$notif_data = [];
 
 			if ($dospem1) {
@@ -120,7 +120,9 @@ class Title extends CI_Controller
 					'user_id' => $dospem1,
 					'judul' => 'Pengajuan Judul Skripsi Baru',
 					'pesan' => "Ada pengajuan judul skripsi baru dari mahasiswa bimbingan Anda.",
-					'type' => 'info'
+					'type' => 'info',
+					//13/08 insert notif
+					'page_type' => 'title-submission'
 				];
 			}
 
@@ -129,7 +131,8 @@ class Title extends CI_Controller
 					'user_id' => $dospem2,
 					'judul' => 'Pengajuan Judul Skripsi Baru',
 					'pesan' => "Ada pengajuan judul skripsi baru dari mahasiswa bimbingan Anda.",
-					'type' => 'info'
+					'type' => 'info',
+					'page_type' => 'title-submission'
 				];
 			}
 
@@ -138,7 +141,8 @@ class Title extends CI_Controller
 					'user_id' => $koordinator->id,
 					'judul' => 'Pengajuan Judul Skripsi Baru',
 					'pesan' => "Ada pengajuan judul skripsi baru yang perlu direspon.",
-					'type' => 'info'
+					'type' => 'info',
+					'page_type' => 'title-submission'
 				];
 			}
 
@@ -260,7 +264,8 @@ class Title extends CI_Controller
 			'user_id' => $mahasiswa_id,
 			'judul' => 'Judul Diterima',
 			'pesan' => "Judul anda telah diterima",
-			'type' => 'success' // or any other type you want
+			'type' => 'success', // or any other type you want,
+			'page_type' => 'approved_title'
 		);
 		$this->db->insert('notifikasi', $notif_data);
 
@@ -291,7 +296,8 @@ class Title extends CI_Controller
 			'user_id' => $mahasiswa_id,
 			'judul' => 'Judul Diterima',
 			'pesan' => "Judul anda telah diterima",
-			'type' => 'success' // or any other type you want
+			'type' => 'success', // or any other type you want
+			'page_type' => 'approved_title'
 		);
 		$this->db->insert('notifikasi', $notif_data);
 
@@ -314,7 +320,8 @@ class Title extends CI_Controller
 			'user_id' => $mahasiswa_id,
 			'judul' => 'Judul Ditolak',
 			'pesan' => "Judul anda telah ditolak",
-			'type' => 'success' // or any other type you want
+			'type' => 'success', // or any other type you want
+			'page_type' => 'rejected_title'
 		);
 		$this->db->insert('notifikasi', $notif_data);
 

@@ -63,9 +63,11 @@
             <textarea class="form-control" id="pembahasan" name="pembahasan" rows="5" placeholder="Masukkan Pembahasan"></textarea>
           </div>
 
+          <!-- 13/08 -->
           <div class="form-group">
-            <label for="bukti">Bukti (format .JPG maks. 1 mb)</label>
-            <input type="file" class="form-control-file" id="bukti" name="bukti" accept="image/png, image/gif, image/jpeg">
+            <label for="bukti">Bukti (jpg png pdf, maks. 1 mb)</label>
+            <input type="file" class="form-control-file" id="bukti" name="bukti" 
+            accept="image/png, image/gif, image/jpeg, application/pdf">
           </div>
 
           <button type="submit" class="btn btn-primary">Selesai</button>

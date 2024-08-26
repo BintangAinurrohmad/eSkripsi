@@ -213,7 +213,8 @@ class Registration_Skripsi extends CI_Controller
 					'user_id' => $dospem1,
 					'judul' => 'Pengajuan Seminar Skripsi Baru',
 					'pesan' => "Ada pengajuan seminar skripsi baru dari mahasiswa bimbingan Anda.",
-					'type' => 'info'
+					'type' => 'info',
+					'page_type' => 'new_skpregris'
 				);
 			}
 
@@ -222,7 +223,8 @@ class Registration_Skripsi extends CI_Controller
 					'user_id' => $dospem2,
 					'judul' => 'Pengajuan Seminar Skripsi Baru',
 					'pesan' => "Ada pengajuan seminar skripsi baru dari mahasiswa bimbingan Anda.",
-					'type' => 'info'
+					'type' => 'info',
+					'page_type' => 'new_skpregris'
 				);
 			}
 
@@ -231,7 +233,8 @@ class Registration_Skripsi extends CI_Controller
 					'user_id' => $koordinator->id,
 					'judul' => 'Pengajuan Seminar Skripsi Baru',
 					'pesan' => "Ada pengajuan seminar skripsi baru yang perlu diperiksa.",
-					'type' => 'info'
+					'type' => 'info',
+					'page_type' => 'new_skpregris'
 				);
 			}
 
@@ -479,7 +482,8 @@ class Registration_Skripsi extends CI_Controller
 			'user_id' => $mahasiswa_id,
 			'judul' => 'Pengajuan Skripsi Diterima',
 			'pesan' => "Silahkan cek jadwal anda sekarang",
-			'type' => 'success'
+			'type' => 'success',
+			'page_type' => 'acc_skpregris'
 		);
 		$this->db->insert('notifikasi', $notif_data);
 
@@ -489,7 +493,8 @@ class Registration_Skripsi extends CI_Controller
 				'user_id' => $dospem1,
 				'judul' => 'Pengajuan Skripsi Diterima',
 				'pesan' => "Silahkan cek jadwal mahasiswa bimbingan Anda sekarang",
-				'type' => 'info'
+				'type' => 'info',
+				'page_type' => 'acc_skpregris'
 			);
 			$this->db->insert('notifikasi', $notif_data);
 		}
@@ -500,7 +505,8 @@ class Registration_Skripsi extends CI_Controller
 				'user_id' => $dospem2,
 				'judul' => 'Pengajuan Skripsi Diterima',
 				'pesan' => "Silahkan cek jadwal mahasiswa bimbingan Anda sekarang",
-				'type' => 'info'
+				'type' => 'info',
+				'page_type' => 'acc_skpregris'
 			);
 			$this->db->insert('notifikasi', $notif_data);
 		}
@@ -511,7 +517,8 @@ class Registration_Skripsi extends CI_Controller
 				'user_id' => $dosuji1,
 				'judul' => 'Pengajuan Skripsi Diterima',
 				'pesan' => "Silahkan cek jadwal ujian skripsi yang akan Anda ujikan",
-				'type' => 'info'
+				'type' => 'info',
+				'page_type' => 'acc_skpregris'
 			);
 			$this->db->insert('notifikasi', $notif_data);
 		}
@@ -522,7 +529,8 @@ class Registration_Skripsi extends CI_Controller
 				'user_id' => $dosuji2,
 				'judul' => 'Pengajuan Skripsi Diterima',
 				'pesan' => "Silahkan cek jadwal ujian skripsi yang akan Anda ujikan",
-				'type' => 'info'
+				'type' => 'info',
+				'page_type' => 'acc_skpregris'
 			);
 			$this->db->insert('notifikasi', $notif_data);
 		}
@@ -557,7 +565,8 @@ class Registration_Skripsi extends CI_Controller
 			'user_id' => $mahasiswa_id,
 			'judul' => 'Pengajuan Skripsi Ditolak',
 			'pesan' => "Silahkan cek jadwal anda sekarang",
-			'type' => 'success'
+			'type' => 'success',
+			'page_type' => 'de_skpregris'
 		);
 		$this->db->insert('notifikasi', $notif_data);
 
@@ -567,7 +576,8 @@ class Registration_Skripsi extends CI_Controller
 				'user_id' => $dospem_1_id,
 				'judul' => 'Pengajuan Skripsi Ditolak',
 				'pesan' => "Silahkan cek status pengajuan skripsi mahasiswa bimbingan Anda",
-				'type' => 'info'
+				'type' => 'info',
+				'page_type' => 'de_skpregris'
 			);
 			$this->db->insert('notifikasi', $notif_data);
 		}
@@ -578,7 +588,8 @@ class Registration_Skripsi extends CI_Controller
 				'user_id' => $dospem_2_id,
 				'judul' => 'Pengajuan Skripsi Ditolak',
 				'pesan' => "Silahkan cek status pengajuan skripsi mahasiswa bimbingan Anda",
-				'type' => 'info'
+				'type' => 'info',
+				'page_type' => 'de_skpregris'
 			);
 			$this->db->insert('notifikasi', $notif_data);
 		}

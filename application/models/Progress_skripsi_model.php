@@ -178,21 +178,74 @@ class Progress_skripsi_model extends CI_Model
         ->where('dospem_1_id', $pembimbing_id)
         ->or_where('dospem_2_id', $pembimbing_id)
         ->group_end()
-        ->group_by('mahasiswa')
-        ->get_compiled_select();
+            ->group_by('mahasiswa')
+            ->get_compiled_select();
 
-        $this->db->select('u.id, u.npm, u.nama, t.judul');
+        $this->db->select('
+        u.id, 
+        u.npm, 
+        u.nama, 
+        t.judul,
+        IFNULL(
+            CASE 
+                WHEN t.status = "Diterima" THEN "Judul Diterima"
+                WHEN t.status = "Ditolak" THEN "Pengajuan Judul"
+                WHEN t.status = "Sedang diproses" THEN "Pengajuan Judul"
+                ELSE "Pengajuan Judul"
+            END,
+            "-"
+        ) AS status_judul,
+        IFNULL(
+            CASE 
+                WHEN pp.id IS NOT NULL THEN "Bimbingan Proposal"
+                ELSE NULL
+            END,
+            "-"
+        ) AS status_bimbingan_proposal,
+        IFNULL(
+            CASE 
+                WHEN t.status_ujian_proposal = "Selesai" THEN "Ujian Proposal"
+                ELSE NULL
+            END,
+            "-"
+        ) AS status_ujian_proposal,
+        IFNULL(
+            CASE 
+                WHEN sp.id IS NOT NULL THEN "Bimbingan Skripsi"
+                ELSE NULL
+            END,
+            "-"
+        ) AS status_bimbingan_skripsi,
+        IFNULL(
+            CASE 
+                WHEN t.status_ujian_skripsi = "Selesai" THEN "Ujian Skripsi"
+                ELSE NULL
+            END,
+            "-"
+        ) AS status_ujian_skripsi,
+        IFNULL(
+            CASE 
+                WHEN spc.id IS NOT NULL THEN "Selesai"
+                ELSE NULL
+            END,
+            "-"
+        ) AS status_skripsi_selesai
+    ');
+
         $this->db->from('title t');
         $this->db->join('users u', 't.mahasiswa = u.id');
+        $this->db->join('pro_progress pp', 'pp.judul_id = t.id', 'left');
+        $this->db->join('skp_progress sp', 'sp.judul_id = t.id', 'left');
+        $this->db->join('skp_pasca spc', 'spc.title_id = t.id', 'left');
         $this->db->where('t.status', 'Diterima');
         $this->db->where("t.id IN ($subquery)", NULL, FALSE);
         $this->db->where('u.angkatan', $target_year); // Filter by the latest batch year
         $this->db->order_by('t.id', 'DESC'); // Order by ID if there's no created_at column
+        $this->db->distinct();
         $query = $this->db->get();
 
         return $query->result();
     }
-
 
     public function get_mahasiswa_for_koordinator()
     {
@@ -223,5 +276,83 @@ class Progress_skripsi_model extends CI_Model
         $this->db->where('title.mahasiswa', $id);
         $query = $this->db->get();
         return $query->result();
+    }
+
+    public function get_all_mahasiswa($angkatan = null, $npm = null, $status_terakhir = null)
+    {
+        $this->db->distinct();
+        $this->db->select('u.nama, u.npm, 
+        IFNULL(
+            CASE 
+                WHEN t.status = "Diterima" THEN "Judul Diterima"
+                WHEN t.status = "Ditolak" THEN "Pengajuan Judul"
+                WHEN t.status = "Sedang diproses" THEN "Pengajuan Judul"
+                ELSE "Pengajuan Judul"
+            END,
+            "-"
+        ) AS status_judul,
+        IFNULL(
+            CASE 
+                WHEN pp.id IS NOT NULL THEN "Bimbingan Proposal"
+                ELSE NULL
+            END,
+            "-"
+        ) AS status_bimbingan_proposal,
+        IFNULL(
+            CASE 
+                WHEN t.status_ujian_proposal = "Selesai" THEN "Ujian Proposal"
+                ELSE NULL
+            END,
+            "-"
+        ) AS status_ujian_proposal,
+        IFNULL(
+            CASE 
+                WHEN sp.id IS NOT NULL THEN "Bimbingan Skripsi"
+                ELSE NULL
+            END,
+            "-"
+        ) AS status_bimbingan_skripsi,
+        IFNULL(
+            CASE 
+                WHEN t.status_ujian_skripsi = "Selesai" THEN "Ujian Skripsi"
+                ELSE NULL
+            END,
+            "-"
+        ) AS status_ujian_skripsi,
+        IFNULL(
+            CASE 
+                WHEN spc.id IS NOT NULL THEN "Selesai"
+                ELSE NULL
+            END,
+            "-"
+        ) AS status_skripsi_selesai
+    ');
+        $this->db->from('users u');
+        $this->db->join('title t', 'u.id = t.mahasiswa', 'left');
+        $this->db->join('pro_progress pp', 'pp.judul_id = t.id', 'left');
+        $this->db->join('skp_progress sp', 'sp.judul_id = t.id', 'left');
+        $this->db->join('skp_pasca spc', 'spc.title_id = t.id', 'left');
+        $this->db->where('u.group_id', 1);
+
+        // Apply filters if provided
+        if ($angkatan) {
+            $this->db->where('u.angkatan', $angkatan);
+        }
+        if ($npm) {
+            $this->db->where('u.npm', $npm);
+        }
+        if ($status_terakhir) {
+            $this->db->having('status_judul', $status_terakhir);
+            $this->db->or_having('status_bimbingan_proposal', $status_terakhir);
+            $this->db->or_having('status_ujian_proposal', $status_terakhir);
+            $this->db->or_having('status_bimbingan_skripsi', $status_terakhir);
+            $this->db->or_having('status_ujian_skripsi', $status_terakhir);
+            $this->db->or_having('status_skripsi_selesai', $status_terakhir);
+        }
+
+        $this->db->order_by('u.nama', 'ASC');
+
+        $query = $this->db->get();
+        return $query->result_array();
     }
 }

@@ -26,9 +26,12 @@
                                     <td><?php echo $row->bab; ?></td> -->
                                     <td><?php echo $row->pembahasan; ?></td>
                                     <td>
-                                        <a href="<?php echo site_url('Progress_skripsi/download_bukti/' . $row->id); ?>">
+                                        <!-- <a href="<?php echo site_url('Progress_skripsi/download_bukti/' . $row->id); ?>">
                                             <button class="btn btn-success">unduh</button>
-                                        </a>
+                                        </a> -->
+
+                                        <!-- 13/08 -->
+                                        <a class="btn btn-primary" href="<?= base_url() ?>progress_skripsi/view_file/bukti/<?= $row->bukti; ?>">Lihat</a>
                                     </td>
                                     <td>
                                         <?php

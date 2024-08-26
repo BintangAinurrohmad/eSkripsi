@@ -48,11 +48,11 @@
 				<i class="ri-book-fill"></i><span>Proposal</span><i class="bi bi-chevron-down ms-auto"></i>
 			</a>
 			<ul id="proposal-nav" class="nav-content collapse <?= is_dropdown_active(['progress_proposal', 'registration_proposal', 'schedule_proposal', 'score_proposal', 'post_proposal']); ?>" data-bs-parent="#sidebar-nav">
-				<li>
+				<!-- <li>
 					<a href="<?= base_url() ?>progress_proposal/" class="<?= set_active('progress_proposal'); ?>">
 						<i class="bi bi-circle"></i><span>Bimbingan</span>
 					</a>
-				</li>
+				</li> -->
 				<li>
 					<a href="<?= base_url() ?>registration_proposal/" class="<?= set_active('registration_proposal'); ?>">
 						<i class="bi bi-circle"></i><span>Pendaftaran Ujian</span>
@@ -81,11 +81,11 @@
 				<i class="ri-book-line"></i><span>Skripsi</span><i class="bi bi-chevron-down ms-auto"></i>
 			</a>
 			<ul id="skripsi-nav" class="nav-content collapse <?= is_dropdown_active(['progress_skripsi', 'registration_skripsi', 'schedule_skripsi', 'score_skripsi', 'post_skripsi']); ?>" data-bs-parent="#sidebar-nav">
-				<li>
+				<!-- <li>
 					<a href="<?= base_url() ?>progress_skripsi/" class="<?= set_active('progress_skripsi'); ?>">
 						<i class="bi bi-circle"></i><span>Bimbingan</span>
 					</a>
-				</li>
+				</li> -->
 				<li>
 					<a href="<?= base_url() ?>registration_skripsi/" class="<?= set_active('registration_skripsi'); ?>">
 						<i class="bi bi-circle"></i><span>Pendaftaran Ujian</span>

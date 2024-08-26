@@ -25,7 +25,7 @@ class Progress_proposal extends CI_Controller
 			} else if ($this->session->userdata('group_id') == 2) {
 				$this->dosen();
 			} else if ($this->session->userdata('group_id') == 3) {
-				$this->dosen();
+				$this->koordinator();
 			} else if ($this->session->userdata('group_id') == 4) {
 				$this->admin();
 			} else {
@@ -114,6 +114,12 @@ class Progress_proposal extends CI_Controller
 					case 'pdf':
 						header('Content-Type: application/pdf');
 						break;
+					case 'docx':
+						header('Content-Type: application/docx');
+						break;
+					case 'doc':
+						header('Content-Type: application/doc');
+						break;
 					default:
 						echo "Unsupported file type.";
 						return;
@@ -126,6 +132,38 @@ class Progress_proposal extends CI_Controller
 		} else {
 			echo "Data not found.";
 		}
+	}
+
+	//bintang 13/08/2024
+	public function view_file($folder, $file)
+	{
+		if (!$this->session->userdata('is_login')) {
+			redirect('login');
+		} else {
+			if ($this->session->userdata('group_id') == 1) {
+				$overlay = 'template/overlay/mahasiswa';
+			} else if ($this->session->userdata('group_id') == 2) {
+				$overlay = 'template/overlay/dosen';
+			} else if ($this->session->userdata('group_id') == 3) {
+				$overlay = 'template/overlay/koordinator';
+			} else if ($this->session->userdata('group_id') == 4) {
+				$overlay = 'template/overlay/admin';
+			} else {
+				redirect('login');
+			}
+		}
+
+		if ($folder == "bukti") {
+			$title = "bukti bimbingan";
+		}
+
+		$data = [
+			'title' => 'Lihat ' . $title,
+			'content' => 'progress/proposal/view_file',
+			'folder' => $folder,
+			'file' => $file
+		];
+		$this->load->view($overlay, $data);
 	}
 
 
@@ -308,49 +346,14 @@ class Progress_proposal extends CI_Controller
 		}
 	}
 
-	// public function insert_bimbingan()
-	// {
-	// 	if ($this->input->post()) {
-	// 		$config['upload_path'] = './file/proposal/bukti/'; // Set upload path
-	// 		$config['allowed_types'] = 'gif|jpg|png'; // Allowed file types
-	// 		$config['max_size'] = '1024'; // Max file size in KB
-	// 		$this->load->library('upload', $config);
-
-	// 		if (!$this->upload->do_upload('bukti')) {
-	// 			$data['error'] = $this->upload->display_errors(); // Display error message
-	// 		} else {
-	// 			$upload_data = $this->upload->data(); // Get upload data
-	// 			$bukti =  $upload_data['file_name']; // Get uploaded file name
-
-	// 			$data = array(
-	// 				'tanggal' => $this->input->post('tanggal'),
-	// 				'judul_id' => $this->input->post('judul'),
-	// 				'pembimbing' => $this->input->post('pembimbing'),
-	// 				// 'bab' => $this->input->post('bab'),
-	// 				'pembahasan' => $this->input->post('pembahasan'),
-	// 				'bukti' => $bukti,
-	// 				'status' => 'pending' // Assuming initial status is 'Diajukan'
-	// 			);
-
-
-	// 			if ($this->Progress_proposal_model->insert_progress($data)) {
-	// 				$data['success'] = 'Progress proposal submitted successfully!';
-	// 			} else {
-	// 				$data['error'] = 'Failed to submit progress proposal.';
-	// 			}
-	// 		}
-	// 		return
-	// 			redirect('Progress_proposal/mahasiswa');
-	// 	}
-	// }
-
 	//bintang
 	public function insert_bimbingan()
 	{
 		if ($this->input->post()) {
 			$config['upload_path'] = './file/proposal/bukti/';
-			$config['allowed_types'] = 'gif|jpg|png';
-			$config['max_size'] = '1024';
+			//13/08/2024
+			$config['allowed_types'] = 'gif|jpg|png|pdf|doc|docx';
+			$config['max_size'] = '3000';
 			$this->load->library('upload', $config);
 
 			if (!$this->upload->do_upload('bukti')) {
@@ -381,7 +384,8 @@ class Progress_proposal extends CI_Controller
 						'user_id' => $mahasiswa_id,
 						'judul' => 'Bimbingan Proposal Diserahkan',
 						'pesan' => "Bimbingan proposal anda berhasil diserahkan kepada dosen pembimbing anda.",
-						'type' => 'success'
+						'type' => 'success',
+						'page_type' => 'new_progress'
 					);
 					$this->db->insert('notifikasi', $notif_data);
 
@@ -392,7 +396,8 @@ class Progress_proposal extends CI_Controller
 							'user_id' => $pembimbing_id,
 							'judul' => 'Bimbingan Proposal Baru',
 							'pesan' => "mahasiswa bimbingan anda telah menyerahkan BIMBINGAN proposal, segera cek progress mahasiswa bimbingan anda.",
-							'type' => 'info'
+							'type' => 'info',
+							'page_type' => 'new_progress'
 						);
 						$this->db->insert('notifikasi', $notif_data);
 					}
@@ -451,18 +456,118 @@ class Progress_proposal extends CI_Controller
 		$this->load->view('template/overlay/dosen', $data);
 	}
 
-
+	//revisi
 	public function koordinator()
 	{
 		$user_id = $this->session->userdata('user_id');
 
+		// Prepare data array with view-specific information
 		$data = [
 			'title' => "Progress Proposal",
 			'content' => 'progress/proposal/koordinator/koordinator',
 		];
+
+		// Retrieve proposal data and mahasiswa data including dosen pembimbing
 		$data['proposal_data'] = $this->Progress_proposal_model->get_mahasiswa_for_dosen($user_id);
+		
+		// Load the koordinator view with the data array
 		$this->load->view('template/overlay/koordinator', $data);
 	}
+
+	public function track_mhs()
+	{
+		$user_id = $this->session->userdata('user_id');
+
+		$data = [
+			'title' => "Progress Mahasiswa",
+			'content' => 'progress/proposal/koordinator/koordinator2',
+		];
+
+		$angkatan = $this->input->get('angkatan');
+		$npm = $this->input->get('npm');
+		$status_terakhir = $this->input->get('status_terakhir');
+		$dospem_1_nama = $this->input->get('dospem_1_nama');
+		$dospem_2_nama = $this->input->get('dospem_2_nama');
+
+		$data['mahasiswa_data'] = $this->Progress_proposal_model->get_all_mahasiswa($angkatan, $npm, $status_terakhir, $dospem_1_nama, $dospem_2_nama);
+
+		$this->load->view('template/overlay/koordinator', $data);
+	}
+
+
+
+	public function word_export()
+	{
+		// Load the necessary model
+		$this->load->model('Progress_proposal_model');
+
+		// Fetch the filtered data
+		$angkatan = $this->input->get('angkatan');
+		$npm = $this->input->get('npm');
+		$status_terakhir = $this->input->get('status_terakhir');
+		$mahasiswa_data = $this->Progress_proposal_model->get_all_mahasiswa($angkatan, $npm, $status_terakhir);
+
+		// Create a new Word document
+		$phpWord = new \PhpOffice\PhpWord\PhpWord();
+
+		// Set the page orientation to landscape
+		$sectionStyle = array(
+			'orientation' => 'landscape',
+			'marginLeft' => 600,
+			'marginRight' => 600,
+			'marginTop' => 600,
+			'marginBottom' => 600
+		);
+		$section = $phpWord->addSection($sectionStyle);
+
+		// Add table headers with border
+		$tableStyle = array(
+			'borderSize' => 6,
+			'borderColor' => '000000',
+			'cellMargin' => 50
+		);
+		$firstRowStyle = array('bgColor' => 'CCCCCC');
+		$phpWord->addTableStyle('Fancy Table', $tableStyle, $firstRowStyle);
+
+		$table = $section->addTable('Fancy Table');
+		$table->addRow();
+		$table->addCell(2000)->addText('Nama');
+		$table->addCell(2000)->addText('NPM');
+		$table->addCell(2000)->addText('Status Judul');
+		$table->addCell(2000)->addText('Status Bimbingan Proposal');
+		$table->addCell(2000)->addText('Status Ujian Proposal');
+		$table->addCell(2000)->addText('Status Bimbingan Skripsi');
+		$table->addCell(2000)->addText('Status Ujian Skripsi');
+		$table->addCell(2000)->addText('Status Skripsi Selesai');
+		$table->addCell(2000)->addText('Dosen Pembimbing 1');
+		$table->addCell(2000)->addText('Dosen Pembimbing 2');
+
+		// Populate the data
+		foreach ($mahasiswa_data as $mhs) {
+			$table->addRow();
+			$table->addCell(2000)->addText($mhs['nama']);
+			$table->addCell(2000)->addText($mhs['npm']);
+			$table->addCell(2000)->addText($mhs['status_judul']);
+			$table->addCell(2000)->addText($mhs['status_bimbingan_proposal']);
+			$table->addCell(2000)->addText($mhs['status_ujian_proposal']);
+			$table->addCell(2000)->addText($mhs['status_bimbingan_skripsi']);
+			$table->addCell(2000)->addText($mhs['status_ujian_skripsi']);
+			$table->addCell(2000)->addText($mhs['status_skripsi_selesai']);
+			$table->addCell(2000)->addText($mhs['dospem_1_nama']);
+			$table->addCell(2000)->addText($mhs['dospem_2_nama']);
+		}
+
+		// Save the file and prompt download
+		$filename = 'mahasiswa_data.docx';
+		header('Content-Type: application/vnd.openxmlformats-officedocument.wordprocessingml.document');
+		header('Content-Disposition: attachment;filename="' . $filename . '"');
+		header('Cache-Control: max-age=0');
+
+		$objWriter = \PhpOffice\PhpWord\IOFactory::createWriter($phpWord, 'Word2007');
+		$objWriter->save('php://output');
+	}
+
+
 
 	public function koordinator1($id)
 	{

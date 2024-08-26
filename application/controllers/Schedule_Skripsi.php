@@ -277,7 +277,8 @@ class Schedule_Skripsi extends CI_Controller
 			'user_id' => $mahasiswa_id,
 			'judul' => 'Jadwal Ujian Skripsi Diperbarui',
 			'pesan' => "Jadwal ujian skripsi Anda telah diperbarui. Silahkan cek jadwal Anda sekarang.",
-			'type' => 'info'
+			'type' => 'info',
+			'page_type' => 'update_skp'
 		);
 		$this->db->insert('notifikasi', $notif_data);
 
@@ -287,7 +288,8 @@ class Schedule_Skripsi extends CI_Controller
 				'user_id' => $dospem_1_id,
 				'judul' => 'Jadwal Ujian Skripsi Diperbarui',
 				'pesan' => "Jadwal ujian skripsi mahasiswa bimbingan Anda telah diperbarui. Silahkan cek jadwal sekarang.",
-				'type' => 'info'
+				'type' => 'info',
+				'page_type' => 'update_skp'
 			);
 			$this->db->insert('notifikasi', $notif_data);
 		}
@@ -298,7 +300,8 @@ class Schedule_Skripsi extends CI_Controller
 				'user_id' => $dospem_2_id,
 				'judul' => 'Jadwal Ujian Skripsi Diperbarui',
 				'pesan' => "Jadwal ujian skripsi mahasiswa bimbingan Anda telah diperbarui. Silahkan cek jadwal sekarang.",
-				'type' => 'info'
+				'type' => 'info',
+				'page_type' => 'update_skp'
 			);
 			$this->db->insert('notifikasi', $notif_data);
 		}

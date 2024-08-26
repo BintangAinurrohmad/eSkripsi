@@ -169,7 +169,7 @@ class Dashboard extends CI_Controller
 
 		$data['jumlahskp_belum_disetujui'] = $this->Dashboard_model->count_pending_approvalskp($dosen_id);
 
-		$data['title'] = "Selamat Datang di Dashboard Admin";
+		$data['title'] = "Selamat Datang di Dashboard";
 		$data['content'] = 'dashboard/admin';
 
 		$this->load->view('template/overlay/admin', $data);
