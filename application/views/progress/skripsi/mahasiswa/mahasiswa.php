@@ -74,7 +74,7 @@
           <tbody>
             <?php foreach ($data_skripsi as $row) : ?>
               <tr>
-                <td><?php echo date('l, d F Y', strtotime($row->tanggal)); ?></td>
+                <td><?= format_tgl($row->tanggal); ?></td>
                 <td><?php echo $row->nama_pembimbing; ?></td>
                 <!-- <td><?php echo $row->bab; ?></td> -->
                 <td><?php echo $row->pembahasan; ?></td>

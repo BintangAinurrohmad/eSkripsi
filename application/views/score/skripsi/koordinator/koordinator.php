@@ -2,6 +2,7 @@
 	<div class="card">
 		<div class="card-body pt-3">
 
+			<!-- Alert untuk Success -->
 			<?php if ($this->session->flashdata('success')) : ?>
 				<div class="alert alert-info alert-dismissible fade show" role="alert">
 					<?php echo $this->session->flashdata('success'); ?>
@@ -9,6 +10,7 @@
 				</div>
 			<?php endif; ?>
 
+			<!-- Alert untuk Error -->
 			<?php if ($this->session->flashdata('error')) : ?>
 				<div class="alert alert-danger alert-dismissible fade show" role="alert">
 					<?php echo $this->session->flashdata('error'); ?>
@@ -32,8 +34,8 @@
 							<th scope="col">Tanggal ujian</th>
 							<th scope="col">Ruang</th>
 							<th scope="col">Jam</th>
-							<th scope="col">Status Ujian</th>
 							<th scope="col">Nilai Akhir</th>
+							<th scope="col">Status Ujian</th>
 							<th scope="col">Lembar Penilaian</th>
 						</tr>
 					</thead>
@@ -41,69 +43,55 @@
 						<?php $no = 1;
 						foreach ($ujian as $uj) { ?>
 							<tr>
-								<th scope="row"><?= $no; ?></th>
-								<td><?php echo $uj->judul; ?></td>
+								<th scope="row"><?= $no++; ?></th>
+								<td><?= $uj->judul; ?></td>
 								<td>
-									<?php
-									$mhs = $this->db->where('id', $uj->mahasiswa)->get('users')->row();
-									echo $mhs->nama;
-									?>
+									<?= $this->db->select('nama')->where('id', $uj->mahasiswa)->get('users')->row()->nama; ?>
 								</td>
 								<td>
-									<?php
-									$dospem1 = $this->db->where('id', $uj->dospem_1_id)->get('users')->row();
-									echo $dospem1->nama;
-									?>
+									<?= $this->db->select('nama')->where('id', $uj->dospem_1_id)->get('users')->row()->nama; ?>
 								</td>
 								<td>
-									<?php
-									$dospem2 = $this->db->where('id', $uj->dospem_2_id)->get('users')->row();
-									echo $dospem2->nama;
-									?>
+									<?= $this->db->select('nama')->where('id', $uj->dospem_2_id)->get('users')->row()->nama; ?>
 								</td>
 								<td>
-									<?php
-									$dosuji1 = $this->db->where('id', $uj->dosuji_1_id)->get('users')->row();
-									echo $dosuji1->nama;
-									?>
+									<?= $this->db->select('nama')->where('id', $uj->dosuji_1_id)->get('users')->row()->nama; ?>
 								</td>
 								<td>
-									<?php
-									$dosuji2 = $this->db->where('id', $uj->dosuji_2_id)->get('users')->row();
-									echo $dosuji2->nama;
-									?>
+									<?= $this->db->select('nama')->where('id', $uj->dosuji_2_id)->get('users')->row()->nama; ?>
 								</td>
-								<td><?php echo format_tgl($uj->tanggal); ?></td>
+								<td><?= format_tgl($uj->tanggal); ?></td>
 								<td>
-									<?php
-									$room = $this->db->where('id', $uj->room_id)->get('rooms')->row();
-									echo $room->nama;
-									?>
+									<?= $this->db->select('nama')->where('id', $uj->room_id)->get('rooms')->row()->nama; ?>
 								</td>
-								<td><?php echo $uj->jam; ?></td>
+								<td><?= $uj->jam; ?></td>
 								<td>
-									<?php if ($uj->status_ujian_skripsi == "Selesai") { ?>
-										<span class="badge rounded-pill bg-success">Selesai</span>
-									<?php } else if ($uj->status_ujian_skripsi == "Terdaftar") { ?>
-										<span class="badge rounded-pill bg-secondary">Menunggu Penilaian</span>
-									<?php } else { ?>
-										<span class="badge rounded-pill bg-danger">Belum Daftar</span>
-									<?php } ?>
-								</td>
-								<td>
-									<span class="editable" data-skp_id="<?php echo $uj->skp_id; ?>"><?php echo $uj->nilai; ?></span>
-									<form method="post" action="<?php echo site_url('score_skripsi/update_nilai'); ?>" class="edit-form" data-skp_id="<?php echo $uj->skp_id; ?>" style="display: none;">
-										<input type="hidden" name="skp_id" value="<?php echo $uj->skp_id; ?>">
-										<input type="number" name="value" class="edit-input form-control" value="<?php echo $uj->nilai; ?>">
+									<span class="editable" data-skp_id="<?= $uj->skp_id; ?>"><?= $uj->nilai; ?></span>
+									<form method="post" action="<?= site_url('score_skripsi/update_nilai'); ?>" class="edit-form" style="display: none;">
+										<input type="hidden" name="skp_id" value="<?= $uj->skp_id; ?>">
+										<input type="number" name="value" class="edit-input form-control" value="<?= $uj->nilai; ?>">
 									</form>
 								</td>
 								<td>
-									<a type="submit" class="btn btn-info" href="<?= base_url() ?>score_skripsi/view_nilai/<?= $uj->skp_id ?>">Lihat</a>
-									<a type="submit" class="btn btn-success" href="<?= base_url() ?>score_skripsi/download_nilai/<?= $uj->skp_id ?>">Unduh</a>
+									<form method="post" action="<?= site_url('score_skripsi/update_status'); ?>" class="status-form">
+										<input type="hidden" name="title_id" value="<?= $uj->title_id; ?>">
+										<select name="status_ujian_skripsi" class="form-select status-dropdown" style="display: none;" data-id="<?= $uj->skp_id; ?>" onchange="this.form.submit();">
+											<option value="Lulus" <?= $uj->status_ujian_skripsi == "Lulus" ? 'selected' : ''; ?>>Lulus</option>
+											<option value="Tidak Lulus" <?= $uj->status_ujian_skripsi == "Tidak lulus" ? 'selected' : ''; ?>>Tidak Lulus</option>
+											<option value="Terdaftar" <?= $uj->status_ujian_skripsi == "Terdaftar" ? 'selected' : ''; ?>>Menunggu Penilaian</option>
+											<option value="Belum Daftar" <?= $uj->status_ujian_skripsi == "Belum Daftar" ? 'selected' : ''; ?>>Belum Daftar</option>
+										</select>
+										<span class="badge rounded-pill <?= $uj->status_ujian_skripsi == 'Lulus' ? 'bg-success' : ($uj->status_ujian_skripsi == 'Tidak lulus' ? 'bg-danger' : ($uj->status_ujian_skripsi == 'Terdaftar' ? 'bg-secondary' : 'bg-warning')); ?> status-badge" data-id="<?= $uj->skp_id; ?>">
+											<?= $uj->status_ujian_skripsi; ?>
+										</span>
+									</form>
+								</td>
+								<td>
+									<a class="btn btn-info" href="<?= base_url() ?>score_skripsi/view_nilai/<?= $uj->skp_id ?>">Lihat</a>
+									<a class="btn btn-success" href="<?= base_url() ?>score_skripsi/download_nilai/<?= $uj->skp_id ?>">Unduh</a>
 								</td>
 							</tr>
-						<?php $no++;
-						} ?>
+						<?php } ?>
 					</tbody>
 				</table>
 			<?php } ?>
@@ -111,6 +99,7 @@
 	</div>
 </section>
 
+<!-- Script untuk Edit Nilai -->
 <script>
 	document.addEventListener('DOMContentLoaded', function() {
 		var editables = document.querySelectorAll('.editable');
@@ -118,18 +107,17 @@
 			editable.addEventListener('click', function() {
 				var skp_id = this.dataset.skp_id;
 				var form = document.querySelector('form[data-skp_id="' + skp_id + '"]');
-				var input = form.querySelector('.edit-input');
 
 				this.style.display = 'none';
 				form.style.display = 'block';
-				input.focus();
+				form.querySelector('.edit-input').focus();
 			});
 		});
 
 		var inputs = document.querySelectorAll('.edit-input');
 		inputs.forEach(function(input) {
 			input.addEventListener('keypress', function(e) {
-				if (e.which == 13) {
+				if (e.key === 'Enter') {
 					this.form.submit();
 				}
 			});
@@ -137,10 +125,36 @@
 			input.addEventListener('blur', function() {
 				var skp_id = this.parentNode.dataset.skp_id;
 				var editable = document.querySelector('.editable[data-skp_id="' + skp_id + '"]');
-				var form = this.parentNode;
-
-				form.style.display = 'none';
+				this.parentNode.style.display = 'none';
 				editable.style.display = 'block';
+			});
+		});
+	});
+</script>
+
+<!-- Script untuk Mengubah Status Ujian -->
+<script>
+	document.addEventListener('DOMContentLoaded', function() {
+		var statusBadges = document.querySelectorAll('.status-badge');
+
+		statusBadges.forEach(function(badge) {
+			badge.addEventListener('click', function() {
+				var id = this.dataset.id;
+				var dropdown = document.querySelector('.status-dropdown[data-id="' + id + '"]');
+
+				this.style.display = 'none';
+				dropdown.style.display = 'block';
+			});
+		});
+
+		var statusDropdowns = document.querySelectorAll('.status-dropdown');
+
+		statusDropdowns.forEach(function(dropdown) {
+			dropdown.addEventListener('blur', function() {
+				this.style.display = 'none';
+				var id = this.dataset.id;
+				var badge = document.querySelector('.status-badge[data-id="' + id + '"]');
+				badge.style.display = 'block';
 			});
 		});
 	});

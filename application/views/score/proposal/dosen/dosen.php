@@ -59,7 +59,7 @@
 								<?php $no = 1;
 								foreach ($dospem1 as $dospem1) { ?>
 									<tr>
-										<th scope="row"><?= $no; ?></th>
+										<th scope="row"><?= $no++; ?></th>
 										<td><?php echo $dospem1->judul; ?></td>
 										<td>
 											<?php
@@ -126,7 +126,7 @@
 								<?php $no = 1;
 								foreach ($dospem2 as $dospem2) { ?>
 									<tr>
-										<th scope="row"><?= $no; ?></th>
+										<th scope="row"><?= $no++; ?></th>
 										<td><?php echo $dospem2->judul; ?></td>
 										<td>
 											<?php
@@ -192,7 +192,7 @@
 								<?php $no = 1;
 								foreach ($dosuji1 as $dosuji1) { ?>
 									<tr>
-										<th scope="row"><?= $no; ?></th>
+										<th scope="row"><?= $no++; ?></th>
 										<td><?php echo $dosuji1->judul; ?></td>
 										<td>
 											<?php
@@ -258,7 +258,7 @@
 								<?php $no = 1;
 								foreach ($dosuji2 as $dosuji2) { ?>
 									<tr>
-										<th scope="row"><?= $no; ?></th>
+										<th scope="row"><?= $no++; ?></th>
 										<td><?php echo $dosuji2->judul; ?></td>
 										<td>
 											<?php

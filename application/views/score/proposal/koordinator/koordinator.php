@@ -32,8 +32,8 @@
 							<th scope="col">Tanggal ujian</th>
 							<th scope="col">Ruang</th>
 							<th scope="col">Jam</th>
-							<th scope="col">Status Ujian</th>
 							<th scope="col">Nilai Akhir</th>
+							<th scope="col">Status Ujian</th>
 							<th scope="col">Lembar Penilaian</th>
 						</tr>
 					</thead>
@@ -82,19 +82,26 @@
 								</td>
 								<td><?php echo $uj->jam; ?></td>
 								<td>
-									<?php if ($uj->status_ujian_proposal == "Selesai") { ?>
-										<span class="badge rounded-pill bg-success">Selesai</span>
-									<?php } else if ($uj->status_ujian_proposal == "Terdaftar") { ?>
-										<span class="badge rounded-pill bg-secondary">Menunggu Penilaian</span>
-									<?php } else { ?>
-										<span class="badge rounded-pill bg-danger">Belum Daftar</span>
-									<?php } ?>
-								</td>
-								<td>
 									<span class="editable" data-pro_id="<?php echo $uj->pro_id; ?>"><?php echo $uj->nilai; ?></span>
 									<form method="post" action="<?php echo site_url('score_proposal/update_nilai'); ?>" class="edit-form" data-pro_id="<?php echo $uj->pro_id; ?>" style="display: none;">
 										<input type="hidden" name="pro_id" value="<?php echo $uj->pro_id; ?>">
 										<input type="number" name="value" class="edit-input form-control" value="<?php echo $uj->nilai; ?>">
+									</form>
+								</td>
+								<td>
+									<!-- Revisi 8-16 -->
+									<form method="post" action="<?php echo site_url('score_proposal/update_status'); ?>" class="status-form" data-id="<?php echo $uj->pro_id; ?>">
+										<input type="hidden" name="title_id" value="<?php echo $uj->title_id; ?>">
+										<select name="status_ujian_proposal" class="form-select status-dropdown" style="display: none;" data-id="<?php echo $uj->pro_id; ?>" onchange="this.form.submit();">
+											<option value="Lulus" <?php echo $uj->status_ujian_proposal == "Lulus" ? 'selected' : ''; ?>>Lulus</option>
+											<option value="Lulus ubah judul" <?php echo $uj->status_ujian_proposal == "Lulus ubah judul" ? 'selected' : ''; ?>>Lulus Ubah Judul</option>
+											<option value="Tidak Lulus" <?php echo $uj->status_ujian_proposal == "Tidak Lulus" ? 'selected' : ''; ?>>Tidak Lulus</option>
+											<option value="Terdaftar" <?php echo $uj->status_ujian_proposal == "Terdaftar" ? 'selected' : ''; ?>>Menunggu Penilaian</option>
+											<option value="Belum Daftar" <?php echo $uj->status_ujian_proposal == "Belum Daftar" ? 'selected' : ''; ?>>Belum Daftar</option>
+										</select>
+										<span class="badge rounded-pill <?php echo $uj->status_ujian_proposal == 'Lulus' ? 'bg-success' : ($uj->status_ujian_proposal == 'Lulus ubah judul' ? 'bg-warning' : ($uj->status_ujian_proposal == 'Tidak Lulus' ? 'bg-danger' : ($uj->status_ujian_proposal == 'Terdaftar' ? 'bg-secondary' : 'bg-danger'))); ?> status-badge" data-id="<?php echo $uj->pro_id; ?>">
+											<?php echo $uj->status_ujian_proposal; ?>
+										</span>
 									</form>
 								</td>
 								<td>
@@ -141,6 +148,34 @@
 
 				form.style.display = 'none';
 				editable.style.display = 'block';
+			});
+		});
+	});
+</script>
+
+<!-- Revisi 8-15 -->
+<script>
+	document.addEventListener('DOMContentLoaded', function() {
+		var statusBadges = document.querySelectorAll('.status-badge');
+
+		statusBadges.forEach(function(badge) {
+			badge.addEventListener('click', function() {
+				var id = this.dataset.id;
+				var dropdown = document.querySelector('.status-dropdown[data-id="' + id + '"]');
+
+				this.style.display = 'none';
+				dropdown.style.display = 'block';
+			});
+		});
+
+		var statusDropdowns = document.querySelectorAll('.status-dropdown');
+
+		statusDropdowns.forEach(function(dropdown) {
+			dropdown.addEventListener('blur', function() {
+				this.style.display = 'none';
+				var id = this.dataset.id;
+				var badge = document.querySelector('.status-badge[data-id="' + id + '"]');
+				badge.style.display = 'block';
 			});
 		});
 	});

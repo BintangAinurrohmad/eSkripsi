@@ -14,7 +14,7 @@ class Skppasca_model extends CI_Model
 		$this->db->select('*, title.id as judul_id');
 		$this->db->from('title');
 		$this->db->join('skp_register', 'skp_register.title_id = title.id', 'inner');
-		$this->db->where('title.status_ujian_skripsi', 'Selesai');
+		$this->db->where('title.status_ujian_skripsi', 'Lulus');
 		$this->db->where('title.mahasiswa', $user_id);
 		$this->db->order_by('title.tanggal_pengajuan', 'DESC');
 		$this->db->limit(1);

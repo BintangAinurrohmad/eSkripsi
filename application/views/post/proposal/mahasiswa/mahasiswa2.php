@@ -3,7 +3,7 @@
 		<div class="card-body">
 
 					<div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
-						Anda belum lulus ujian skripsi
+						Anda belum lulus ujian proposal
 					</div>
 
 		</div>

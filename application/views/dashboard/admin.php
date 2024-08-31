@@ -61,27 +61,69 @@
           <div class="card-body">
             <h5 class="card-title">Dosen dan Jumlah Mahasiswa Bimbingan</h5>
             <div class="datatable-wrapper datatable-loading no-footer sortable searchable fixed-columns">
-              <table class="table table-stripped">
-                <thead>
-                  <tr>
-                    <th>Nama Dosen</th>
-                    <th>Jumlah Mahasiswa</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <?php foreach ($dosen_mahasiswa as $data) : ?>
+               <table class="table table-striped">
+                  <thead>
                     <tr>
-                      <td><?= $data['nama_dosen']; ?></td>
-                      <td><?= $data['jumlah_mahasiswa']; ?></td>
+                      <th>Nama Dosen</th>
+                      <th>DosPem1</th>
+                      <th>DosPem2</th>
                     </tr>
-                  <?php endforeach; ?>
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody>
+                    <?php foreach ($dosen_mahasiswa as $data) : ?>
+                      <tr>
+                        <td><?= $data['nama_dosen']; ?></td>
+                        <td><?= $data['pembimbing_1']; ?></td>
+                        <td><?= $data['pembimbing_2']; ?></td>
+                      </tr>
+                    <?php endforeach; ?>
+                  </tbody>
+                </table>
             </div>
           </div>
         </div>
       </div><!-- End Tabel Pembimbing dan Mahasiswa -->
 
+    </div>
+  </section>
+
+  <!-- Card Pengumuman -->
+  <section class="section">
+    <div class="card">
+      <div class="card-body pt-2">
+
+        <h5 class="card-title">Pengumuman</h5>
+
+        <table class="table datatable">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col" class="col-md-4">Penulis</th>
+              <th scope="col">Pengumuman</th>
+            </tr>
+          </thead>
+          <tbody>
+            <?php $no = 1;
+            foreach ($pengumuman as $pengumuman) { ?>
+              <tr>
+                <td>
+                  <i class="ri-megaphone-fill"></>
+                </td>
+                <td class="col-md-4">
+                  <?php
+                  $creator = $this->db->where('id', $pengumuman->created_by)->get('users')->row();
+                  echo $creator->nama;
+                  ?>
+                </td>
+                <td>
+                  <b><?= $pengumuman->title; ?></b><br />
+                  <?= $pengumuman->content; ?>
+                </td>
+              </tr>
+            <?php } ?>
+          </tbody>
+        </table>
+      </div>
     </div>
   </section>
 

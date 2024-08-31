@@ -1,3 +1,4 @@
+<!-- Revisi 8-18 -->
 <?php
 $showAddButton = true;
 if (is_array($myProposal) && !empty($myProposal)) {
@@ -16,13 +17,19 @@ if (is_array($myProposal) && !empty($myProposal)) {
 if (!$hasApprovedTitle) {
 	$showAddButton = false;
 }
+
+if ($latestTitle->status_ujian_proposal == 'Belum terdaftar') {
+	$showAddButton = true;
+}
 ?>
 
 <section class="section">
 	<div class="card">
-		<div class="card-body" style="padding-top: <?php if(!$showAddButton) { echo "1rem"; } else {
-									echo "4rem";
-								} ?>;">
+		<div class="card-body" style="padding-top: <?php if (!$showAddButton) {
+														echo "1rem";
+													} else {
+														echo "4rem";
+													} ?>;">
 
 			<?php if ($this->session->flashdata('success')) : ?>
 				<div class="alert alert-info alert-dismissible fade show" role="alert">
@@ -40,6 +47,7 @@ if (!$hasApprovedTitle) {
 						<tr>
 							<th scope="col">No</th>
 							<th scope="col">Judul</th>
+							<th scope="col">Tanggal Pendaftaran</th>
 							<th scope="col">Naskah</th>
 							<th scope="col">Lembar Persetujuan</th>
 							<th scope="col">Pembimbing 1</th>
@@ -53,6 +61,7 @@ if (!$hasApprovedTitle) {
 							<tr>
 								<th scope="row"><?= $no++; ?></th>
 								<td><?= $proposal->judul; ?></td>
+								<td><?= format_tgl($proposal->tanggal_pendaftaran); ?></td>
 								<td><a class="btn btn-primary" href="<?= base_url() ?>registration_proposal/view_file/naskah/<?= $proposal->file_naskah; ?>">Lihat</a></td>
 								<td><a class="btn btn-primary" href="<?= base_url() ?>registration_proposal/view_file/persetujuan/<?= $proposal->file_persetujuan; ?>">Lihat</a></td>
 								<td>

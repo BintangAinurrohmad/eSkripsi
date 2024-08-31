@@ -6,7 +6,7 @@
 
         <div class="tab-pane fade profile-overview active show" id="profile-overview" role="tabpanel">
 
-          <table class="table">
+          <table class="table datatable">
             <thead>
               <tr>
                 <th>Tanggal</th>

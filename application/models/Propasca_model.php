@@ -11,10 +11,9 @@ class Propasca_model extends CI_Model
 
 	public function get_title($user_id)
 	{
-		$this->db->select('*, title.id as judul_id');
+		$this->db->select('*');
 		$this->db->from('title');
-		$this->db->join('pro_register','pro_register.title_id = title.id','inner');
-		$this->db->where('title.status_ujian_proposal', 'Selesai');
+		$this->db->where_in('title.status_ujian_proposal', ['Lulus', 'Lulus ubah judul']);
 		$this->db->where('title.mahasiswa', $user_id);
 		$this->db->order_by('title.tanggal_pengajuan', 'DESC');
 		$this->db->limit(1);
@@ -22,6 +21,7 @@ class Propasca_model extends CI_Model
 
 		return $query->row();
 	}
+
 
 	public function insert($data)
 	{
@@ -32,8 +32,8 @@ class Propasca_model extends CI_Model
 	{
 		$this->db->select('*');
 		$this->db->from('pro_pasca');
-		$this->db->join('title','pro_pasca.title_id = title.id','inner');
-		$this->db->where('title.id',$title);
+		$this->db->join('title', 'pro_pasca.title_id = title.id', 'inner');
+		$this->db->where('title.id', $title);
 		$query = $this->db->get();
 		return $query->num_rows();
 	}
@@ -43,8 +43,14 @@ class Propasca_model extends CI_Model
 		$this->db->select('*, pro_pasca.id as pasca_id');
 		$this->db->from('pro_pasca');
 		$this->db->join('title', 'pro_pasca.title_id = title.id', 'inner');
-		$this->db->order_by('pro_pasca.id','DESC');
+		$this->db->order_by('pro_pasca.id', 'DESC');
 		$query = $this->db->get();
 		return $query->result();
+	}
+
+	public function update_title($title_id, $data)
+	{
+		$this->db->where('id', $title_id);
+		$this->db->update('title', $data);
 	}
 }

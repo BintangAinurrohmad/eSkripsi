@@ -1,9 +1,9 @@
 <section class="section">
 	<div class="card">
-		<div class="card-body">
+		<div class="card-body" style="padding-top: 4rem;">
 
 			<?php if ($this->session->flashdata('success')) : ?>
-				<div class="alert alert-info alert-dismissible fade show" style="margin-top: 4rem;" role="alert">
+				<div class="alert alert-info alert-dismissible fade show" role="alert">
 					<?php echo $this->session->flashdata('success'); ?>
 					<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 				</div>
@@ -19,13 +19,12 @@
 						</form>
 					</div> -->
 
-			<table class="table" style="margin-top: 4rem;">
+			<table class="table datatable">
 				<thead>
 					<tr>
-						<th scope="col">No</th>
 						<th scope="col">Tanggal</th>
-						<th scope="col">Judul</th>
 						<th scope="col">Penulis</th>
+						<th scope="col">Judul</th>
 						<th scope="col">Aksi</th>
 					</tr>
 				</thead>
@@ -33,13 +32,17 @@
 					<?php $no = 1;
 					foreach ($pengumuman as $pengumuman) { ?>
 						<tr>
-							<th scope="row"><?= $no++; ?></th>
-							<td><?= $pengumuman->tanggal; ?></td>
-							<td><?= $pengumuman->judul; ?></td>
-							<td><?= $pengumuman->isi; ?></td>
+							<td><?= format_tgl($pengumuman->created_at); ?></td>
 							<td>
-								<a type="submit" class="btn btn-primary" href="<?= base_url() ?>">Sunting</a>
-								<a type="submit" class="btn btn-danger" href="<?= base_url() ?>">Hapus</a>
+								<?php
+								$creator = $this->db->where('id', $pengumuman->created_by)->get('users')->row();
+								echo $creator->nama;
+								?>
+							</td>
+							<td><?= $pengumuman->title; ?></td>
+							<td>
+								<a type="submit" class="btn btn-primary" href="<?= base_url('announcement/edit') ?>/<?= $pengumuman->id; ?>">Edit</a>
+								<a type="submit" class="btn btn-danger" href="<?= base_url('announcement/delete') ?>/<?= $pengumuman->id; ?>">Hapus</a>
 							</td>
 						</tr>
 					<?php } ?>

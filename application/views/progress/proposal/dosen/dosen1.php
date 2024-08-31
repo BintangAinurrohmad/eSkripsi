@@ -6,7 +6,7 @@
 
                 <div class="tab-pane fade profile-overview active show" id="profile-overview" role="tabpanel">
 
-                    <table class="table">
+                    <table class="table datatable">
                         <thead>
                             <tr>
                                 <th>Tanggal</th>
@@ -21,10 +21,9 @@
                         </thead>
                         <tbody>
                             <?php
-                            setlocale(LC_TIME, 'id_ID.UTF-8'); // Set locale to Indonesian
                             foreach ($data_proposal as $row) : ?>
                                 <tr>
-                                    <td><?php echo strftime('%A, %d %B %Y', strtotime($row->tanggal)); ?></td>
+                                    <td><?= format_tgl($row->tanggal); ?></td>
                                     <td><?php echo $row->judul; ?></td>
                                     <!-- <td><?php echo $row->nama_pembimbing; ?></td> -->
                                     <!-- <td><?php echo $row->bab; ?></td> -->

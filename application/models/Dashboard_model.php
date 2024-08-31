@@ -110,10 +110,10 @@ class Dashboard_model extends CI_Model
 
         // Subquery untuk mendapatkan ID terbaru dari setiap mahasiswa
         $subquery = $this->db->select('MAX(t.id) as id')
-        ->from('title t')
-        ->join('users m', 'm.id = t.mahasiswa AND m.group_id = 1 AND m.angkatan = ' . $target_year, 'left')
-        ->where('t.status', 'Diterima')
-        ->group_start()
+            ->from('title t')
+            ->join('users m', 'm.id = t.mahasiswa AND m.group_id = 1 AND m.angkatan = ' . $target_year, 'left')
+            ->where('t.status', 'Diterima')
+            ->group_start()
             ->where('t.dospem_1_id', $user_id)
             ->or_where('t.dospem_2_id', $user_id)
             ->group_end()
@@ -150,27 +150,53 @@ class Dashboard_model extends CI_Model
     }
 
 
-    public function get_dosen_mahasiswa()
+    public function get_dosen_mahasiswa_bimbingan()
     {
         $current_year = date('Y');
         $target_year = $current_year - 4;
 
-        $this->db->select('u.id, u.nama, COUNT(DISTINCT m.id) AS jumlah_mahasiswa');
+        // Subquery untuk menghitung jumlah mahasiswa sebagai pembimbing 1
+        $subquery1 = $this->db->select('dospem_1_id, COUNT(DISTINCT m.id) AS pembimbing_1')
+            ->from('title t')
+            ->join('users m', 't.mahasiswa = m.id', 'left')
+            ->where('t.status', 'Diterima')
+            ->where('m.group_id', 1) // Pastikan hanya menghitung mahasiswa
+            ->where('m.angkatan', $target_year) // Filter berdasarkan angkatan
+            ->group_by('dospem_1_id')
+            ->get_compiled_select();
+
+        // Subquery untuk menghitung jumlah mahasiswa sebagai pembimbing 2
+        $subquery2 = $this->db->select('dospem_2_id, COUNT(DISTINCT m.id) AS pembimbing_2')
+            ->from('title t')
+            ->join('users m', 't.mahasiswa = m.id', 'left')
+            ->where('t.status', 'Diterima')
+            ->where('m.group_id', 1) // Pastikan hanya menghitung mahasiswa
+            ->where('m.angkatan', $target_year) // Filter berdasarkan angkatan
+            ->group_by('dospem_2_id')
+            ->get_compiled_select();
+
+        // Query utama
+        $this->db->select('
+        u.id, 
+        u.nama, 
+        IFNULL(p1.pembimbing_1, 0) AS pembimbing_1, 
+        IFNULL(p2.pembimbing_2, 0) AS pembimbing_2
+    ');
         $this->db->from('users u');
-        $this->db->join('title t', '(u.id = t.dospem_1_id OR u.id = t.dospem_2_id) AND t.status = "Diterima"', 'left');
-        $this->db->join('users m', 'm.id = t.mahasiswa AND m.group_id = 1 AND m.angkatan = ' . $target_year, 'left');
-        $this->db->where('(u.group_id = 2 OR u.group_id = 3)');
-        $this->db->group_by('u.id, u.nama');
-        $this->db->order_by('jumlah_mahasiswa', 'DESC');
+        $this->db->join("($subquery1) p1", 'u.id = p1.dospem_1_id', 'left');
+        $this->db->join("($subquery2) p2", 'u.id = p2.dospem_2_id', 'left');
+        $this->db->where('(u.group_id = 2 OR u.group_id = 3)'); // Filter untuk dosen kelompok
+        $this->db->order_by('u.nama', 'ASC');
 
         $query = $this->db->get();
 
+        // Menyusun hasil query dalam bentuk array untuk dikembalikan
         $dosen_mahasiswa = array();
         foreach ($query->result() as $row) {
             $dosen_mahasiswa[] = array(
-                'id_dosen' => $row->id,
                 'nama_dosen' => $row->nama,
-                'jumlah_mahasiswa' => $row->jumlah_mahasiswa
+                'pembimbing_1' => $row->pembimbing_1,
+                'pembimbing_2' => $row->pembimbing_2
             );
         }
 
@@ -475,5 +501,4 @@ class Dashboard_model extends CI_Model
             return null; // Return null if no user was found with the given user_id
         }
     }
-
 }

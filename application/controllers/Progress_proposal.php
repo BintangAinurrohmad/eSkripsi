@@ -432,8 +432,13 @@ class Progress_proposal extends CI_Controller
 		$data['title'] = "Progress Proposal";
 		$data['content'] = 'progress/proposal/dosen/dosen1';
 		$data['mahasiswa_id'] = $id;
-
-		$this->load->view('template/overlay/dosen', $data);
+//revisi
+		if ($this->session->userdata('group_id') == 2) {
+			$template = 'template/overlay/dosen';
+		} elseif ($this->session->userdata('group_id') == 3) {
+			$template = 'template/overlay/koordinator';
+		}
+		$this->load->view($template, $data);
 	}
 
 

@@ -34,16 +34,15 @@
 								<td><?= $title->judul; ?></td>
 								<td>
 									<?php
-									$mahasiswa = $this->db->where('id', $title->mahasiswa)->get('users')->row();
-									echo $mahasiswa->nama;
-									?>
+									echo $title->nama_mahasiswa;
+									?> (<?= $title->npm; ?>)
 								</td>
 								<td>
 									<?php
 									$dosen1 = $this->db->where('id', $title->dospem_1_id)->get('users')->row();
 									echo $dosen1->nama;
 									?>
-									<br/>
+									<br />
 									<?php if ($title->status_dospem_1 == "Diterima") { ?>
 										<span class="badge rounded-pill bg-success">Diterima</span>
 									<?php } else if ($title->status_dospem_1 == "Ditolak") { ?>
@@ -57,7 +56,7 @@
 									$dosen2 = $this->db->where('id', $title->dospem_2_id)->get('users')->row();
 									echo $dosen2->nama;
 									?>
-									<br/>
+									<br />
 									<?php if ($title->status_dospem_2 == "Diterima") { ?>
 										<span class="badge rounded-pill bg-success">Diterima</span>
 									<?php } else if ($title->status_dospem_2 == "Ditolak") { ?>

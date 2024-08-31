@@ -92,6 +92,46 @@
     </div>
   </section>
 
+  <!-- Card Pengumuman -->
+  <section class="section">
+    <div class="card">
+      <div class="card-body pt-2">
+
+        <h5 class="card-title">Pengumuman</h5>
+
+        <table class="table datatable">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col" class="col-md-4">Penulis</th>
+              <th scope="col">Pengumuman</th>
+            </tr>
+          </thead>
+          <tbody>
+            <?php $no = 1;
+            foreach ($pengumuman as $pengumuman) { ?>
+              <tr>
+                <td>
+                  <i class="ri-megaphone-fill"></>
+                </td>
+                <td class="col-md-4">
+                  <?php
+                  $creator = $this->db->where('id', $pengumuman->created_by)->get('users')->row();
+                  echo $creator->nama;
+                  ?>
+                </td>
+                <td>
+                  <b><?= $pengumuman->title; ?></b><br />
+                  <?= $pengumuman->content; ?>
+                </td>
+              </tr>
+            <?php } ?>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>

@@ -48,6 +48,12 @@ class Title_model extends CI_Model
         return $this->db->insert_id();
     }
 
+    public function addSkripsi($data)
+    {
+        $this->db->insert('skripsi_lama', $data);
+        return $this->db->insert_id();
+    }
+
     public function accTitle($id, $data)
     {
         $this->db->where('id', $id);
@@ -56,10 +62,34 @@ class Title_model extends CI_Model
 
     public function getTitle()
     {
-        $this->db->select('title.*, users.nama as nama_mahasiswa');
+        $this->db->select('title.judul as judul, title.bidang_id as bidang_id, users.npm as npm, users.nama as nama_mahasiswa, title.dospem_1_id as dospem_1_id, title.status_dospem_1 as status_dospem_1, title.dospem_2_id as dospem_2_id, title.status_dospem_2 as status_dospem_2, title.status as status');
+        $this->db->from('title');
         $this->db->join('users', 'title.mahasiswa = users.id', 'left');
-        $this->db->order_by('title.id', 'DESC');
-        $query = $this->db->get('title');
+        $query1 = $this->db->get_compiled_select();
+
+        $this->db->select('judul, bidang_id, npm, nama_mahasiswa, dospem_1_id, status_dospem_1, dospem_2_id, status_dospem_2, status');
+        $this->db->from('skripsi_lama');
+        $query2 = $this->db->get_compiled_select();
+
+        $query = $this->db->query($query1 . " UNION " . $query2);
+
+        return $query->result();
+    }
+
+    public function getSkripsi()
+    {
+        $this->db->select('title.judul as judul, title.bidang_id as bidang_id, users.npm as npm, users.nama as nama_mahasiswa, title.dospem_1_id as dospem_1_id, title.status_dospem_1 as status_dospem_1, title.dospem_2_id as dospem_2_id, title.status_dospem_2 as status_dospem_2, title.status as status');
+        $this->db->from('title');
+        $this->db->join('users', 'title.mahasiswa = users.id', 'left');
+        $this->db->where('title.status', 'Diterima');
+        $query1 = $this->db->get_compiled_select();
+
+        $this->db->select('judul, bidang_id, npm, nama_mahasiswa, dospem_1_id, status_dospem_1, dospem_2_id, status_dospem_2, status');
+        $this->db->from('skripsi_lama');
+        $query2 = $this->db->get_compiled_select();
+
+        $query = $this->db->query($query1 . " UNION " . $query2);
+
         return $query->result();
     }
 
@@ -133,16 +163,25 @@ class Title_model extends CI_Model
         return $query->result();
     }
 
-    public function search($keyword)
+    public function getTitleOnly()
     {
         $this->db->select('title.*, users.nama as nama_mahasiswa');
         $this->db->join('users', 'title.mahasiswa = users.id', 'left');
-        $this->db->like('judul', $keyword);
-        $this->db->or_like('mahasiswa_nama', $keyword);
         $this->db->order_by('title.id', 'DESC');
         $query = $this->db->get('title');
         return $query->result();
     }
+
+    // public function search($keyword)
+    // {
+    //     $this->db->select('title.*, users.nama as nama_mahasiswa');
+    //     $this->db->join('users', 'title.mahasiswa = users.id', 'left');
+    //     $this->db->like('judul', $keyword);
+    //     $this->db->or_like('mahasiswa_nama', $keyword);
+    //     $this->db->order_by('title.id', 'DESC');
+    //     $query = $this->db->get('title');
+    //     return $query->result();
+    // }
 
     public function getThisTitle($title_id)
     {

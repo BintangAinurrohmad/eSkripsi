@@ -181,4 +181,10 @@ class Skpscore_model extends CI_Model
 		$this->db->where('id', $skp_id);
 		return $this->db->update('skp_register', $data);
 	}
+
+	public function update_status($title_id, $data)
+	{
+		$this->db->where('id', $title_id);
+		return $this->db->update('title', $data);
+	}
 }

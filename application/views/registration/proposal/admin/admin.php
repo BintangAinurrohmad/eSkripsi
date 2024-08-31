@@ -20,7 +20,9 @@
 						<tr>
 							<th scope="col">No</th>
 							<th scope="col">Judul</th>
+							<th scope="col">Tanggal Pendaftaran</th>
 							<th scope="col">Mahasiswa</th>
+							<th scope="col">NPM</th>
 							<th scope="col">Pembimbing 1</th>
 							<th scope="col">Pembimbing 2</th>
 							<th scope="col">Status</th>
@@ -32,12 +34,14 @@
 							<tr>
 								<th scope="row"><?= $no++; ?></th>
 								<td><?= $proposal->judul; ?></td>
+								<td><?= format_tgl($proposal->tanggal_pendaftaran); ?></td>
 								<td>
 									<?php
 									$mahasiswa = $this->db->where('id', $proposal->mahasiswa)->get('users')->row();
 									echo $mahasiswa->nama;
 									?>
 								</td>
+								<td><?= $mahasiswa->npm; ?></td>
 								<td>
 									<?php
 									$dosen1 = $this->db->where('id', $proposal->dospem_1_id)->get('users')->row();

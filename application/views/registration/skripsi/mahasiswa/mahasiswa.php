@@ -8,10 +8,30 @@ if (is_array($mySkripsi) && !empty($mySkripsi)) {
 		$showAddButton = true;
 	}
 } else {
+	$latestSkripsi = (object)[
+		'status_ujian_skripsi' => 'Belum terdaftar',
+	];
 	$showAddButton = true;
 }
 
 if (!$hasApprovedTitle) {
+	$showAddButton = false;
+}
+
+if ($latestSkripsi->status_ujian_skripsi == "Tidak lulus" || $latestSkripsi->status_ujian_skripsi == "Belum terdaftar") {
+	$this->load->model('Skpregister_model');
+	$progress_dospem_1 = $this->Skpregister_model->count_progress($myTitle->id, $myTitle->dospem_1_id);
+	$progress_dospem_2 = $this->Skpregister_model->count_progress($myTitle->id, $myTitle->dospem_2_id);
+
+	// $progress_dospem_1 = 6;
+	// $progress_dospem_2 = 6;
+
+	if ($progress_dospem_1 >= 6 && $progress_dospem_2 >= 6) {
+		$showAddButton = true;
+	} else {
+		$showAddButton = false;
+	}
+} else {
 	$showAddButton = false;
 }
 ?>
@@ -23,6 +43,7 @@ if (!$hasApprovedTitle) {
 													} else {
 														echo "4rem";
 													} ?>;">
+
 
 			<?php if ($this->session->flashdata('success')) : ?>
 				<div class="alert alert-info alert-dismissible fade show" role="alert">
@@ -40,6 +61,7 @@ if (!$hasApprovedTitle) {
 						<tr>
 							<th scope="col">No</th>
 							<th scope="col">Judul</th>
+							<th scope="col">Tanggal Pendaftaran</th>
 							<th scope="col">Naskah</th>
 							<th scope="col">Lembar Persetujuan</th>
 							<th scope="col">Transkrip Nilai</th>
@@ -55,6 +77,7 @@ if (!$hasApprovedTitle) {
 							<tr>
 								<th scope="row"><?= $no++; ?></th>
 								<td><?= $skripsi->judul; ?></td>
+								<td><?= format_tgl($skripsi->tanggal_pendaftaran); ?></td>
 								<td><a class="btn btn-primary" href="<?= base_url() ?>registration_skripsi/view_file/naskah/<?= $skripsi->file_naskah; ?>">Lihat</a></td>
 								<td><a class="btn btn-primary" href="<?= base_url() ?>registration_skripsi/view_file/persetujuan/<?= $skripsi->file_persetujuan; ?>">Lihat</a></td>
 								<td><a class="btn btn-primary" href="<?= base_url() ?>registration_skripsi/view_file/transkrip/<?= $skripsi->file_transkrip; ?>">Lihat</a></td>

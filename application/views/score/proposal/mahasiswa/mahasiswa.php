@@ -67,13 +67,10 @@
 								</td>
 								<td><?php echo $ujian->jam; ?></td>
 								<td>
-									<?php if ($ujian->status_ujian_proposal == "Selesai") { ?>
-										<span class="badge rounded-pill bg-success">Selesai</span>
-									<?php } else if ($ujian->status_ujian_proposal == "Terdaftar") { ?>
-										<span class="badge rounded-pill bg-secondary">Menunggu Penilaian</span>
-									<?php } else { ?>
-										<span class="badge rounded-pill bg-danger">Belum Daftar</span>
-									<?php } ?>
+									<!-- Revisi 8-16 -->
+									<span class="badge rounded-pill <?php echo $ujian->status_ujian_proposal == 'Lulus' ? 'bg-success' : ($ujian->status_ujian_proposal == 'Lulus ubah judul' ? 'bg-warning' : ($ujian->status_ujian_proposal == 'Tidak Lulus' ? 'bg-danger' : ($ujian->status_ujian_proposal == 'Terdaftar' ? 'bg-secondary' : 'bg-danger'))); ?> status-badge" data-id="<?php echo $ujian->pro_id; ?>">
+										<?php echo $ujian->status_ujian_proposal; ?>
+									</span>
 								</td>
 							</tr>
 						<?php } ?>

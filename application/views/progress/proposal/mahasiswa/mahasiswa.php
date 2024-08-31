@@ -73,11 +73,10 @@
           </thead>
           <tbody>
             <?php
-            setlocale(LC_TIME, 'id_ID.UTF-8'); // Set locale to Indonesian
             foreach ($data_proposal as $row) :
             ?>
               <tr>
-                <td><?php echo strftime('%A, %d %B %Y', strtotime($row->tanggal)); ?></td>
+                <td><?= format_tgl($row->tanggal); ?></td>
                 <td><?php echo $row->nama_pembimbing; ?></td>
                 <!-- <td><?php echo $row->bab; ?></td> -->
                 <td><?php echo $row->pembahasan; ?></td>

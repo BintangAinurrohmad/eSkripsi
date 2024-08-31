@@ -150,4 +150,17 @@ class Proregister_model extends CI_Model
 		$query = $this->db->get('title');
 		return $query->num_rows() > 0;
 	}
+
+	public function latestTitle($user_id)
+	{
+		$this->db->select('*');
+		$this->db->from('title');
+		$this->db->where('title.mahasiswa', $user_id);
+		$this->db->where('status', 'Diterima');
+		$this->db->order_by('title.tanggal_pengajuan', 'DESC');
+		$this->db->limit(1);
+		$query = $this->db->get();
+
+		return $query->row();
+	}
 }

@@ -10,6 +10,18 @@
 		</li><!-- End Dashboard Nav -->
 
 		<li class="nav-item">
+			<a class="nav-link <?= set_active('announcement'); ?>" href="<?= base_url() ?>announcement/">
+				<i class="ri-megaphone-fill"></i><span>Pengumuman</span>
+			</a>
+		</li><!-- End Announcement Nav -->
+
+		<li class="nav-item">
+			<a class="nav-link <?= set_active('tracking_mhs/track_mhs'); ?>" href="<?= base_url() ?>tracking_mhs/track_mhs">
+				<i class="ri-list-ordered"></i><span>Progress mahasiswa</span>
+			</a>
+		</li>
+
+		<li class="nav-item">
 			<a class="nav-link <?= set_active('dm'); ?>" data-bs-target="#data-nav" data-bs-toggle="collapse" href="#">
 				<i class="ri-stack-fill"></i><span>Data Master</span><i class="bi bi-chevron-down ms-auto"></i>
 			</a>
@@ -17,6 +29,11 @@
 				<li>
 					<a href="<?= base_url('dm/admin'); ?>" class="<?= set_active_specific(['dm/admin', 'dm/add']); ?>">
 						<i class="bi bi-circle"></i><span>Pengguna</span>
+					</a>
+				</li>
+				<li>
+					<a href="<?= base_url('dm/skripsi'); ?>" class="<?= set_active_specific(['dm/skripsi', 'dm/add_skripsi']); ?>">
+						<i class="bi bi-circle"></i><span>Skripsi</span>
 					</a>
 				</li>
 				<li>

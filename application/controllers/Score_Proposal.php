@@ -514,7 +514,12 @@ class Score_Proposal extends CI_Controller
 			'content' => 'score/proposal/dosen/nilai_dospem',
 			'ujian' => $ujian,
 		];
-		$this->load->view('template/overlay/dosen', $data);
+		if ($this->session->userdata('group_id') == 2) {
+			$template = 'template/overlay/dosen';
+		} elseif ($this->session->userdata('group_id') == 3) {
+			$template = 'template/overlay/koordinator';
+		}
+		$this->load->view($template, $data);
 	}
 
 	public function insert_nilai_pembimbing()
@@ -621,7 +626,12 @@ class Score_Proposal extends CI_Controller
 		$skor_akhir = $skor_total / 100;
 
 		if (!empty($nilaiDospem1->rata_a) && !empty($nilaiDospem2->rata_a) && !empty($nilaiDosuji1->rata_a) && !empty($nilaiDosuji2->rata_a)) {
-			$status = 'Selesai';
+			// Revisi 8-15
+			if ($skor_akhir <= 55) {
+				$status = 'Tidak lulus';
+			} else {
+				$status = 'Lulus';
+			}
 		} else {
 			$status = 'Terdaftar';
 		}
@@ -655,7 +665,12 @@ class Score_Proposal extends CI_Controller
 			'content' => 'score/proposal/dosen/nilai_dosuji',
 			'ujian' => $ujian
 		];
-		$this->load->view('template/overlay/dosen', $data);
+		if ($this->session->userdata('group_id') == 2) {
+			$template = 'template/overlay/dosen';
+		} elseif ($this->session->userdata('group_id') == 3) {
+			$template = 'template/overlay/koordinator';
+		}
+		$this->load->view($template, $data);
 	}
 
 	public function insert_nilai_penguji()
@@ -749,7 +764,12 @@ class Score_Proposal extends CI_Controller
 		$skor_akhir = $skor_total / 100;
 
 		if (!empty($nilaiDospem1->rata_a) && !empty($nilaiDospem2->rata_a) && !empty($nilaiDosuji1->rata_a) && !empty($nilaiDosuji2->rata_a)) {
-			$status = 'Selesai';
+			// Revisi 8-15
+			if ($skor_akhir <= 55) {
+				$status = 'Tidak lulus';
+			} else {
+				$status = 'Lulus';
+			}
 		} else {
 			$status = 'Terdaftar';
 		}
@@ -820,5 +840,21 @@ class Score_Proposal extends CI_Controller
 				redirect('score_proposal/koordinator');
 			}
 		}
+	}
+
+	public function update_status()
+	{
+		$title_id = $this->input->post('title_id');
+		$data['status_ujian_proposal'] = $this->input->post('status_ujian_proposal');
+
+		$this->Proscore_model->update_status($title_id, $data);
+
+		if ($this->db->affected_rows() > 0) {
+			$this->session->set_flashdata('success', 'Status ujian berhasil diperbarui.');
+		} else {
+			$this->session->set_flashdata('error', 'Gagal memperbarui status ujian.');
+		}
+
+		redirect('score_proposal/koordinator');
 	}
 }

@@ -33,8 +33,7 @@ class Skpregister_model extends CI_Model
 	{
 		$this->db->where('mahasiswa', $user_id);
 		$this->db->where('status', 'Diterima');
-		$this->db->where('status_ujian_proposal', 'Selesai');
-		$this->db->where('status_ujian_skripsi', 'Belum terdaftar');
+		$this->db->where_in('status_ujian_proposal', ['Lulus', 'Lulus ubah judul']);
 		$this->db->order_by('id', 'DESC');
 		$this->db->limit(1);
 		$query = $this->db->get('title');
@@ -133,9 +132,18 @@ class Skpregister_model extends CI_Model
 	{
 		$this->db->where('mahasiswa', $user_id);
 		$this->db->where('status', 'Diterima');
-		$this->db->where('status_ujian_proposal', 'Selesai');
+		$this->db->where_in('status_ujian_proposal', ['Lulus', 'Lulus ubah judul']);
 		$this->db->where('status_ujian_skripsi', 'Belum terdaftar');
 		$query = $this->db->get('title');
 		return $query->num_rows() > 0;
+	}
+
+	public function count_progress($judul_id, $dospem_id)
+	{
+		$this->db->from('skp_progress');
+		$this->db->where('judul_id', $judul_id);
+		$this->db->where('pembimbing', $dospem_id);
+		$this->db->where('status', 'approved');
+		return $this->db->count_all_results();
 	}
 }

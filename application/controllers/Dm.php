@@ -10,6 +10,7 @@ class Dm extends CI_Controller
 		$this->load->model('User_model');
 		$this->load->model('Ra_model');
 		$this->load->model('Room_model');
+		$this->load->model('Title_model');
 	}
 
 	public function index()
@@ -27,6 +28,77 @@ class Dm extends CI_Controller
 				$this->admin();
 			} else {
 				redirect('login');
+			}
+		}
+	}
+
+	public function skripsi()
+	{
+		if ($this->session->userdata('group_id') != 4) {
+			redirect('error404');
+		}
+
+		$skripsi = $this->Title_model->getSkripsi();
+		$data = [
+			'title' => "Data Skripsi",
+			'content' => 'dm/skripsi/skripsi',
+			'skripsi' => $skripsi,
+		];
+		$this->load->view('template/overlay/admin', $data);
+	}
+
+	public function add_skripsi()
+	{
+		if ($this->session->userdata('group_id') != 4) {
+			redirect('error404');
+		}
+
+		$research_area = $this->Title_model->getResearchArea();
+		$dosen = $this->Title_model->getDosen();
+		$dosen2 = $this->Title_model->getDosen();
+		$data = [
+			'title' => "Tambah Data Skripsi",
+			'content' => 'dm/skripsi/skripsi2',
+			'research_area' => $research_area,
+			'dosen' => $dosen,
+			'dosen2' => $dosen2
+		];
+		$this->load->view('template/overlay/admin', $data);
+	}
+
+	public function insert_skripsi()
+	{
+		$this->form_validation->set_rules('nama_mahasiswa', 'Nama Mahasiswa', 'required');
+		$this->form_validation->set_rules('npm', 'NPM', 'required');
+		$this->form_validation->set_rules('judul', 'Judul', 'required');
+		$this->form_validation->set_rules('bidang_id', 'Bidang', 'required');
+		$this->form_validation->set_rules('dospem_1_id', 'Dosen Pembimbing 1', 'required');
+		$this->form_validation->set_rules('dospem_2_id', 'Dosen Pembimbing 2', 'required');
+
+		// If validation fails
+		if ($this->form_validation->run() == FALSE) {
+			$this->session->set_flashdata('error', 'Seluruh kolom wajib diisi.');
+			redirect('dm/add_skripsi');
+		} else {
+			// If validation succeeds, save data to database
+			$data['judul'] = $this->input->post('judul');
+			$data['nama_mahasiswa'] = $this->input->post('nama_mahasiswa');
+			$data['npm'] = $this->input->post('npm');
+			$data['bidang_id'] = $this->input->post('bidang_id');
+			$data['dospem_1_id'] = $this->input->post('dospem_1_id');
+			$data['status_dospem_1'] = 'Diterima';
+			$data['dospem_2_id'] = $this->input->post('dospem_2_id');
+			$data['status_dospem_2'] = 'Diterima';
+			$data['status'] = 'Diterima';
+
+			if ($data['bidang_id'] == 'Pilih Bidang' || $data['dospem_1_id'] == 'Pilih Dosen' || $data['dospem_2_id'] == 'Pilih Dosen') {
+				$this->session->set_flashdata('error', 'Seluruh kolom wajib diisi.');
+				redirect('dm/add_skripsi');
+			} else {
+				$this->Title_model->addSkripsi($data);
+
+				$this->session->set_flashdata('success', 'Berhasil menambahkan data skripsi.');
+				redirect('dm/skripsi');
 			}
 		}
 	}
@@ -204,7 +276,7 @@ class Dm extends CI_Controller
 
 		$ra = $this->Ra_model->get();
 		$data = [
-			'title' => "Bidang Penelitian",
+			'title' => "Data Bidang Penelitian",
 			'content' => 'dm/research_area',
 			'ra' => $ra
 		];
@@ -252,7 +324,7 @@ class Dm extends CI_Controller
 
 		$rooms = $this->Room_model->get();
 		$data = [
-			'title' => "Bidang Penelitian",
+			'title' => "Data Ruang Ujian",
 			'content' => 'dm/room',
 			'rooms' => $rooms
 		];

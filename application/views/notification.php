@@ -41,15 +41,15 @@ $redirect_page_types = [
     "new_progress" =>
     $this->session->userdata('group_id') == 2 ? 'progress_proposal/dosen' : 'progress_proposal/mahasiswa',
     "new_progress_skp" =>
-    $this->session->userdata('group_id') == 2 ? 'progress_proposal/dosen' : 'progress_proposal/mahasiswa',
+    $this->session->userdata('group_id') == 2 ? 'progress_skripsi/dosen' : 'progress_skripsi/mahasiswa',
 
     "new_proregis" => $this->session->userdata('group_id') == 3 ? 'registration_proposal/koordinator' : 'registration_proposal/dosen',
     "acc_proregis" => $this->session->userdata('group_id') == 2 ? 'registration_proposal/dosen' : 'registration_proposal/mahasiswa',
     "de_proregis" => $this->session->userdata('group_id') == 2 ? 'registration_proposal/dosen' : 'registration_proposal/mahasiswa',
 
-    "new_skpregis" => $this->session->userdata('group_id') == 3 ? 'registration_skripsi/koordinator' : 'registration_skripsi/dosen',
-    "acc_skpregis" => $this->session->userdata('group_id') == 2 ? 'registration_skripsi/dosen' : 'registration_skripsi/mahasiswa',
-    "de_skpregis" => $this->session->userdata('group_id') == 2 ? 'registration_skripsi/dosen' : 'registration_skripsi/mahasiswa',
+    "new_skpregris" => $this->session->userdata('group_id') == 3 ? 'registration_skripsi/koordinator' : 'registration_skripsi/dosen',
+    "acc_skpregris" => $this->session->userdata('group_id') == 2 ? 'registration_skripsi/dosen' : 'registration_skripsi/mahasiswa',
+    "de_skpregris" => $this->session->userdata('group_id') == 2 ? 'registration_skripsi/dosen' : 'registration_skripsi/mahasiswa',
 
     "update_pro" => $this->session->userdata('group_id') == 2 ? 'schedule_proposal/dosen' : 'schedule_proposal/mahasiswa',
 

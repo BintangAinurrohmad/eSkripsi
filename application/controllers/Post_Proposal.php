@@ -1,7 +1,8 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
-class Post_Proposal extends CI_Controller {
+class Post_Proposal extends CI_Controller
+{
 
 	public function __construct()
 	{
@@ -12,13 +13,13 @@ class Post_Proposal extends CI_Controller {
 	public function index()
 	{
 		if (!$this->session->userdata('is_login')) {
-            redirect('login');
-        } else {
+			redirect('login');
+		} else {
 			if ($this->session->userdata('group_id') == 1) {
 				$this->mahasiswa();
 			} else if ($this->session->userdata('group_id') == 2) {
 				$this->dosen();
-			} else if ($this->session->userdata('group_id') == 3){
+			} else if ($this->session->userdata('group_id') == 3) {
 				$this->koordinator();
 			} else if ($this->session->userdata('group_id') == 4) {
 				$this->admin();
@@ -66,41 +67,75 @@ class Post_Proposal extends CI_Controller {
 
 		$data = [
 			'title' => "Pasca Ujian Proposal",
-			'content' => $content, 
+			'content' => $content,
 			'judul' => $judul,
 		];
 		$this->load->view('template/overlay/mahasiswa', $data);
 	}
+	public function upload()
+	{
+		$config['upload_path']          = './file/proposal/naskah_final';
+		$config['allowed_types']        = 'pdf';
+		$config['max_size']             = 10240;
 
-	public function upload() {
-        $config['upload_path']          = './file/proposal/naskah_final'; 
-        $config['allowed_types']        = 'pdf'; 
-        $config['max_size']             = 10240; 
+		$this->load->library('upload', $config);
 
-        $this->load->library('upload', $config);
-
-        if ( ! $this->upload->do_upload('proposal_final')) {
-            $error = $this->upload->display_errors();
-            $this->session->set_flashdata('error', $error);
+		if (! $this->upload->do_upload('proposal_final')) {
+			$error = $this->upload->display_errors();
+			$this->session->set_flashdata('error', $error);
 			redirect('post_proposal');
-        } else {
-            $data = $this->upload->data();
-            $file_name = $data['file_name'];
+		} else {
+			$data = $this->upload->data();
+			$file_name = $data['file_name'];
 
-            $upload_data = array(
-                'title_id' => $this->input->post('title_id'),
-                'file_naskah' => $file_name,
-                'tanggal_upload' => date('Y-m-d H:i:s')
-            );
+			$upload_data = array(
+				'title_id' => $this->input->post('title_id'),
+				'file_naskah' => $file_name,
+				'tanggal_upload' => date('Y-m-d H:i:s')
+			);
 
-            $this->Propasca_model->insert($upload_data);
+			$this->Propasca_model->insert($upload_data);
 
-            // Redirect atau tampilkan pesan sukses
-            redirect('post_proposal');
-        }
+			// Redirect atau tampilkan pesan sukses
+			redirect('post_proposal');
+		}
 	}
 
-    public function dosen()
+	public function upload_new()
+	{
+		$config['upload_path']          = './file/proposal/naskah_final';
+		$config['allowed_types']        = 'pdf';
+		$config['max_size']             = 10240;
+
+		$this->load->library('upload', $config);
+
+		if (! $this->upload->do_upload('proposal_final')) {
+			$error = $this->upload->display_errors();
+			$this->session->set_flashdata('error', $error);
+			redirect('post_proposal');
+		} else {
+			$data = $this->upload->data();
+			$file_name = $data['file_name'];
+
+			$upload_data = array(
+				'title_id' => $this->input->post('title_id'),
+				'file_naskah' => $file_name,
+				'tanggal_upload' => date('Y-m-d H:i:s')
+			);
+
+			$this->Propasca_model->insert($upload_data);
+
+			$title_id = $this->input->post('title_id');
+			$data_title['judul'] = $this->input->post('new_title');
+
+			$this->Propasca_model->update_title($title_id, $data_title);
+
+			// Redirect atau tampilkan pesan sukses
+			redirect('post_proposal');
+		}
+	}
+
+	public function dosen()
 	{
 		$pasca = $this->Propasca_model->get_all();
 		$data = [
@@ -111,18 +146,18 @@ class Post_Proposal extends CI_Controller {
 		$this->load->view('template/overlay/dosen', $data);
 	}
 
-    public function koordinator()
+	public function koordinator()
 	{
 		$pasca = $this->Propasca_model->get_all();
 		$data = [
 			'title' => "Pasca Ujian Proposal",
-			'content' => 'post/proposal/koordinator/koordinator', 
+			'content' => 'post/proposal/koordinator/koordinator',
 			'pasca' => $pasca
 		];
 		$this->load->view('template/overlay/koordinator', $data);
 	}
 
-    public function admin()
+	public function admin()
 	{
 		$pasca = $this->Propasca_model->get_all();
 		$data = [

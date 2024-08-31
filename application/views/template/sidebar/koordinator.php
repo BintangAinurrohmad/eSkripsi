@@ -10,6 +10,12 @@
 		</li><!-- End Dashboard Nav -->
 
 		<li class="nav-item">
+			<a class="nav-link <?= set_active('announcement'); ?>" href="<?= base_url() ?>announcement/">
+				<i class="ri-megaphone-fill"></i><span>Pengumuman</span>
+			</a>
+		</li><!-- End Announcement Nav -->
+
+		<li class="nav-item">
 			<a class="nav-link <?= set_active('title'); ?>" href="<?= base_url() ?>title/koordinator">
 				<i class="ri-quill-pen-fill"></i><span>Pengajuan Judul</span>
 			</a>
@@ -93,7 +99,7 @@
 
 		<li class="nav-item">
 			<a class="nav-link <?= set_active('tracking_mhs/track_mhs'); ?>" href="<?= base_url() ?>tracking_mhs/track_mhs">
-				<i class="ri-download-2-fill"></i><span>Progress mahasiswa</span>
+				<i class="ri-list-ordered"></i><span>Progress mahasiswa</span>
 			</a>
 		</li>
 

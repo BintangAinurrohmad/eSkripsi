@@ -235,7 +235,7 @@ class Title extends CI_Controller
 		$dospem2 = $this->Title_model->getTitleDospem2($id);
 		$titleKo = $this->Title_model->getTitleKo();
 		$dosen = $this->Title_model->getDosen();
-		$t = $this->Title_model->getTitle();
+		$t = $this->Title_model->getTitleOnly();
 		$data = [
 			'title' => "Pengajuan Judul",
 			'content' => 'title/koordinator/koordinator',

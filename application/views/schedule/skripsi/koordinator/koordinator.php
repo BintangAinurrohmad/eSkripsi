@@ -78,7 +78,7 @@
 											$room = $this->db->where('id', $dsn->room_id)->get('rooms')->row();
 											echo $room->nama;
 											?></td>
-										<td><?= $dsn->tanggal; ?></td>
+										<td><?= format_tgl($dsn->tanggal); ?></td>
 										<td><?= $dsn->jam; ?></td>
 									</tr>
 								<?php } ?>
@@ -142,10 +142,10 @@
 											$room = $this->db->where('id', $all->room_id)->get('rooms')->row();
 											echo $room->nama;
 											?></td>
-										<td><?= $all->tanggal; ?></td>
+										<td><?= format_tgl($all->tanggal); ?></td>
 										<td><?= $all->jam; ?></td>
 										<td>
-											<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal<?= $all->skp_id; ?>">Sunting Jadwal</button>
+											<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal<?= $all->skp_id; ?>">Edit</button>
 										</td>
 									</tr>
 
@@ -182,7 +182,7 @@
 															<select class="form-select" name="room_id" id="room_id" aria-label="Default select example">
 																<option selected="">-- Pilih Ruangan Ujian --</option>
 																<?php foreach ($rooms as $room) : ?>
-																	<option value="<?= $room['id']; ?>" <?= set_select('id', $room['id']); ?>><?= $room['nama']; ?></option>
+																	<option value="<?= $room['id']; ?>" <?= set_select('id', $room['id']); ?> <?php if ($room['id'] == $all->room_id) echo 'selected'; ?>><?= $room['nama']; ?></option>
 																<?php endforeach; ?>
 															</select>
 														</div>

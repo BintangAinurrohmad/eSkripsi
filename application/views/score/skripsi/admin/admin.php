@@ -19,8 +19,8 @@
 							<th scope="col">Tanggal ujian</th>
 							<th scope="col">Ruang</th>
 							<th scope="col">Jam</th>
-							<th scope="col">Status Ujian</th>
 							<th scope="col">Nilai Akhir</th>
+							<th scope="col">Status Ujian</th>
 							<th scope="col">Unduh Nilai</th>
 						</tr>
 					</thead>
@@ -68,8 +68,12 @@
 									?>
 								</td>
 								<td><?php echo $ujian->jam; ?></td>
-								<td><?php echo $ujian->status_ujian_proposal; ?></td>
 								<td><?php echo $ujian->nilai; ?></td>
+								<td>
+									<span class="badge rounded-pill <?= $ujian->status_ujian_skripsi == 'Lulus' ? 'bg-success' : ($ujian->status_ujian_skripsi == 'Tidak lulus' ? 'bg-danger' : ($ujian->status_ujian_skripsi == 'Terdaftar' ? 'bg-secondary' : 'bg-warning')); ?> status-badge" data-id="<?= $ujian->skp_id; ?>">
+										<?= $ujian->status_ujian_skripsi; ?>
+									</span>
+								</td>
 								<td>
 									<a type="submit" class="btn btn-primary" href="<?= base_url() ?>score_skripsi/view_nilai/<?= $ujian->skp_id ?>">Lihat</a>
 									<a type="submit" class="btn btn-primary" href="<?= base_url() ?>score_skripsi/download_nilai/<?= $ujian->skp_id ?>">Unduh</a>

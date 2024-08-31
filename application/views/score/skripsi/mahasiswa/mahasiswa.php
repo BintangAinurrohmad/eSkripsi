@@ -67,13 +67,9 @@
 								</td>
 								<td><?php echo $ujian->jam; ?></td>
 								<td>
-									<?php if ($ujian->status_ujian_skripsi == "Selesai") { ?>
-										<span class="badge rounded-pill bg-success">Selesai</span>
-									<?php } else if ($ujian->status_ujian_skripsi == "Terdaftar") { ?>
-										<span class="badge rounded-pill bg-secondary">Menunggu Penilaian</span>
-									<?php } else { ?>
-										<span class="badge rounded-pill bg-danger">Belum Daftar</span>
-									<?php } ?>
+									<span class="badge rounded-pill <?= $ujian->status_ujian_skripsi == 'Lulus' ? 'bg-success' : ($ujian->status_ujian_skripsi == 'Tidak lulus' ? 'bg-danger' : ($ujian->status_ujian_skripsi == 'Terdaftar' ? 'bg-secondary' : 'bg-warning')); ?> status-badge" data-id="<?= $ujian->skp_id; ?>">
+										<?= $ujian->status_ujian_skripsi; ?>
+									</span>
 								</td>
 							</tr>
 						<?php } ?>

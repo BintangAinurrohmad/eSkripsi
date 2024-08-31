@@ -49,6 +49,7 @@
 								<tr>
 									<th scope="col">No</th>
 									<th scope="col">Judul</th>
+									<th scope="col">Tanggal Pendaftaran</th>
 									<th scope="col">Mahasiswa</th>
 									<th scope="col">NPM</th>
 									<th scope="col">Status</th>
@@ -64,6 +65,7 @@
 									<tr>
 										<th scope="row"><?= $no++; ?></th>
 										<td><?= $dospem1->judul; ?></td>
+										<td><?= format_tgl($dospem1->tanggal_pendaftaran); ?></td>
 										<td>
 											<?php
 											$mahasiswa = $this->db->where('id', $dospem1->mahasiswa)->get('users')->row();
@@ -126,6 +128,7 @@
 								<tr>
 									<th scope="col">No</th>
 									<th scope="col">Judul</th>
+									<th scope="col">Tanggal Pendaftaran</th>
 									<th scope="col">Mahasiswa</th>
 									<th scope="col">NPM</th>
 									<th scope="col">Status</th>
@@ -141,6 +144,7 @@
 									<tr>
 										<th scope="row"><?= $no++; ?></th>
 										<td><?= $dospem2->judul; ?></td>
+										<td><?= format_tgl($dospem2->tanggal_pendaftaran); ?></td>
 										<td>
 											<?php
 											$mahasiswa = $this->db->where('id', $dospem2->mahasiswa)->get('users')->row();

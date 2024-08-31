@@ -4,7 +4,7 @@
         <div class="card-body">
             <div class="tab-content pt-2">
                 <div class="tab-pane fade profile-overview active show" id="profile-overview" role="tabpanel">
-                    <table class="table">
+                    <table class="table datatable">
                         <thead>
                             <tr>
                                 <th>Tanggal</th>
@@ -20,7 +20,7 @@
                         <tbody>
                             <?php foreach ($data_skripsi as $row) : ?>
                                 <tr>
-                                    <td><?php echo date('l, d F Y', strtotime($row->tanggal)); ?></td>
+                                    <td><?= format_tgl($row->tanggal); ?></td>
                                     <td><?php echo $row->judul; ?></td>
                                     <!-- <td><?php echo $row->nama_pembimbing; ?></td>
                                     <td><?php echo $row->bab; ?></td> -->

@@ -80,14 +80,25 @@ class Registration_Skripsi extends CI_Controller
 
 		$mySkripsi = $this->Skpregister_model->getMySkripsi($this->session->userdata('user_id'));
 		$hasApprovedTitle = $this->Skpregister_model->has_approved_title($this->session->userdata('user_id'));
+
+		$myTitle = $this->Skpregister_model->getMyTitle($this->session->userdata('user_id'));
+
+		if ($myTitle || $mySkripsi) {
+			$content = 'registration/skripsi/mahasiswa/mahasiswa';
+		} else {
+			$content = 'registration/skripsi/mahasiswa/mahasiswa2';
+		}
+
 		$data = [
 			'title' => "Pendaftaran Ujian Skripsi",
-			'content' => 'registration/skripsi/mahasiswa/mahasiswa',
+			'content' => $content,
 			'mySkripsi' => $mySkripsi,
-			'hasApprovedTitle' => $hasApprovedTitle
+			'hasApprovedTitle' => $hasApprovedTitle,
+			'myTitle' => $myTitle,
 		];
 		$this->load->view('template/overlay/mahasiswa', $data);
 	}
+
 
 	public function daftar()
 	{
@@ -605,11 +616,11 @@ class Registration_Skripsi extends CI_Controller
 			redirect('error404');
 		}
 
-		$skripsi = $this->Skpregister_model->getProposal();
+		$skripsi = $this->Skpregister_model->getSkripsi();
 		$data = [
 			'title' => "Pendaftaran Ujian Skripsi",
 			'content' => 'registration/skripsi/admin/admin',
-			'proposal' => $skripsi,
+			'skripsi' => $skripsi,
 		];
 		$this->load->view('template/overlay/admin', $data);
 	}

@@ -68,7 +68,12 @@
 									?>
 								</td>
 								<td><?php echo $ujian->jam; ?></td>
-								<td><?php echo $ujian->status_ujian_proposal; ?></td>
+								<td>
+									<!-- Revisi 8-16 -->
+									<span class="badge rounded-pill <?php echo $ujian->status_ujian_proposal == 'Lulus' ? 'bg-success' : ($ujian->status_ujian_proposal == 'Lulus ubah judul' ? 'bg-warning' : ($ujian->status_ujian_proposal == 'Tidak Lulus' ? 'bg-danger' : ($ujian->status_ujian_proposal == 'Terdaftar' ? 'bg-secondary' : 'bg-danger'))); ?> status-badge" data-id="<?php echo $ujian->pro_id; ?>">
+										<?php echo $ujian->status_ujian_proposal; ?>
+									</span>
+								</td>
 								<td><?php echo $ujian->nilai; ?></td>
 								<td>
 									<a type="submit" class="btn btn-primary" href="<?= base_url() ?>score_proposal/view_nilai/<?= $ujian->pro_id ?>">Lihat</a>

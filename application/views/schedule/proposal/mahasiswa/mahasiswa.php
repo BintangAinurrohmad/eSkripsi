@@ -65,7 +65,7 @@
 											$room = $this->db->where('id', $mhs->room_id)->get('rooms')->row();
 											echo $room->nama;
 											?></td>
-										<td><?= $mhs->tanggal; ?></td>
+										<td><?= format_tgl($mhs->tanggal); ?></td>
 										<td><?= $mhs->jam; ?></td>
 										<td>
 											<a href="<?= base_url('schedule_proposal/download_berita_acara') ?>/<?= $mhs->pro_id ?>" type="submit" class="btn btn-primary">Unduh</a>
@@ -134,7 +134,7 @@
 											$room = $this->db->where('id', $all->room_id)->get('rooms')->row();
 											echo $room->nama;
 											?></td>
-										<td><?= $all->tanggal; ?></td>
+										<td><?= format_tgl($all->tanggal); ?></td>
 										<td><?= $all->jam; ?></td>
 									</tr>
 								<?php } ?>

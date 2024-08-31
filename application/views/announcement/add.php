@@ -1,23 +1,20 @@
 <section class="section">
 	<div class="card">
-		<div class="card-body">
-			<h5 class="card-title"></h5>
+		<div class="card-body pt-3">
 
-			<!-- Floating Labels Form -->
-			<form class="row g-3">
-
-				<div class="col-md-12">
-					<div class="form-floating">
-						<input type="text" class="form-control" id="floatingName" placeholder="Your Name">
-						<label for="floatingName">Your Name</label>
-					</div>
+			<form class="row g-3" method="post" action="<?= base_url('announcement/submit') ?>">
+				<div class="col-12">
+					<label class="form-label">Judul</label>
+					<input type="text" name="title" class="form-control" id="inputNanme4" placeholder="Masukkan Judul Pengumuman" required>
 				</div>
 
-				<div class="quill-editor-default mt-3">
+				<div class="col-12">
+					<label class="form-label">Isi</label>
+					<textarea class="form-control" name="content" rows="10" placeholder="Masukkan Isi Pengumuman" required></textarea>
 				</div>
 
 				<div class="text-center">
-					<button type="submit" class="btn btn-primary">Submit</button>
+					<button type="submit" class="btn btn-primary">Kirim</button>
 				</div>
 			</form>
 

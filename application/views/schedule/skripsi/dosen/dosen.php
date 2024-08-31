@@ -63,7 +63,7 @@
 											$room = $this->db->where('id', $dsn->room_id)->get('rooms')->row();
 											echo $room->nama;
 											?></td>
-										<td><?= $dsn->tanggal; ?></td>
+										<td><?= format_tgl($dsn->tanggal); ?></td>
 										<td><?= $dsn->jam; ?></td>
 									</tr>
 								<?php } ?>
@@ -126,7 +126,7 @@
 											$room = $this->db->where('id', $all->room_id)->get('rooms')->row();
 											echo $room->nama;
 											?></td>
-										<td><?= $all->tanggal; ?></td>
+										<td><?= format_tgl($all->tanggal); ?></td>
 										<td><?= $all->jam; ?></td>
 									</tr>
 								<?php } ?>

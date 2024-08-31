@@ -187,8 +187,10 @@
 							<thead>
 								<tr>
 									<th scope="col">No</th>
-									<th scope="col">Judul</th>
+									<th scope="col">NPM</th>
 									<th scope="col">Mahasiswa</th>
+									<th scope="col">Judul</th>
+									<th scope="col">Bidang</th>
 									<th scope="col">Pembimbing 1</th>
 									<th scope="col">Pembimbing 2</th>
 									<th scope="col">Status</th>
@@ -199,8 +201,15 @@
 								foreach ($t as $t) { ?>
 									<tr>
 										<th scope="row"><?= $no++; ?></th>
-										<td><?= $t->judul; ?></td>
+										<td><?= $t->npm; ?></td>
 										<td><?= $t->nama_mahasiswa; ?></td>
+										<td><?= $t->judul; ?></td>
+										<td>
+											<?php
+											$bidang = $this->db->where('id', $t->bidang_id)->get('research_area')->row();
+											echo $bidang->nama;
+											?>
+										</td>
 										<td>
 											<?php
 											$dosen1 = $this->db->where('id', $t->dospem_1_id)->get('users')->row();
@@ -252,21 +261,20 @@
 				</div>
 			</div>
 
+			<!-- Revisi 8-18 -->
 			<?php
 			$showAddButton = true;
-			if (empty($myt)) {
-				$showAddButton = true;
-			} else {
-				foreach ($myt as $item) {
-					if (is_object($item) && isset($item->status)) {
-						if ($item->status == "Sedang diproses") {
-							$showAddButton = false;
-							break;
-						} else if ($item->status == "Ditolak") {
-							$showAddButton = true;
-						}
-					}
+			if (is_array($myt) && !empty($myt)) {
+				$latestTitle = $myt[0];
+				if ($latestTitle->status == "Sedang diproses") {
+					$showAddButton = false;
+				} elseif ($latestTitle->status == "Ditolak" || $latestTitle->status_ujian_proposal == 'Tidak lulus') {
+					$showAddButton = true;
+				} else {
+					$showAddButton = false;
 				}
+			} else {
+				$showAddButton = true;
 			}
 			?>
 

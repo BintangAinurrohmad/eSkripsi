@@ -76,11 +76,20 @@ class Registration_Proposal extends CI_Controller
 
 		$myProposal = $this->Proregister_model->getMyProposal($this->session->userdata('user_id'));
 		$hasApprovedTitle = $this->Proregister_model->has_approved_title($this->session->userdata('user_id'));
+		$latestTitle = $this->Proregister_model->latestTitle($this->session->userdata('user_id'));
+
+		if ($latestTitle) {
+			$content = 'registration/proposal/mahasiswa/mahasiswa';
+		} else {
+			$content = 'registration/proposal/mahasiswa/mahasiswa2';
+		}
+
 		$data = [
 			'title' => "Pendaftaran Ujian Proposal",
-			'content' => 'registration/proposal/mahasiswa/mahasiswa',
+			'content' => $content,
 			'myProposal' => $myProposal,
-			'hasApprovedTitle' => $hasApprovedTitle
+			'hasApprovedTitle' => $hasApprovedTitle,
+			'latestTitle' => $latestTitle
 		];
 		$this->load->view('template/overlay/mahasiswa', $data);
 	}

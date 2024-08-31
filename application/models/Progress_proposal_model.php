@@ -183,14 +183,14 @@ class Progress_proposal_model extends CI_Model
         $target_year = $current_year - 4;
 
         $subquery = $this->db->select('MAX(id) as id')
-        ->from('title')
-        ->where('status', 'Diterima')
-        ->group_start()
-        ->where('dospem_1_id', $pembimbing_id)
-        ->or_where('dospem_2_id', $pembimbing_id)
-        ->group_end()
-        ->group_by('mahasiswa')
-        ->get_compiled_select();
+            ->from('title')
+            ->where('status', 'Diterima')
+            ->group_start()
+            ->where('dospem_1_id', $pembimbing_id)
+            ->or_where('dospem_2_id', $pembimbing_id)
+            ->group_end()
+            ->group_by('mahasiswa')
+            ->get_compiled_select();
 
         $this->db->select('
         u.id, 
@@ -215,7 +215,11 @@ class Progress_proposal_model extends CI_Model
         ) AS status_bimbingan_proposal,
         IFNULL(
             CASE 
-                WHEN t.status_ujian_proposal = "Selesai" THEN "Ujian Proposal"
+                WHEN t.status_ujian_proposal = "Belum terdaftar" THEN "Belum daftar"
+                WHEN t.status_ujian_proposal = "Terdaftar" THEN "Ujian Proposal"
+                WHEN t.status_ujian_proposal = "Lulus" THEN "Selesai"
+                WHEN t.status_ujian_proposal = "Lulus ubah judul" THEN "Lulus dengan revisi"
+                WHEN t.status_ujian_proposal = "Tidak lulus" THEN "Tidak lulus"
                 ELSE NULL
             END,
             "-"
@@ -229,7 +233,10 @@ class Progress_proposal_model extends CI_Model
         ) AS status_bimbingan_skripsi,
         IFNULL(
             CASE 
-                WHEN t.status_ujian_skripsi = "Selesai" THEN "Ujian Skripsi"
+                WHEN t.status_ujian_skripsi = "Belum terdaftar" THEN "Belum daftar"
+                WHEN t.status_ujian_skripsi = "Terdaftar" THEN "Ujian skripsi"
+                WHEN t.status_ujian_skripsi = "Lulus" THEN "Selesai"
+                WHEN t.status_ujian_skripsi = "Tidak lulus" THEN "Tidak lulus"
                 ELSE NULL
             END,
             "-"
@@ -314,7 +321,11 @@ class Progress_proposal_model extends CI_Model
         ) AS status_bimbingan_proposal,
         IFNULL(
             CASE 
-                WHEN t.status_ujian_proposal = "Selesai" THEN "Ujian Proposal"
+                WHEN t.status_ujian_proposal = "Belum terdaftar" THEN "Belum daftar"
+                WHEN t.status_ujian_proposal = "Terdaftar" THEN "Ujian Proposal"
+                WHEN t.status_ujian_proposal = "Lulus" THEN "Selesai"
+                WHEN t.status_ujian_proposal = "Lulus ubah judul" THEN "Lulus dengan revisi"
+                WHEN t.status_ujian_proposal = "Tidak lulus" THEN "Tidak lulus"
                 ELSE NULL
             END,
             "-"
@@ -328,7 +339,10 @@ class Progress_proposal_model extends CI_Model
         ) AS status_bimbingan_skripsi,
         IFNULL(
             CASE 
-                WHEN t.status_ujian_skripsi = "Selesai" THEN "Ujian Skripsi"
+                 WHEN t.status_ujian_skripsi = "Belum terdaftar" THEN "Belum daftar"
+                WHEN t.status_ujian_skripsi = "Terdaftar" THEN "Ujian skripsi"
+                WHEN t.status_ujian_skripsi = "Lulus" THEN "Selesai"
+                WHEN t.status_ujian_skripsi = "Tidak lulus" THEN "Tidak lulus"
                 ELSE NULL
             END,
             "-"
@@ -387,6 +401,4 @@ class Progress_proposal_model extends CI_Model
         $query = $this->db->get();
         return $query->result_array();
     }
-
-
 }

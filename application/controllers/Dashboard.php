@@ -8,6 +8,8 @@ class Dashboard extends CI_Controller
 	{
 		parent::__construct();
 		$this->load->model('User_model');
+		$this->load->model('Announcement_model');
+		$this->load->model('Dashboard_model');
 	}
 
 	public function index()
@@ -36,6 +38,7 @@ class Dashboard extends CI_Controller
 
 		$user_id = $this->session->userdata('user_id');
 
+
 		if ($user_id) {
 			$lastTitle = $this->Title_model->getMyLastAccTitle($user_id);
 			$user_name = $this->Dashboard_model->getLoggedInUserName(); // Get the user name
@@ -49,7 +52,7 @@ class Dashboard extends CI_Controller
 				'data_proposal' => $this->Dashboard_model->get_proposal_data_by_user_id($user_id),
 				'guidance_count' => $this->Dashboard_model->get_guidance_count($user_id),
 				'last_guidance_date' => $this->Dashboard_model->get_last_guidance_date($user_id),
-				'dosen_mahasiswa' => $this->Dashboard_model->get_dosen_mahasiswa()
+				'pengumuman' => $this->Announcement_model->get()
 			];
 
 			$this->load->view('template/overlay/mahasiswa', $data);
@@ -59,19 +62,19 @@ class Dashboard extends CI_Controller
 		}
 	}
 
-
-
 	public function dosen()
 	{
 		$dosen_id = $this->session->userdata('user_id'); // Assuming the dosen ID is retrieved from the session
 		$this->load->model('Dashboard_model');
+
+		$data['pengumuman'] = $this->Announcement_model->get();
 
 		$data['judul'] = $this->Dashboard_model->getBelumDisetujuiJudul();
 		$data['dibimbing'] = $this->Dashboard_model->getMahasiswaDibimbing();
 		$data['belumBimbingan'] = $this->Dashboard_model->getBelumBimbingan();
 		$data['belumSeminar'] = $this->Dashboard_model->getBelumSeminar();
 		$data['belumSkripsi'] = $this->Dashboard_model->getBelumSkripsi();
-		$data['dosen_mahasiswa'] = $this->Dashboard_model->get_dosen_mahasiswa();
+		//$data['dosen_mahasiswa'] = $this->Dashboard_model->get_dosen_mahasiswa();
 
 		// Assuming getLoggedInUserName returns a string
 		$user_name = $this->Dashboard_model->getLoggedInUserName();
@@ -97,12 +100,17 @@ class Dashboard extends CI_Controller
 
 		$this->load->model('title_model');
 		$this->load->model('Dashboard_model');
+
+		$data['pengumuman'] = $this->Announcement_model->get();
+
 		$data['judul'] = $this->Dashboard_model->getBelumDisetujuiJudul();
 		$data['dibimbing'] = $this->Dashboard_model->getMahasiswaDibimbing();
 		$data['belumBimbingan'] = $this->Dashboard_model->getBelumBimbingan();
 		$data['belumSeminar'] = $this->Dashboard_model->getBelumSeminar();
 		$data['belumSkripsi'] = $this->Dashboard_model->getBelumSkripsi();
-		$data['dosen_mahasiswa'] = $this->Dashboard_model->get_dosen_mahasiswa();
+
+		// Menggunakan fungsi yang benar untuk mendapatkan data dosen dan mahasiswa bimbingan
+		$data['dosen_mahasiswa'] = $this->Dashboard_model->get_dosen_mahasiswa_bimbingan();
 
 		$data['user_name'] = $this->Dashboard_model->getLoggedInUserName();
 
@@ -117,7 +125,6 @@ class Dashboard extends CI_Controller
 
 		$data['jumlah_jadwal_skp'] = $jumlah_jadwal_skp;
 		$data['jumlah_jadwal_today_skp'] = $jumlah_jadwal_today_skp;
-
 
 		$data['jumlah_belum_disetujui'] = $this->Dashboard_model->count_pending_approval($dosen_id);
 
@@ -138,19 +145,22 @@ class Dashboard extends CI_Controller
 	}
 
 
+
 	public function admin()
 	{
 		$dosen_id = $this->session->userdata('user_id'); // Asumsi ID dosen diambil dari sesi
 
 		$this->load->model('title_model');
 		$this->load->model('Dashboard_model');
+
+		$data['pengumuman'] = $this->Announcement_model->get();
+		
 		$data['judul'] = $this->Dashboard_model->getBelumDisetujuiJudul();
 		$data['dibimbing'] = $this->Dashboard_model->getMahasiswaDibimbing();
 		$data['belumBimbingan'] = $this->Dashboard_model->getBelumBimbingan();
 		$data['belumSeminar'] = $this->Dashboard_model->getBelumSeminar();
 		$data['belumSkripsi'] = $this->Dashboard_model->getBelumSkripsi();
-		$data['dosen_mahasiswa'] = $this->Dashboard_model->get_dosen_mahasiswa();
-
+		
 		$data['user_name'] = $this->Dashboard_model->getLoggedInUserName();
 
 		$jumlah_jadwal = $this->Dashboard_model->get_jumlah_jadwal();
@@ -168,6 +178,8 @@ class Dashboard extends CI_Controller
 		$data['count'] = $count;
 
 		$data['jumlahskp_belum_disetujui'] = $this->Dashboard_model->count_pending_approvalskp($dosen_id);
+
+		$data['dosen_mahasiswa'] = $this->Dashboard_model->get_dosen_mahasiswa_bimbingan();
 
 		$data['title'] = "Selamat Datang di Dashboard";
 		$data['content'] = 'dashboard/admin';
