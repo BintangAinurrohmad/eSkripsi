@@ -199,7 +199,7 @@
 											<?php } ?>
 										</td>
 										<td>
-											<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal3<?= $item->id; ?>">Lihat Detail</button>
+											<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal3<?= $item->id; ?>" onclick="checkPlagiarism('<?= $item->judul ?>')">Lihat Detail</button>
 										</td>
 										<td>
 											<?php if ($item->status_dospem_1 == 'Diterima' && $item->status_dospem_2 == 'Ditolak') { ?>
@@ -219,12 +219,12 @@
 
 									<!-- Modal Detail Status -->
 									<div class="modal fade" id="myModal3<?= $item->id; ?>">
-										<div class="modal-dialog">
+										<div class="modal-dialog modal-xl">
 											<div class="modal-content">
 												<div class="modal-header">
 													<h4 class="modal-title">Detail</h4>
 												</div>
-												<div class="modal-body">
+												<div class="modal-body modal-body-pdf">
 													<div class="row">
 														<span class="col-sm-5"><b>Judul</b></span>
 														<span class="col-sm-10"><?= $item->judul; ?></span>
@@ -271,8 +271,14 @@
 														<span class="col-sm-5"><b>Keterangan</b></span>
 														<span class="col-sm-10"><?= $item->alasan_dospem_2; ?></span>
 													</div>
+													<div class="row">
+														<span class="col-sm-5 mt-3"><b>Status Plagiarisme</b></span>
+														<br>
+														<div id="plagiarismResult" class="mt-3"></div>
+													</div>
 												</div>
 												<div class="modal-footer">
+													<button type="button" class="btn btn-success" id="printPdfButton">Cetak PDF</button> <!-- Tombol Cetak PDF -->
 													<button type="button" class="btn btn-danger" data-dismiss="modal">Tutup</button>
 												</div>
 											</div>
@@ -385,3 +391,88 @@
 		</div>
 	</div>
 </section>
+
+
+<script>
+	function checkPlagiarism(judul) {
+		const formData = new FormData();
+		formData.append('new_title', judul);
+
+		fetch('<?php echo base_url("title_plagiarism/index"); ?>', {
+				method: 'POST',
+				body: formData
+			})
+			.then(response => response.json())
+			.then(data => {
+				const plagiarismResult = document.getElementById('plagiarismResult');
+				plagiarismResult.innerHTML = ''; // Clear previous results
+
+				if (data.length > 0) {
+					data.forEach(result => {
+						let colorClass = 'text-success'; // Default color for low similarity
+
+						if (result.similarity > 80) {
+							colorClass = 'text-danger'; // High similarity
+						} else if (result.similarity > 50) {
+							colorClass = 'text-warning'; // Medium similarity
+						}
+
+						plagiarismResult.innerHTML += `
+                    <div class="card mt-3">
+                        <div class="card-body p-0 p-3">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6>${result.approved_title}</h6>
+                                    <p style="font-size: 12px">${result.nama_mahasiswa}</p>
+                                </div>
+                                <h5 class="${colorClass}">${result.similarity}%</h>
+                            </div>
+                        </div>
+                    </div>
+                `;
+					});
+				} else {
+					plagiarismResult.innerHTML = `
+                <div class="card mt-3">
+                    <div class="card-body p-0 p-3">
+                          <h5 class="text-center text-success"> Tidak ada plagiasi pada judul ini </h5>
+                    </div>
+                </div>
+            `;
+				}
+			})
+			.catch(error => console.error('Error:', error));
+	}
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script>
+	document.getElementById('printPdfButton').addEventListener('click', function() {
+		const {
+			jsPDF
+		} = window.jspdf;
+
+		// Atur ukuran halaman PDF (contoh ukuran A4 dalam satuan mm)
+		const doc = new jsPDF({
+			orientation: 'portrait',
+			unit: 'mm',
+			format: 'a4'
+		});
+
+		const content = document.querySelector('.modal-body-pdf');
+
+		html2canvas(content, {
+			scale: 2 // Skala lebih tinggi untuk meningkatkan resolusi
+		}).then(canvas => {
+			// Menghitung dimensi untuk menyesuaikan skala dengan halaman PDF
+			const imgWidth = 210; // Lebar A4 (210mm)
+			const imgHeight = (canvas.height * imgWidth) / canvas.width; // Mengatur tinggi sesuai dengan proporsi kanvas
+
+			const imgData = canvas.toDataURL('image/png');
+			doc.addImage(imgData, 'JPEG', 0, 0, imgWidth, imgHeight, null, 'FAST'); // Menggunakan 'FAST' untuk kualitas yang lebih rendah
+
+			// Simpan PDF
+			doc.save('detail-skripsi.pdf');
+		});
+	});
+</script>
