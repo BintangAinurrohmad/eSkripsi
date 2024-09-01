@@ -61,4 +61,63 @@
 			</form>
 		</div>
 	</div>
+
+	<div id="plagiarismResult" class="mt-3"></div> <!-- Container for plagiarism results -->
 </section>
+
+<script>
+	document.getElementById('judul').addEventListener('input', function() {
+		const judul = this.value;
+
+		if (judul.split(' ').length > 1) { // Check if more than one word is typed
+			const formData = new FormData();
+			formData.append('new_title', judul);
+
+			fetch('<?php echo base_url("title_plagiarism/index"); ?>', {
+					method: 'POST',
+					body: formData
+				})
+				.then(response => response.json())
+				.then(data => {
+					const plagiarismResult = document.getElementById('plagiarismResult');
+					plagiarismResult.innerHTML = ''; // Clear previous results
+
+					if (data.length > 0) {
+						data.forEach(result => {
+							let colorClass = 'text-success'; // Default color for low similarity
+
+							if (result.similarity > 80) {
+								colorClass = 'text-danger'; // High similarity
+							} else if (result.similarity > 50) {
+								colorClass = 'text-warning'; // Medium similarity
+							}
+							plagiarismResult.innerHTML += `
+                            <div class="card mt-3">
+                                <div class="card-body p-0 p-3">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <h5>${result.approved_title}</h5>
+                                            ${result.nama_mahasiswa}
+                                        </div>
+                                        <h3 class="${colorClass}">${result.similarity}%</h3>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+						});
+					} else {
+						plagiarismResult.innerHTML = `
+                            <div class="card mt-3">
+                                <div class="card-body p-0 p-3">
+                                      <h5 class="text-center text-success"> Tidak ada plagiasi pada judul anda </h5>
+                                </div>
+                            </div>
+                        `;
+					}
+				})
+				.catch(error => console.error('Error:', error));
+		} else {
+			document.getElementById('plagiarismResult').innerHTML = '';
+		}
+	});
+</script>
