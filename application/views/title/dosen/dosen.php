@@ -181,7 +181,7 @@
 													</div>
 												</div>
 												<div class="modal-footer">
-													<button type="button" class="btn btn-success" id="printPdfButton<?= $dospem1->id; ?>">Cetak PDF</button>
+													<button type="button" class="btn btn-success" onclick="printData()">Cetak PDF</button>
 													<button type="button" class="btn btn-danger" data-dismiss="modal">Tutup</button>
 												</div>
 											</div>
@@ -348,7 +348,7 @@
 													</div>
 												</div>
 												<div class="modal-footer">
-													<button type="button" class="btn btn-success" id="printPdfButton<?= $dospem2->id; ?>">Cetak PDF</button>
+													<button type="button" class="btn btn-success" onclick="printData()">Cetak PDF</button>
 													<button type="button" class="btn btn-danger" data-dismiss="modal">Tutup</button>
 												</div>
 											</div>
@@ -502,7 +502,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script>
-	document.getElementById('printPdfButton').addEventListener('click', function() {
+	function printData() {
 		const {
 			jsPDF
 		} = window.jspdf;
@@ -529,5 +529,5 @@
 			// Simpan PDF
 			doc.save('detail-skripsi.pdf');
 		});
-	});
+	};
 </script>
